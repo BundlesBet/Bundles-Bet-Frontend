@@ -13,11 +13,12 @@ import {
 
 //utilities
 import { ChevronLeft, Wallet } from '@mui/icons-material'
-import AccountBalanceWalletIcon from '@mui/icons-material/AccountBalanceWallet'
-import KeyIcon from '@mui/icons-material/Key'
+
+import { Logo, key, wallet } from 'assets/index'
 import Head from 'next/head'
 import { secondaryButton } from 'themes/commonStyles'
 import { useMetamask } from 'contexts/Metamask'
+import Image from 'next/image'
 
 interface Props {}
 
@@ -56,9 +57,8 @@ const ConnectWallet = (_props: Props) => {
                 onClick={() => {
                   router.back()
                 }}
-                aria-label="close"
               >
-                <ChevronLeft sx={{ color: '#fff' }} />
+                <Image src={Logo} alt="logo" />
               </IconButton>
 
               <Typography
@@ -114,7 +114,7 @@ const ConnectWallet = (_props: Props) => {
           >
             <Button
               onClick={connect}
-              startIcon={<AccountBalanceWalletIcon />}
+              startIcon={<Image src={wallet} alt="key" />}
               variant="contained"
               fullWidth
               sx={{
@@ -131,7 +131,7 @@ const ConnectWallet = (_props: Props) => {
               Connect Your Wallet
             </Button>
             <Button
-              startIcon={<KeyIcon />}
+              startIcon={<Image src={key} alt="key" />}
               variant="outlined"
               color="primary"
               fullWidth
