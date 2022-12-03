@@ -10,10 +10,10 @@ const customTheme = createTheme({
   },
   palette: {
     primary: {
-      main: "#000000",
+      main: "#FFFFFF",
     },
     secondary: {
-      main: "#002AA4", //Choose your primary and secondary colors , so you can use <Typography color="primary or color ="secondary"></Typography>
+      main: "#0EB634 ", //Choose your primary and secondary colors , so you can use <Typography color="primary or color ="secondary"></Typography>
     },
   },
   components: {
@@ -23,6 +23,10 @@ const customTheme = createTheme({
         // Name of the slot
         root: {
           //   Some CSS
+
+          fontWeight: 700,
+          fontSize: "14px",
+          lineHeight: "18px",
           background: "#0EB634",
           borderRadius: "4px",
           color: "#FFFFFF",

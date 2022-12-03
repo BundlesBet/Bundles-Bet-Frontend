@@ -21,8 +21,9 @@ body {
   -webkit-background-size: cover;
   -moz-background-size: cover;
   -o-background-size: cover;
+  background-image: url("../assets/background.png");
   background-size: cover;
-  background-color: #150716;
+  background-repeat: repeat-y;
   color: #ffffff;
   max-width: 1800px;
   width: 100%;

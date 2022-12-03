@@ -8,7 +8,7 @@ import { ERC721 } from "./types/ERC721";
 import { AllowedChainConfig, ContractConfig } from "./types/config";
 
 export const allowedChains: AllowedChainConfig[] = [
-  // { id: 1, name: 'Ethereum' }
+  { id: 80001, name: "Polygon" },
 ];
 
 export const contractAddress = {
