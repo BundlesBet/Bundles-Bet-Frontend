@@ -11,19 +11,16 @@ import {
   Button,
 } from '@mui/material'
 
-//utilities
-import { ChevronLeft, Wallet } from '@mui/icons-material'
-
 import { Logo, key, wallet } from 'assets/index'
 import Head from 'next/head'
-import { secondaryButton } from 'themes/commonStyles'
+import { secondaryButton } from 'styles/commonStyles'
 import { useMetamask } from 'contexts/Metamask'
 import Image from 'next/image'
 
 interface Props {}
 
 /**
- * @param <Open and closing states if it is model(still needs to confirm by BlockGames Team)>
+ * @param <Pass Props as any>
  * @returns <returns the Log In component/Page>
  */
 
