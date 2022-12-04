@@ -28,3 +28,20 @@ export const accordionSummaryStyles = {
   // justifyContent: 'space-between',
   // alignContent: 'center',
 }
+
+export const currentBalancePaperStyle = {
+  background: '#0EB634',
+  borderRadius: '1px',
+  boxShadow: '0px 4px 4px rgba(0, 0, 0, 0.25)',
+  color: '#fff',
+  p: { xs: 2, md: 3 },
+}
+
+export const currentBalancePaperStyle2 = {
+  background:
+    'linear-gradient(180deg, rgba(24, 129, 48, 0.8) 0%, rgba(24, 129, 48, 0.5) 100%)',
+  borderRadius: '1px',
+  boxShadow: '0px 4px 4px rgba(0, 0, 0, 0.25)',
+  color: '#fff',
+  p: { xs: 2, md: 2 },
+}
