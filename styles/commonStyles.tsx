@@ -9,8 +9,6 @@ export const secondaryButton = {
   },
 }
 export const accordionStyles = {
-  mt: 1,
-  mb: 1,
   width: '100%',
   backgroundColor: '#282835',
   color: '#fff',
