@@ -63,23 +63,21 @@ const SelectPoolAccordion = (props: Props) => {
           </Typography>
         </AccordionSummary>
         <AccordionDetails sx={{ bgcolor: '#1C1C26' }}>
-          <Stack>
-            <Typography
-              textAlign={'center'}
-              sx={{
-                mb: 2,
-                ...accordionTextStyles,
-              }}
-            >
-              Canada Vs Greece
-              <Typography mt={1} color={'#7D7D8D'} fontSize={'14px'}>
-                {' '}
-                12,345 Active Bets
-              </Typography>
+          <Typography
+            textAlign={'center'}
+            sx={{
+              mb: 2,
+              mt: 2,
+              ...accordionTextStyles,
+            }}
+          >
+            Canada Vs Greece
+            <Typography mt={1} color={'#7D7D8D'} fontSize={'14px'}>
+              {' '}
+              12,345 Active Bets
             </Typography>
-          </Stack>
-
-          <Divider />
+          </Typography>
+          <Divider sx={{ mb: 2 }} />
           <Typography
             textAlign={'center'}
             sx={{
@@ -93,7 +91,7 @@ const SelectPoolAccordion = (props: Props) => {
               12,345 Active Bets
             </Typography>
           </Typography>
-          <Divider />
+          <Divider sx={{ mb: 2 }} />
         </AccordionDetails>
       </Accordion>
     </>

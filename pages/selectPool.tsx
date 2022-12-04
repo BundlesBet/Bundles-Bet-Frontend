@@ -36,7 +36,7 @@ const SelectPool: NextPage<Props> = ({}) => {
       >
         <Container component="main" maxWidth="md">
           <CssBaseline />
-          <Box mb={8}>
+          <Box mb={8} mt={8}>
             <Stack
               justifyContent={'center'}
               alignItems={'center'}
@@ -69,6 +69,7 @@ const SelectPool: NextPage<Props> = ({}) => {
               color="#7D7D8D"
               fontWeight={600}
               mt={4}
+              mb={4}
               textAlign="center"
               sx={{ fontSize: { xs: '12px', md: '16px', lg: '16px' } }}
             >
