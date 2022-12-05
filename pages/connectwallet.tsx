@@ -16,6 +16,8 @@ import Head from 'next/head'
 import { secondaryButton } from 'styles/commonStyles'
 import { useMetamask } from 'contexts/Metamask'
 import Image from 'next/image'
+import Header from 'components/Header'
+import useMetamaskLogin from 'hooks/useMetamaskLogin'
 
 interface Props {}
 
@@ -26,13 +28,16 @@ interface Props {}
 
 const ConnectWallet = (_props: Props) => {
   const router = useRouter()
-  const { connect } = useMetamask()
+  const { login } = useMetamaskLogin()
+  const { account, connect } = useMetamask()
 
   return (
     <>
       <Head>
         <title>Connect Wallet</title>
       </Head>
+
+      <Header></Header>
 
       <Grid
         container
@@ -110,7 +115,10 @@ const ConnectWallet = (_props: Props) => {
             spacing={2}
           >
             <Button
-              onClick={connect}
+              onClick={() => {
+                connect()
+                setTimeout(() => login(), 5000)
+              }}
               startIcon={<Image src={wallet} alt="key" />}
               variant="contained"
               fullWidth
