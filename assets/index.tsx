@@ -8,5 +8,6 @@ import wallet from './wallet.png'
 import Discord from './discord.png'
 import ProfilePic from './ProfilePic.png'
 import background from './background.png'
+import cricket from './cricket.png'
 
-export { background, Discord, key, Logo, Link, ProfilePic, wallet }
+export { background, cricket, Discord, key, Logo, Link, ProfilePic, wallet }
