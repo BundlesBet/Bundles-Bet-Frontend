@@ -1,5 +1,8 @@
 // libraries
+import Head from 'next/head'
+import Image from 'next/image'
 import { useRouter } from 'next/router'
+import { useEffect, useRef } from 'react'
 import {
   Typography,
   Stack,
@@ -11,13 +14,17 @@ import {
   Button,
 } from '@mui/material'
 
-import { Logo, key, wallet } from 'assets/index'
-import Head from 'next/head'
-import { secondaryButton } from 'styles/commonStyles'
+// contexts and hooks
 import { useMetamask } from 'contexts/Metamask'
-import Image from 'next/image'
-import Header from 'components/Header'
 import useMetamaskLogin from 'hooks/useMetamaskLogin'
+
+// components
+
+// styles
+import { secondaryButton } from 'styles/commonStyles'
+
+// assets
+import { Logo, key, wallet } from 'assets/index'
 
 interface Props {}
 
@@ -31,13 +38,18 @@ const ConnectWallet = (_props: Props) => {
   const { login } = useMetamaskLogin()
   const { account, connect } = useMetamask()
 
+  useEffect(() => {
+    if (account) {
+      login()
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [account])
+
   return (
     <>
       <Head>
         <title>Connect Wallet</title>
       </Head>
-
-      <Header></Header>
 
       <Grid
         container
@@ -115,10 +127,7 @@ const ConnectWallet = (_props: Props) => {
             spacing={2}
           >
             <Button
-              onClick={() => {
-                connect()
-                setTimeout(() => login(), 5000)
-              }}
+              onClick={connect}
               startIcon={<Image src={wallet} alt="key" />}
               variant="contained"
               fullWidth

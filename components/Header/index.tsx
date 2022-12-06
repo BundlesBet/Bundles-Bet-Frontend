@@ -1,5 +1,5 @@
 import Image from 'next/image'
-import { MouseEvent, useState } from 'react'
+import { MouseEvent, useEffect, useState } from 'react'
 import { Notifications, TableRows } from '@mui/icons-material'
 import {
   AppBar,
@@ -14,6 +14,7 @@ import {
 
 // contexts and hooks
 import { useMetamask } from 'contexts/Metamask'
+import useMetamaskLogin from 'hooks/useMetamaskLogin'
 
 // components
 import BalanceView from 'components/BalanceView'
@@ -22,6 +23,7 @@ import BalanceView from 'components/BalanceView'
 import { Logo, ProfilePic, wallet } from 'assets'
 
 const Header = (props: {}) => {
+  const { login } = useMetamaskLogin()
   const { account, connect } = useMetamask()
 
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
@@ -37,6 +39,13 @@ const Header = (props: {}) => {
   }
 
   const trimmedAccount = account.slice(0, 5) + '...' + account.slice(-5)
+
+  useEffect(() => {
+    if (account) {
+      login()
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [account])
 
   return (
     <Box sx={{ flexGrow: 1 }}>

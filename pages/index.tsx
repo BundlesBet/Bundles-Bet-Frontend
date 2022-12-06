@@ -1,9 +1,12 @@
 // Libraries
-import CurrentBalance from 'components/CurrentBalance'
+import Head from 'next/head'
+import type { NextPage } from 'next'
+
+// components
+import Footer from 'components/Footer'
 import Header from 'components/Header'
 import Rewards from 'components/Rewards'
-import type { NextPage } from 'next'
-import Head from 'next/head'
+import CurrentBalance from 'components/CurrentBalance'
 
 // Styles
 import classes from '../styles/Home.module.scss'
@@ -18,10 +21,12 @@ const Home: NextPage = () => {
 
       <Header></Header>
 
-      <div className={classes.container}>
-        {/* <CurrentBalance />
+      {/* <div className={classes.container}> */}
+      {/* <CurrentBalance />
         <Rewards /> */}
-      </div>
+      {/* </div> */}
+
+      <Footer />
     </>
   )
 }
