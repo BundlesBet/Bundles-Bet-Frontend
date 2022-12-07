@@ -1,7 +1,11 @@
 #!/usr/bin/env sh
 . "$(dirname -- "$0")/_/husky.sh"
 
+echo ''
 echo '🔍🎨 Formating and checking staged files before committing!'
 
 yarn lint:fix
 yarn prettier:fix
+
+echo ''
+echo '🥳✅ Formating and checking process has been successfully completed!'
