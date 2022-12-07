@@ -1,7 +1,7 @@
 import Stack from '@mui/material/Stack'
 import { Autocomplete, Paper, TextField } from '@mui/material'
 
-import { sportsList } from 'utils'
+import { sportsList, sportsListType } from 'utils'
 
 export default function SportSearch() {
   return (
@@ -26,9 +26,7 @@ export default function SportSearch() {
           </Paper>
         )}
         id="sport search"
-        options={sportsList.map(
-          (option: { sportName: string }) => option.sportName
-        )}
+        options={sportsList.map((option: sportsListType) => option.sportName)}
         renderInput={(params) => (
           <TextField
             {...params}
