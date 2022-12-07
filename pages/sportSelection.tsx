@@ -1,17 +1,17 @@
 // libraries
 import Head from 'next/head'
+import { Fragment } from 'react'
+import { Stack } from '@mui/system'
 import { Typography } from '@mui/material'
 
-// contexts and hooks
+// contexts, utilities and hooks
+import { sportsList, sportsListType } from 'utils'
 
 // components
 import Header from 'components/Header'
 import Footer from 'components/Footer'
-import SportSearch from 'components/SearchField'
-import { Stack } from '@mui/system'
-import { sportsList } from 'utils'
 import SportCard from 'components/SportCard'
-import { Fragment } from 'react'
+import SportSearch from 'components/SearchField'
 
 // styles
 
@@ -50,9 +50,13 @@ const ConnectWallet = (_props: Props) => {
         alignItems={'center'}
         my={4}
       >
-        {sportsList.map((sport: { sportName: string }, index) => (
+        {sportsList.map((sport: sportsListType, index) => (
           <Fragment key={index}>
-            <SportCard />
+            <SportCard
+              sportIcon={sport.icon}
+              sportImg={sport.img}
+              sportName={sport.sportName}
+            />
           </Fragment>
         ))}
       </Stack>

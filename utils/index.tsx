@@ -2,7 +2,11 @@
  * @File <Required Utility function in Common>
  */
 
-import { cricket } from 'assets'
+import { SvgIconTypeMap } from '@mui/material'
+import { SportsFootball, SportsSoccer } from '@mui/icons-material'
+import { OverridableComponent } from '@mui/material/OverridableComponent'
+
+import { Football, NFL } from 'assets'
 
 // Required URLs
 export const urls = {
@@ -20,8 +24,15 @@ export const api = async (AxiosObj: object) => {
   }
 }
 
+export interface sportsListType {
+  icon: OverridableComponent<SvgIconTypeMap<{}, 'svg'>> & {
+    muiName: string
+  }
+  sportName: string
+  img: StaticImageData
+}
+
 export const sportsList = [
-  { sportName: 'Cricket', img: cricket },
-  { sportName: 'Football', img: cricket },
-  { sportName: 'Hockey', img: cricket },
+  { icon: SportsFootball, sportName: 'NFL League', img: NFL },
+  { icon: SportsSoccer, sportName: 'Football', img: Football },
 ]
