@@ -1,6 +1,6 @@
 // Libraries
-import { useState } from "react";
-import { toast, TypeOptions } from "react-toastify";
+import { useState } from 'react'
+import { toast, TypeOptions } from 'react-toastify'
 
 /**
  * @param  {string} message - Message to display.
@@ -8,31 +8,31 @@ import { toast, TypeOptions } from "react-toastify";
  * @returns {[Function, Function]} { trigger, dismiss }
  */
 export default function usePersistentToast(
-  message = "",
-  type: TypeOptions = "default"
+  message = '',
+  type: TypeOptions = 'default'
 ) {
-  const [persistentToastID, setPersistentToastID] = useState<React.ReactText>();
+  const [persistentToastID, setPersistentToastID] = useState<React.ReactText>()
 
   /**
    * Dismisses the current toast and triggers a new one. If no toast is active, it will trigger a new one.
    */
   const trigger = () => {
-    toast.dismiss(persistentToastID);
+    toast.dismiss(persistentToastID)
     const toastID = toast(message, {
       type,
       autoClose: false,
       closeButton: false,
-    });
-    setPersistentToastID(toastID);
-  };
+    })
+    setPersistentToastID(toastID)
+  }
 
   /**
    * Dismisses the current toast.
    */
   const dismiss = () => {
-    setPersistentToastID(undefined);
-    toast.dismiss(persistentToastID);
-  };
+    setPersistentToastID(undefined)
+    toast.dismiss(persistentToastID)
+  }
 
-  return { trigger, dismiss };
+  return { trigger, dismiss }
 }

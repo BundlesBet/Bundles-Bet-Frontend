@@ -1,5 +1,5 @@
 // Libraries
-import { useState } from "react";
+import { useState } from 'react'
 
 /**
  * Hook to force update the component.
@@ -10,12 +10,12 @@ import { useState } from "react";
  * @returns {[() => void, boolean]} { rerender, triggerValue }
  */
 export default function useForceUpdate() {
-  const [triggerValue, setTriggerValue] = useState(0);
+  const [triggerValue, setTriggerValue] = useState(0)
 
   /**
    * Force updates the component.
    */
-  const rerender = () => setTriggerValue((value) => ++value);
+  const rerender = () => setTriggerValue((value) => ++value)
 
-  return { rerender, triggerValue };
+  return { rerender, triggerValue }
 }
