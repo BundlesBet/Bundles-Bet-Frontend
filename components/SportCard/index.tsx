@@ -3,16 +3,13 @@ import Image from 'next/image'
 import { OverridableComponent } from '@mui/material/OverridableComponent'
 import {
   Box,
-  Button,
   Card,
-  CardActions,
-  CardContent,
   CardMedia,
   Stack,
   SvgIconTypeMap,
   Typography,
 } from '@mui/material'
-import { SportsFootball, SportsSoccer } from '@mui/icons-material'
+
 // contexts and hooks
 
 // styles
