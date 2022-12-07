@@ -18,7 +18,8 @@ const Footer = (props: {}) => {
       sx={{ px: { xs: '5px', sm: '30px', md: '155px' }, py: '13px' }}
     >
       <Stack
-        direction={'row'}
+        rowGap={2}
+        direction={{ xs: 'column', sm: 'row' }}
         alignItems={'center'}
         justifyContent={'space-between'}
       >
