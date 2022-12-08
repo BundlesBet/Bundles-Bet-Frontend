@@ -22,6 +22,7 @@ import BalanceView from 'components/BalanceView'
 // assets
 import { Logo, ProfilePic, wallet } from 'assets'
 import SignUpModal from 'components/SignUpModal'
+import { useRouter } from 'next/router'
 
 const Header = (props: {}) => {
   const { login } = useMetamaskLogin()
@@ -31,6 +32,8 @@ const Header = (props: {}) => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
 
   const open = Boolean(anchorEl)
+
+  const router = useRouter()
 
   const handleClick = (event: MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget)
@@ -44,8 +47,6 @@ const Header = (props: {}) => {
 
   const signUpChecker = async () => {
     const signUpCheck = await login()
-
-    console.log(signUpCheck)
 
     if (!signUpCheck) {
       console.log(51)
@@ -78,6 +79,9 @@ const Header = (props: {}) => {
             direction={'row'}
             alignItems={'center'}
             justifyContent={'space-between'}
+            onClick={() => {
+              router.push('/')
+            }}
           >
             <Stack
               direction={'row'}

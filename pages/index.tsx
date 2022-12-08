@@ -7,6 +7,8 @@ import SelectPoolTabs from 'components/SelectPool'
 
 // Styles
 import classes from '../styles/Home.module.scss'
+import CurrentBalance from 'components/CurrentBalance'
+import Rewards from 'components/Rewards'
 
 const Home: NextPage = () => {
   return (
@@ -16,6 +18,8 @@ const Home: NextPage = () => {
         <meta name="viewport" content="initial-scale=1.0, width=device-width" />
       </Head>
       <div className={classes.container}>
+        {/* <CurrentBalance />
+        <Rewards /> */}
         <SelectPoolTabs />
       </div>
     </>

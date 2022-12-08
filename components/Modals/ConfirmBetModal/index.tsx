@@ -10,10 +10,11 @@ import {
   Typography,
 } from '@mui/material'
 import CloseIcon from '@mui/icons-material/Close'
+import Image from 'next/image'
+import { Link } from 'assets/index'
 
 // contexts and hooks
 import { useMetamask } from 'contexts/Metamask'
-import LinkIcon from '@mui/icons-material/Link'
 import { useCopyToClipboard } from 'usehooks-ts'
 
 // assets
@@ -84,10 +85,15 @@ const ConfirmBetModal = (props: Props) => {
           InputProps={{
             endAdornment: (
               <InputAdornment position="end" sx={{ background: '#07070D' }}>
-                <LinkIcon
-                  onClick={copyToClipBoard}
-                  sx={{ cursor: 'pointer', color: '#7D7D8D' }}
-                />
+                <Box sx={{ cursor: 'pointer' }}>
+                  <Image
+                    src={Link}
+                    alt="linkIcon"
+                    onClick={() => {
+                      copy(account)
+                    }}
+                  />
+                </Box>
               </InputAdornment>
             ),
           }}
