@@ -13,6 +13,7 @@ export const urls = {
   admin: '/admin',
   dashboard: '/',
   login: '/login',
+  connectWallet: '/connectWallet',
 }
 
 export const api = async (AxiosObj: object) => {

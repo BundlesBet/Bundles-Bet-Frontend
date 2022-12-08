@@ -8,6 +8,9 @@ import Typography from '@mui/material/Typography'
 import Box from '@mui/material/Box'
 import styles from './tabs.module.scss'
 import { Container } from '@mui/material'
+import ActiveTable from 'components/Table/Activetable'
+import UnActiveTable from 'components/Table/UnActiveTable'
+import ShowAllTable from 'components/Table/ShowAllTable'
 
 interface TabPanelProps {
   children?: React.ReactNode
@@ -43,7 +46,7 @@ function a11yProps(index: number) {
   }
 }
 
-export default function FullWidthTabs() {
+export default function SelectPoolTabs() {
   const theme = useTheme()
   const [value, setValue] = React.useState(0)
 
@@ -62,19 +65,18 @@ export default function FullWidthTabs() {
           {' '}
           Select Pool
         </Typography>
-        <Box sx={{ bgcolor: 'background.paper' }}>
+        <Box sx={{ bgcolor: '#1C1C26' }}>
           <AppBar position="static">
             <Tabs
               value={value}
               onChange={handleChange}
               indicatorColor="secondary"
-              textColor="inherit"
-              variant="fullWidth"
-              aria-label="full width tabs example"
+              textColor="primary"
+              sx={{ bgcolor: '#1C1C26' }}
             >
-              <Tab label="Item One" {...a11yProps(0)} />
-              <Tab label="Item Two" {...a11yProps(1)} />
-              <Tab label="Item Three" {...a11yProps(2)} />
+              <Tab label="Active" {...a11yProps(0)} />
+              <Tab label="Inactive" {...a11yProps(1)} />
+              <Tab label="Show All (80)" {...a11yProps(2)} />
             </Tabs>
           </AppBar>
           <SwipeableViews
@@ -83,13 +85,13 @@ export default function FullWidthTabs() {
             onChangeIndex={handleChangeIndex}
           >
             <TabPanel value={value} index={0} dir={theme.direction}>
-              Item One
+              <ActiveTable />
             </TabPanel>
             <TabPanel value={value} index={1} dir={theme.direction}>
-              Item Two
+              <UnActiveTable />
             </TabPanel>
             <TabPanel value={value} index={2} dir={theme.direction}>
-              Item Three
+              <ShowAllTable />
             </TabPanel>
           </SwipeableViews>
         </Box>

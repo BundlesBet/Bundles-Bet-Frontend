@@ -8,8 +8,8 @@ import { Typography } from '@mui/material'
 import { sportsList, sportsListType } from 'utils'
 
 // components
-import Header from 'components/Header'
-import Footer from 'components/Footer'
+import Header from 'components/Layout/Header'
+import Footer from 'components/Layout/Footer'
 import SportCard from 'components/SportCard'
 import SportSearch from 'components/SearchField'
 
