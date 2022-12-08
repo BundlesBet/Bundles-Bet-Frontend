@@ -8,8 +8,6 @@ import { Typography } from '@mui/material'
 import { sportsList, sportsListType } from 'utils'
 
 // components
-import Header from 'components/Header'
-import Footer from 'components/Footer'
 import SportCard from 'components/SportCard'
 import SportSearch from 'components/SearchField'
 
@@ -25,8 +23,6 @@ const ConnectWallet = (_props: Props) => {
       <Head>
         <title>Sport Selection</title>
       </Head>
-
-      <Header></Header>
 
       <Typography
         mb={'30px'}
@@ -71,8 +67,6 @@ const ConnectWallet = (_props: Props) => {
         <br /> Money back as a Free Bet on losing bets if the last ball is hit
         for a boundary
       </Typography>
-
-      <Footer></Footer>
     </>
   )
 }

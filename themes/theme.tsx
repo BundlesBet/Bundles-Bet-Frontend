@@ -11,6 +11,7 @@ const customTheme = createTheme({
   palette: {
     primary: {
       main: '#FFFFFF',
+      light: '#7D7D8D',
     },
     secondary: {
       main: '#0EB634 ', //Choose your primary and secondary colors , so you can use <Typography color="primary or color ="secondary"></Typography>
@@ -23,7 +24,6 @@ const customTheme = createTheme({
         // Name of the slot
         root: {
           //   Some CSS
-
           fontWeight: 700,
           fontSize: '14px',
           lineHeight: '18px',
@@ -37,6 +37,25 @@ const customTheme = createTheme({
           },
         },
       },
+    },
+    MuiDivider: {
+      variants: [
+        {
+          props: { variant: 'fullWidth' },
+          style: {
+            borderBottomWidth: 1,
+            borderColor: '#282835',
+            ':before': {
+              borderBottomWidth: 1,
+              borderColor: '#282835',
+            },
+            ':after': {
+              borderBottomWidth: 1,
+              borderColor: '#282835',
+            },
+          },
+        },
+      ],
     },
   },
 })

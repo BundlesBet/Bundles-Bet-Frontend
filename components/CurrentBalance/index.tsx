@@ -1,4 +1,4 @@
-import { Paper, Stack, Typography } from '@mui/material'
+import { Box, Paper, Stack, Typography } from '@mui/material'
 import { Container } from '@mui/system'
 import React from 'react'
 import {
@@ -47,13 +47,15 @@ const CurrentBalance = (props: Props) => {
                 ? account.slice(0, 6) + '...' + account.slice(-4)
                 : 'Account'}
             </Typography>
-            <Image
-              src={Link}
-              alt="linkIcon"
-              onClick={() => {
-                copy(account)
-              }}
-            />
+            <Box sx={{ cursor: 'pointer' }}>
+              <Image
+                src={Link}
+                alt="linkIcon"
+                onClick={() => {
+                  copy(account)
+                }}
+              />
+            </Box>
           </Stack>
         </Stack>
       </Paper>

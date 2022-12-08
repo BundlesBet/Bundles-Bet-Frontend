@@ -3,9 +3,8 @@ import Head from 'next/head'
 import type { NextPage } from 'next'
 
 // components
-import Footer from 'components/Footer'
-import Header from 'components/Header'
 import Rewards from 'components/Rewards'
+import SelectPoolTabs from 'components/SelectPool'
 import CurrentBalance from 'components/CurrentBalance'
 
 // Styles
@@ -19,14 +18,11 @@ const Home: NextPage = () => {
         <meta name="viewport" content="initial-scale=1.0, width=device-width" />
       </Head>
 
-      <Header></Header>
-
-      {/* <div className={classes.container}> */}
-      {/* <CurrentBalance />
+      <div className={classes.container}>
+        {/* <CurrentBalance />
         <Rewards /> */}
-      {/* </div> */}
-
-      <Footer />
+        <SelectPoolTabs />
+      </div>
     </>
   )
 }
