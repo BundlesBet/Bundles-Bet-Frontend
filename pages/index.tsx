@@ -1,6 +1,7 @@
 // Libraries
 import CurrentBalance from 'components/CurrentBalance'
 import Rewards from 'components/Rewards'
+import FullWidthTabs from 'components/SelectPool'
 import type { NextPage } from 'next'
 import Head from 'next/head'
 
@@ -17,6 +18,7 @@ const Home: NextPage = () => {
       <div className={classes.container}>
         {/* <CurrentBalance />
         <Rewards /> */}
+        <FullWidthTabs />
       </div>
     </>
   )
