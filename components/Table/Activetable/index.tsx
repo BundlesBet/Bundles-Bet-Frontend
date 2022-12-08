@@ -1,12 +1,15 @@
 import * as React from 'react'
-import Table from '@mui/material/Table'
-import TableBody from '@mui/material/TableBody'
-import TableCell from '@mui/material/TableCell'
-import TableContainer from '@mui/material/TableContainer'
-import TableHead from '@mui/material/TableHead'
-import TableRow from '@mui/material/TableRow'
-import { Button, Typography } from '@mui/material'
 import { useBoolean } from 'usehooks-ts'
+import {
+  Button,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  Typography,
+} from '@mui/material'
 
 import ConfirmBetModal from 'components/Modals/ConfirmBetModal'
 

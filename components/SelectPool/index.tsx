@@ -34,11 +34,7 @@ function TabPanel(props: TabPanelProps) {
       aria-labelledby={`full-width-tab-${index}`}
       {...other}
     >
-      {value === index && (
-        <Box sx={{ p: 3 }}>
-          <Typography>{children}</Typography>
-        </Box>
-      )}
+      {value === index && <Box sx={{ p: 3 }}>{children}</Box>}
     </div>
   )
 }
@@ -76,7 +72,9 @@ export default function SelectPoolTabs() {
               onChange={handleChange}
               indicatorColor="secondary"
               textColor="primary"
-              sx={{ bgcolor: '#1C1C26' }}
+              sx={{
+                bgcolor: '#1C1C26',
+              }}
             >
               <Tab label="Active" {...a11yProps(0)} />
               <Tab label="Inactive" {...a11yProps(1)} />
