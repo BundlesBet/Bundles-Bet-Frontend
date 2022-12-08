@@ -1,4 +1,3 @@
-<p align="center"><img src="public/logo.svg" align="center" width="250"></p>
 <h2 align="center">Bundles Bets Frontend</h2>
 
 # Instructions
