@@ -1,16 +1,20 @@
-import * as React from 'react'
+import { useState } from 'react'
 import SwipeableViews from 'react-swipeable-views'
-import { useTheme } from '@mui/material/styles'
-import AppBar from '@mui/material/AppBar'
-import Tabs from '@mui/material/Tabs'
-import Tab from '@mui/material/Tab'
-import Typography from '@mui/material/Typography'
-import Box from '@mui/material/Box'
-import styles from './tabs.module.scss'
-import { Container } from '@mui/material'
+import {
+  AppBar,
+  Box,
+  Container,
+  Tab,
+  Tabs,
+  Typography,
+  useTheme,
+} from '@mui/material'
+
 import ActiveTable from 'components/Table/Activetable'
 import UnActiveTable from 'components/Table/UnActiveTable'
 import ShowAllTable from 'components/Table/ShowAllTable'
+
+import styles from './tabs.module.scss'
 
 interface TabPanelProps {
   children?: React.ReactNode
@@ -48,7 +52,7 @@ function a11yProps(index: number) {
 
 export default function SelectPoolTabs() {
   const theme = useTheme()
-  const [value, setValue] = React.useState(0)
+  const [value, setValue] = useState(0)
 
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
     setValue(newValue)

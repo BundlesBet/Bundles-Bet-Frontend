@@ -11,12 +11,7 @@ import { Discord, Logo } from 'assets'
 
 const Footer = (props: {}) => {
   return (
-    <Box
-      bottom={0}
-      position={'absolute'}
-      width={'100%'}
-      sx={{ px: { xs: '5px', sm: '30px', md: '155px' }, py: '13px' }}
-    >
+    <Box mt={4} sx={{ px: { xs: '5px', sm: '30px', md: '155px' }, py: '13px' }}>
       <Stack
         rowGap={2}
         direction={{ xs: 'column', sm: 'row' }}
