@@ -79,14 +79,14 @@ const Header = (props: {}) => {
             direction={'row'}
             alignItems={'center'}
             justifyContent={'space-between'}
-            onClick={() => {
-              router.push('/')
-            }}
           >
             <Stack
               direction={'row'}
               alignItems={'center'}
               justifyContent={'center'}
+              onClick={() => {
+                router.push('/')
+              }}
             >
               <IconButton
                 size="large"
