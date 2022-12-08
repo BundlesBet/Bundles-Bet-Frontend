@@ -1,9 +1,9 @@
 import React from 'react'
+import { Box } from '@mui/material'
 
 // Components
 import Header from './Header'
 import Footer from './Footer'
-import { Box } from '@mui/material'
 
 interface IProps {
   children: React.ReactNode
