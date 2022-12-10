@@ -21,18 +21,9 @@ import { useMetamask } from 'contexts/Metamask'
 import useMetamaskLogin from 'hooks/useMetamaskLogin'
 
 // components
-<<<<<<< Updated upstream
-import Rewards from 'components/Rewards'
-import SelectPoolTabs from 'components/SelectPool'
-import CurrentBalance from 'components/CurrentBalance'
-
-// Styles
-import classes from '../styles/Home.module.scss'
-=======
 
 // styles
 import { secondaryButton } from 'styles/commonStyles'
->>>>>>> Stashed changes
 
 // assets
 import { Logo, key, wallet } from 'assets/index'
@@ -68,13 +59,6 @@ const ConnectWallet: NextPage<Props> = ({}) => {
         <title>Connect Wallet</title>
       </Head>
 
-<<<<<<< Updated upstream
-      <div className={classes.container}>
-        {/* <CurrentBalance />
-        <Rewards /> */}
-        <SelectPoolTabs />
-      </div>
-=======
       <Grid
         container
         spacing={0}
@@ -193,7 +177,6 @@ const ConnectWallet: NextPage<Props> = ({}) => {
           </Stack>
         </Container>
       </Grid>
->>>>>>> Stashed changes
     </>
   )
 }

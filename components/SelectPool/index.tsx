@@ -60,44 +60,42 @@ export default function SelectPoolTabs() {
 
   return (
     <>
-      <Container component="main" maxWidth="lg">
-        <Typography className={styles.heading} textAlign={'start'} mb={2}>
-          {' '}
-          Select Pool
-        </Typography>
-        <Box sx={{ bgcolor: '#1C1C26' }}>
-          <AppBar position="static">
-            <Tabs
-              value={value}
-              onChange={handleChange}
-              indicatorColor="secondary"
-              textColor="primary"
-              sx={{
-                bgcolor: '#1C1C26',
-              }}
-            >
-              <Tab label="Active" {...a11yProps(0)} />
-              <Tab label="Inactive" {...a11yProps(1)} />
-              <Tab label="Show All (80)" {...a11yProps(2)} />
-            </Tabs>
-          </AppBar>
-          <SwipeableViews
-            axis={theme.direction === 'rtl' ? 'x-reverse' : 'x'}
-            index={value}
-            onChangeIndex={handleChangeIndex}
+      <Typography className={styles.heading} textAlign={'start'} mb={2}>
+        {' '}
+        Select Pool
+      </Typography>
+      <Box sx={{ bgcolor: '#1C1C26' }}>
+        <AppBar position="static">
+          <Tabs
+            value={value}
+            onChange={handleChange}
+            indicatorColor="secondary"
+            textColor="primary"
+            sx={{
+              bgcolor: '#1C1C26',
+            }}
           >
-            <TabPanel value={value} index={0} dir={theme.direction}>
-              <ActiveTable />
-            </TabPanel>
-            <TabPanel value={value} index={1} dir={theme.direction}>
-              <UnActiveTable />
-            </TabPanel>
-            <TabPanel value={value} index={2} dir={theme.direction}>
-              <ShowAllTable />
-            </TabPanel>
-          </SwipeableViews>
-        </Box>
-      </Container>
+            <Tab label="Active" {...a11yProps(0)} />
+            <Tab label="Inactive" {...a11yProps(1)} />
+            <Tab label="Show All (80)" {...a11yProps(2)} />
+          </Tabs>
+        </AppBar>
+        <SwipeableViews
+          axis={theme.direction === 'rtl' ? 'x-reverse' : 'x'}
+          index={value}
+          onChangeIndex={handleChangeIndex}
+        >
+          <TabPanel value={value} index={0} dir={theme.direction}>
+            <ActiveTable />
+          </TabPanel>
+          <TabPanel value={value} index={1} dir={theme.direction}>
+            <UnActiveTable />
+          </TabPanel>
+          <TabPanel value={value} index={2} dir={theme.direction}>
+            <ShowAllTable />
+          </TabPanel>
+        </SwipeableViews>
+      </Box>
     </>
   )
 }

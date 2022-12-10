@@ -10,6 +10,8 @@ import Discord from './discord.png'
 import Football from './Football.png'
 import ProfilePic from './ProfilePic.png'
 import background from './background.png'
+import FR from './FR.png'
+import US from './US.png'
 
 export {
   background,
@@ -21,4 +23,6 @@ export {
   NFL,
   ProfilePic,
   wallet,
+  FR,
+  US,
 }

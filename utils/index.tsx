@@ -14,6 +14,7 @@ export const urls = {
   connectWallet: '/',
   login: '/login',
   viewPool: '/view-pool',
+  dashboard: '/dashboard',
 }
 
 export const api = async (AxiosObj: object) => {

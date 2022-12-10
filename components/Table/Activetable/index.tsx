@@ -1,4 +1,5 @@
 import * as React from 'react'
+import { useState } from 'react'
 import Table from '@mui/material/Table'
 import TableBody from '@mui/material/TableBody'
 import TableCell from '@mui/material/TableCell'
@@ -8,9 +9,12 @@ import TableRow from '@mui/material/TableRow'
 import {
   Box,
   Button,
+  ButtonGroup,
   IconButton,
+  Stack,
   TableFooter,
   TablePagination,
+  Tooltip,
   Typography,
   useTheme,
 } from '@mui/material'
@@ -21,22 +25,9 @@ import KeyboardArrowRight from '@mui/icons-material/KeyboardArrowRight'
 import LastPageIcon from '@mui/icons-material/LastPage'
 
 import ConfirmBetModal from 'components/Modals/ConfirmBetModal'
+import { useMetamask } from 'contexts/Metamask'
 
-function createData(
-  sport: string,
-  match: string,
-  bid: number,
-  poolFaces: number,
-  action: any
-) {
-  return { sport, match, bid, poolFaces, action }
-}
-
-const rows = [
-  createData('NPL', 'Canada vs Greece', 126.0, 24, 'Bet Now'),
-  createData('NHL', 'US vs France', 339.0, 37, 'Bet Now'),
-  createData('BasketBall', 'Brazil vs Us', 262, 16.0, 'Bet Now'),
-]
+import { FR, US } from 'assets'
 
 const tableHeadStyle = {
   '& .MuiTableCell-root': {
@@ -160,14 +151,77 @@ function TablePaginationActions(props: TablePaginationActionsProps) {
   )
 }
 
+const rows = [
+  {
+    sport: 'Football',
+    match: { team1: 'US', team2: 'FR' },
+    bid: 0.1,
+    poolFaces: 2,
+    selectedTeam: 'Manchester United',
+    action: ' Bet Now',
+  },
+  {
+    sport: 'Football',
+    match: { team1: 'Canada', team2: 'Greece' },
+    bid: 0.1,
+    poolFaces: 2,
+    selectedTeam: 'Manchester United',
+    action: ' Bet Now',
+  },
+  {
+    sport: 'Football',
+    match: { team1: 'Greece', team2: 'Germany' },
+    bid: 0.1,
+    poolFaces: 2,
+    selectedTeam: 'Manchester United',
+    action: ' Bet Now',
+  },
+  {
+    sport: 'Football',
+    match: { team1: 'France', team2: 'India' },
+    bid: 0.1,
+    poolFaces: 2,
+    selectedTeam: 'Manchester United',
+    action: ' Bet Now',
+  },
+  {
+    sport: 'Football',
+    match: { team1: 'Canada', team2: 'Greece' },
+    bid: 0.1,
+    poolFaces: 2,
+    selectedTeam: 'Manchester United',
+    action: ' Bet Now',
+  },
+  {
+    sport: 'Football',
+    match: { team1: 'Portugal', team2: 'Brazil' },
+    bid: 0.1,
+    poolFaces: 2,
+    selectedTeam: 'Manchester United',
+    action: ' Bet Now',
+  },
+]
+
 export default function ActiveTable() {
   const { setTrue, setFalse, setValue, value } = useBoolean(false)
+
   const openConfirmBetModal = setTrue
 
-  const cancelConfirmBetModal = () => setValue((x: boolean) => !x)
-
+  const { account } = useMetamask()
+  const cancelConfirmBetModal = () => {
+    setValue((x: boolean) => !x)
+  }
   const [page, setPage] = React.useState(0)
-  const [rowsPerPage, setRowsPerPage] = React.useState(4)
+  const [rowsPerPage, setRowsPerPage] = React.useState(5)
+  const [selectedTeamName, setSelectedTeamName] = useState<any>('Select Team')
+  console.log(
+    '🚀 ~ file: index.tsx:193 ~ ActiveTable ~ selectedTeamName',
+    selectedTeamName
+  )
+
+  const updateSelectedNftState = (name: string) => {
+    setSelectedTeamName(name)
+  }
 
   // Avoid a layout jump when reaching the last page with empty rows.
   const emptyRows =
@@ -189,12 +243,15 @@ export default function ActiveTable() {
   return (
     <>
       <TableContainer>
-        <Table sx={{ minWidth: 300 }}>
+        <Table sx={{ minWidth: 500 }}>
           <TableHead sx={tableHeadStyle}>
             <TableRow>
               <TableCell sx={{ color: '#fff' }}>Sport</TableCell>
               <TableCell sx={{ color: '#fff' }} align="right">
                 Pool Matches
+              </TableCell>
+              <TableCell sx={{ color: '#fff' }} align="right">
+                Selected Team
               </TableCell>
               <TableCell sx={{ color: '#fff' }} align="right">
                 Total Bid
@@ -211,16 +268,64 @@ export default function ActiveTable() {
             {(rowsPerPage > 0
               ? rows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
               : rows
-            ).map((row) => (
+            ).map((row, key) => (
               <TableRow
-                key={row.match}
+                key={key}
                 sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
               >
                 <TableCell sx={{ color: '#fff' }} component="th" scope="row">
                   {row.sport}
                 </TableCell>
+
                 <TableCell sx={{ color: '#fff' }} align="right">
-                  {row.match}
+                  <ButtonGroup
+                    disableElevation
+                    variant="contained"
+                    aria-label="Disabled elevation buttons"
+                  >
+                    <Button
+                      onClick={() => updateSelectedNftState(row.match.team1)}
+                      variant="contained"
+                      sx={{
+                        background: '#282835',
+                        p: 2,
+                        '&:hover': {
+                          backgroundColor: '#0EB634',
+                          color: '#FFFFFF',
+                        },
+                        border:
+                          selectedTeamName === row.match.team1
+                            ? '2px solid #0EB634'
+                            : '',
+                      }}
+                    >
+                      {' '}
+                      {row.match.team1}
+                    </Button>
+
+                    <Button
+                      onClick={() => updateSelectedNftState(row.match.team2)}
+                      variant="contained"
+                      sx={{
+                        background: '#282835',
+                        p: 2,
+                        '&:hover': {
+                          backgroundColor: '#0EB634',
+                          color: '#FFFFFF',
+                        },
+                        border:
+                          selectedTeamName === row.match.team2
+                            ? '2px solid #0EB634'
+                            : '',
+                      }}
+                    >
+                      {' '}
+                      {row.match.team2}
+                    </Button>
+                  </ButtonGroup>
+                </TableCell>
+                <TableCell sx={{ color: '#fff' }} align="right">
+                  {selectedTeamName}
                 </TableCell>
                 <TableCell sx={{ color: '#fff' }} align="right">
                   {row.bid} <br />{' '}
@@ -235,6 +340,11 @@ export default function ActiveTable() {
                 <TableCell sx={{ color: '#fff' }} align="right">
                   <Button
                     onClick={openConfirmBetModal}
+                    disabled={
+                      account && selectedTeamName !== 'Select Team'
+                        ? false
+                        : true
+                    }
                     sx={{
                       background: '#282835',
                       p: 2,
@@ -260,7 +370,6 @@ export default function ActiveTable() {
               <TablePagination
                 sx={{ color: '#fff' }}
                 rowsPerPageOptions={[5, 10, 25, { label: 'All', value: -1 }]}
-                colSpan={3}
                 count={rows.length}
                 rowsPerPage={rowsPerPage}
                 page={page}

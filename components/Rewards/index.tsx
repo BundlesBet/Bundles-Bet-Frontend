@@ -1,14 +1,12 @@
-import { Button, Paper, Stack, Typography } from '@mui/material'
-import { Container } from '@mui/system'
+import { Paper, Stack, Typography } from '@mui/material'
 import React from 'react'
 import styles from './rewards.module.scss'
-import { useMetamask } from 'contexts/Metamask'
 
 type Props = {}
 
 const Rewards = (props: Props) => {
   return (
-    <Container component="main" maxWidth="md">
+    <>
       <Typography className={styles.heading}>Rewards</Typography>
       {[...new Array(3)].map((item, key) => {
         return (
@@ -63,7 +61,7 @@ const Rewards = (props: Props) => {
           </Paper>
         )
       })}
-    </Container>
+    </>
   )
 }
 

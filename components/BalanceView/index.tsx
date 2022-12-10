@@ -85,7 +85,7 @@ const BalanceView = (props: Props) => {
               direction={'row'}
               alignItems={'center'}
               justifyContent={'center'}
-              onClick={() => router.push('/profile')}
+              onClick={() => router.push('/dashboard')}
             >
               <Person sx={{ color: '#fff' }} />
               <Typography ml={1} color={'#fff'} mr={1}>

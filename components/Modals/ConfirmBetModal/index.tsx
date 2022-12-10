@@ -52,7 +52,6 @@ const ConfirmBetModal = (props: Props) => {
   const copyToClipBoard = () => {
     copy(account)
   }
-
   return (
     <Modal open={open} onClose={handleClose}>
       <Box sx={style}>
@@ -144,6 +143,7 @@ const ConfirmBetModal = (props: Props) => {
                 p: 3,
               }}
               type="submit"
+              onClick={() => handleClose(false)}
             >
               Confirm
             </Button>
