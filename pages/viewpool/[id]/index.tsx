@@ -7,8 +7,9 @@ import {
   Container,
   CssBaseline,
   Box,
+  Link,
 } from '@mui/material'
-
+import { useRouter } from 'next/router'
 import Head from 'next/head'
 
 import SelectPoolAccordion from 'components/Accordion/SelectPoolAccordion'
@@ -20,19 +21,18 @@ import SelectPoolAccordion from 'components/Accordion/SelectPoolAccordion'
 
 interface Props {}
 
-const SelectPool: NextPage<Props> = ({}) => {
+const ViewPool: NextPage<Props> = ({}) => {
+  const router = useRouter()
   return (
     <div>
       <Head>
-        <title>Select Pool</title>
+        <title>View Pool</title>
       </Head>
-      <Grid
-        container
+      <Stack
         spacing={0}
         direction="column"
         alignItems="center"
         justifyContent="center"
-        style={{ minHeight: '100vh' }}
       >
         <Container component="main" maxWidth="md">
           <CssBaseline />
@@ -48,7 +48,7 @@ const SelectPool: NextPage<Props> = ({}) => {
                 fontWeight={600}
                 sx={{ fontSize: { xs: '18px', md: '38px', lg: '38px' } }}
               >
-                Select Pool
+                View Pool
               </Typography>
             </Stack>
           </Box>
@@ -59,9 +59,19 @@ const SelectPool: NextPage<Props> = ({}) => {
               direction="column"
               spacing={2}
             >
-              {[...new Array(3)].map((item, key) => {
+              {[...new Array(1)].map((item, key) => {
                 return <SelectPoolAccordion key={key} />
               })}
+            </Stack>
+            <Stack
+              justifyContent={'center'}
+              alignItems={'center'}
+              onClick={() => {
+                router.push('/select-pool')
+              }}
+              mt={2}
+            >
+              <Link sx={{ cursor: 'pointer' }}>See More</Link>
             </Stack>
           </Box>
           <Box>
@@ -80,9 +90,9 @@ const SelectPool: NextPage<Props> = ({}) => {
             </Typography>
           </Box>
         </Container>
-      </Grid>
+      </Stack>
     </div>
   )
 }
 
-export default SelectPool
+export default ViewPool

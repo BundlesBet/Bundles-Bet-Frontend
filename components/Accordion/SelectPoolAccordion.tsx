@@ -5,7 +5,6 @@ import {
   Typography,
   AccordionDetails,
   Divider,
-  Stack,
 } from '@mui/material'
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown'
 import {
@@ -24,7 +23,7 @@ type Props = {}
 const SelectPoolAccordion = (props: Props) => {
   return (
     <>
-      <Accordion sx={accordionStyles}>
+      <Accordion sx={accordionStyles} defaultExpanded={true}>
         <AccordionSummary
           sx={{
             ...accordionSummaryStyles,
@@ -47,7 +46,7 @@ const SelectPoolAccordion = (props: Props) => {
             >
               Start: 09:09:00 PM IST / 12 Dec 2022
             </Typography>
-            Mini Pool
+            Standard Pool
           </Typography>
 
           <Typography
@@ -59,7 +58,7 @@ const SelectPoolAccordion = (props: Props) => {
               fontSize: { xs: '12px', md: '22px', lg: '22px' },
             }}
           >
-            5 Matches /<span style={{ color: '#fff' }}>0.1 $BUNDS </span>
+            5 Matches /<span style={{ color: '#fff' }}>{''}0.1 $BUNDS </span>
           </Typography>
         </AccordionSummary>
         <AccordionDetails sx={{ bgcolor: '#1C1C26' }}>
@@ -72,10 +71,15 @@ const SelectPoolAccordion = (props: Props) => {
             }}
           >
             Canada Vs Greece
-            <Typography mt={1} color={'#7D7D8D'} fontSize={'14px'}>
-              {' '}
-              12,345 Active Bets
-            </Typography>
+          </Typography>
+          <Typography
+            mt={1}
+            color={'#7D7D8D'}
+            textAlign={'center'}
+            fontSize={'14px'}
+          >
+            {' '}
+            12,345 Active Bets
           </Typography>
           <Divider sx={{ mb: 2 }} />
           <Typography
@@ -86,10 +90,15 @@ const SelectPoolAccordion = (props: Props) => {
             }}
           >
             US vs Germany
-            <Typography mt={1} color={'#7D7D8D'} fontSize={'14px'}>
-              {' '}
-              12,345 Active Bets
-            </Typography>
+          </Typography>
+          <Typography
+            mt={1}
+            color={'#7D7D8D'}
+            textAlign={'center'}
+            fontSize={'14px'}
+          >
+            {' '}
+            12,345 Active Bets
           </Typography>
           <Divider sx={{ mb: 2 }} />
         </AccordionDetails>
