@@ -1,17 +1,4 @@
 import * as React from 'react'
-<<<<<<< Updated upstream
-import { useBoolean } from 'usehooks-ts'
-import {
-  Button,
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TableRow,
-  Typography,
-} from '@mui/material'
-=======
 import Table from '@mui/material/Table'
 import TableBody from '@mui/material/TableBody'
 import TableCell from '@mui/material/TableCell'
@@ -32,7 +19,6 @@ import FirstPageIcon from '@mui/icons-material/FirstPage'
 import KeyboardArrowLeft from '@mui/icons-material/KeyboardArrowLeft'
 import KeyboardArrowRight from '@mui/icons-material/KeyboardArrowRight'
 import LastPageIcon from '@mui/icons-material/LastPage'
->>>>>>> Stashed changes
 
 import ConfirmBetModal from 'components/Modals/ConfirmBetModal'
 
