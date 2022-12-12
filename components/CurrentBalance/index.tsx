@@ -1,14 +1,14 @@
 import { Box, Paper, Stack, Typography } from '@mui/material'
-import { Container } from '@mui/system'
 import React from 'react'
+import { useCopyToClipboard } from 'usehooks-ts'
+import { useMetamask } from 'contexts/Metamask'
+import Image from 'next/image'
+
 import {
   currentBalancePaperStyle,
   currentBalancePaperStyle2,
 } from 'styles/commonStyles'
 import styles from './currentBalance.module.scss'
-import { useCopyToClipboard } from 'usehooks-ts'
-import { useMetamask } from 'contexts/Metamask'
-import Image from 'next/image'
 import { Link } from 'assets/index'
 
 type Props = {}

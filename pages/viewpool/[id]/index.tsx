@@ -65,13 +65,8 @@ const ViewPool: NextPage<Props> = ({}) => {
             <Stack
               justifyContent={'center'}
               alignItems={'center'}
-              onClick={() => {
-                router.push('/select-pool')
-              }}
               mt={2}
-            >
-              <Link sx={{ cursor: 'pointer' }}>See More</Link>
-            </Stack>
+            ></Stack>
           </Box>
           <Box>
             <Typography

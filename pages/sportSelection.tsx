@@ -55,7 +55,7 @@ const SportSelection = (_props: Props) => {
           <Fragment key={index}>
             <SportCard
               clickHandler={() => {
-                router.push(`/viewpool/${sport.id}}`)
+                router.push(`/viewpool/${sport.id}`)
               }}
               selectHandler={() => {
                 updateSelectedNftState(sport.id)

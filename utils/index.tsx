@@ -37,5 +37,5 @@ export interface sportsListType {
 
 export const sportsList = [
   { icon: SportsFootball, sportName: 'NFL League', img: NFL, id: '1' },
-  { icon: SportsSoccer, sportName: 'Football', img: Football, id: '2' },
+  { icon: SportsSoccer, sportName: 'Football/Soccer', img: Football, id: '2' },
 ]

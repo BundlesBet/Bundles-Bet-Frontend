@@ -12,6 +12,8 @@ import ProfilePic from './ProfilePic.png'
 import background from './background.png'
 import FR from './FR.png'
 import US from './US.png'
+import Coins from './Vector.png'
+import Trophy from './trophy.png'
 
 export {
   background,
@@ -25,4 +27,6 @@ export {
   wallet,
   FR,
   US,
+  Coins,
+  Trophy,
 }

@@ -31,16 +31,24 @@ export const accordionSummaryStyles = {
 
 export const currentBalancePaperStyle = {
   background: '#0EB634',
-  borderRadius: '1px',
+  borderRadius: '2px',
   boxShadow: '0px 4px 4px rgba(0, 0, 0, 0.25)',
   color: '#fff',
   p: { xs: 2, md: 3 },
+}
+export const dashBoardCardStyle = {
+  background: '#1C1C26',
+  borderRadius: '4px',
+  boxShadow: '0px 4px 4px rgba(0, 0, 0, 0.25)',
+  color: '#fff',
+  p: { xs: 2, md: 3 },
+  borderBottom: ' 1px solid #0EB634',
 }
 
 export const currentBalancePaperStyle2 = {
   background:
     'linear-gradient(180deg, rgba(24, 129, 48, 0.8) 0%, rgba(24, 129, 48, 0.5) 100%)',
-  borderRadius: '1px',
+  borderRadius: '2px',
   boxShadow: '0px 4px 4px rgba(0, 0, 0, 0.25)',
   color: '#fff',
   p: { xs: 2, md: 2 },

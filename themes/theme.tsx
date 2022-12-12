@@ -57,6 +57,16 @@ const customTheme = createTheme({
         },
       ],
     },
+    MuiTooltip: {
+      styleOverrides: {
+        tooltip: {
+          fontSize: '14px',
+          color: '#FFFFFF',
+          backgroundColor: '#7D7D8D',
+          border: '1px solid #462C4F',
+        },
+      },
+    },
   },
 })
 

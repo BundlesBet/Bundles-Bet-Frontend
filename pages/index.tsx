@@ -89,7 +89,7 @@ const ConnectWallet: NextPage<Props> = ({}) => {
                 fontWeight={600}
                 sx={{ fontSize: { xs: '18px', md: '28px', lg: '32px' } }}
               >
-                BUNDLE <span style={{ color: '#fff' }}> BETS</span>
+                BUNDLES <span style={{ color: '#fff' }}> BETS</span>
               </Typography>
             </Stack>
           </Box>
@@ -143,7 +143,6 @@ const ConnectWallet: NextPage<Props> = ({}) => {
                 mt: 3,
                 mb: 1,
                 height: '50px',
-
                 fontWeight: 700,
                 borderRadius: '5px',
                 lineHeight: '21px',
@@ -167,13 +166,15 @@ const ConnectWallet: NextPage<Props> = ({}) => {
             >
               Import Private Key
             </Button>
-            <Box
+
+            <Link
+              component="button"
               onClick={() => {
                 router.push('/sportSelection')
               }}
             >
-              <Link>Skip for now</Link>
-            </Box>
+              Skip for now
+            </Link>
           </Stack>
         </Container>
       </Grid>

@@ -1,5 +1,4 @@
 import * as React from 'react'
-import { useState } from 'react'
 import Table from '@mui/material/Table'
 import TableBody from '@mui/material/TableBody'
 import TableCell from '@mui/material/TableCell'
@@ -8,27 +7,60 @@ import TableHead from '@mui/material/TableHead'
 import TableRow from '@mui/material/TableRow'
 import {
   Box,
-  Button,
-  ButtonGroup,
   IconButton,
-  Stack,
+  Paper,
   TableFooter,
   TablePagination,
-  Tooltip,
   Typography,
   useTheme,
 } from '@mui/material'
-import { useBoolean } from 'usehooks-ts'
 import FirstPageIcon from '@mui/icons-material/FirstPage'
 import KeyboardArrowLeft from '@mui/icons-material/KeyboardArrowLeft'
 import KeyboardArrowRight from '@mui/icons-material/KeyboardArrowRight'
 import LastPageIcon from '@mui/icons-material/LastPage'
-import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined'
 
-import ConfirmBetModal from 'components/Modals/ConfirmBetModal'
-import { useMetamask } from 'contexts/Metamask'
+import styles from './Dashboard.module.scss'
 
-import { FR, US } from 'assets'
+function createData(
+  date: string,
+  match: string,
+  transactionHash: string,
+  poolSize: number,
+  status: any
+) {
+  return { date, match, transactionHash, poolSize, status }
+}
+
+const rows = [
+  createData(
+    '28th August, 2022 09:00',
+    'Canada vs Greece',
+    '0xabbb...adad',
+    24,
+    'Bet Now'
+  ),
+  createData(
+    '28th August, 2022 09:00',
+    'Canada vs Greece',
+    '0xabbb...adad',
+    24,
+    'Bet Now'
+  ),
+  createData(
+    '28th August, 2022 09:00',
+    'Canada vs Greece',
+    '0xabbb...adad',
+    24,
+    'Bet Now'
+  ),
+  createData(
+    '28th August, 2022 09:00',
+    'Canada vs Greece',
+    '0xabbb...adad',
+    24,
+    'Bet Now'
+  ),
+]
 
 const tableHeadStyle = {
   '& .MuiTableCell-root': {
@@ -152,77 +184,9 @@ function TablePaginationActions(props: TablePaginationActionsProps) {
   )
 }
 
-const rows = [
-  {
-    sport: 'Football',
-    match: { team1: 'US', team2: 'FR' },
-    bid: 0.1,
-    poolFaces: 2,
-    selectedTeam: 'Manchester United',
-    action: ' Bet Now',
-  },
-  {
-    sport: 'Football',
-    match: { team1: 'Canada', team2: 'Greece' },
-    bid: 0.1,
-    poolFaces: 2,
-    selectedTeam: 'Manchester United',
-    action: ' Bet Now',
-  },
-  {
-    sport: 'Football',
-    match: { team1: 'Greece', team2: 'Germany' },
-    bid: 0.1,
-    poolFaces: 2,
-    selectedTeam: 'Manchester United',
-    action: ' Bet Now',
-  },
-  {
-    sport: 'Football',
-    match: { team1: 'France', team2: 'India' },
-    bid: 0.1,
-    poolFaces: 2,
-    selectedTeam: 'Manchester United',
-    action: ' Bet Now',
-  },
-  {
-    sport: 'Football',
-    match: { team1: 'Canada', team2: 'Greece' },
-    bid: 0.1,
-    poolFaces: 2,
-    selectedTeam: 'Manchester United',
-    action: ' Bet Now',
-  },
-  {
-    sport: 'Football',
-    match: { team1: 'Portugal', team2: 'Brazil' },
-    bid: 0.1,
-    poolFaces: 2,
-    selectedTeam: 'Manchester United',
-    action: ' Bet Now',
-  },
-]
-
-export default function ActiveTable() {
-  const { setTrue, setFalse, setValue, value } = useBoolean(false)
-
-  const openConfirmBetModal = setTrue
-
-  const { account } = useMetamask()
-  const cancelConfirmBetModal = () => {
-    setValue((x: boolean) => !x)
-  }
+export default function WonTable() {
   const [page, setPage] = React.useState(0)
   const [rowsPerPage, setRowsPerPage] = React.useState(5)
-  const [selectedTeamName, setSelectedTeamName] = useState<any>('Select Team')
-  console.log(
-    '🚀 ~ file: index.tsx:193 ~ ActiveTable ~ selectedTeamName',
-    selectedTeamName
-  )
-
-  const updateSelectedNftState = (name: string) => {
-    setSelectedTeamName(name)
-  }
 
   // Avoid a layout jump when reaching the last page with empty rows.
   const emptyRows =
@@ -241,46 +205,24 @@ export default function ActiveTable() {
     setRowsPerPage(parseInt(event.target.value, 10))
     setPage(0)
   }
-
-  const toolTipJsx = () => {
-    return (
-      <Tooltip
-        title={
-          !account
-            ? 'Connect your Wallet'
-            : '' || selectedTeamName !== 'Select Team'
-            ? ''
-            : 'Please Select Team'
-        }
-        arrow
-      >
-        <IconButton>
-          <InfoOutlinedIcon color="primary" />
-        </IconButton>
-      </Tooltip>
-    )
-  }
   return (
     <>
       <TableContainer>
-        <Table sx={{ minWidth: 500 }}>
+        <Table sx={{ minWidth: 300 }}>
           <TableHead sx={tableHeadStyle}>
             <TableRow>
-              <TableCell sx={{ color: '#fff' }}>Sport</TableCell>
-              <TableCell sx={{ color: '#fff' }} align="right">
-                Pool Matches
+              <TableCell sx={{ color: 'primary.light' }}>Date</TableCell>
+              <TableCell sx={{ color: 'primary.light' }} align="center">
+                Match
               </TableCell>
-              <TableCell sx={{ color: '#fff' }} align="right">
-                Selected Team
+              <TableCell sx={{ color: 'primary.light' }} align="center">
+                Transaction hash
               </TableCell>
-              <TableCell sx={{ color: '#fff' }} align="right">
-                Total Bid
+              <TableCell sx={{ color: 'primary.light' }} align="center">
+                Pool Size
               </TableCell>
-              <TableCell sx={{ color: '#fff' }} align="right">
-                Pool Faces
-              </TableCell>
-              <TableCell sx={{ color: '#fff' }} align="right">
-                Action
+              <TableCell sx={{ color: 'primary.light' }} align="right">
+                Status
               </TableCell>
             </TableRow>
           </TableHead>
@@ -294,91 +236,31 @@ export default function ActiveTable() {
                 sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
               >
                 <TableCell sx={{ color: '#fff' }} component="th" scope="row">
-                  {row.sport}
+                  {row.date}
                 </TableCell>
-
-                <TableCell sx={{ color: '#fff' }} align="right">
-                  <ButtonGroup
-                    disableElevation
-                    variant="contained"
-                    aria-label="Disabled elevation buttons"
-                  >
-                    <Button
-                      onClick={() => updateSelectedNftState(row.match.team1)}
-                      variant="contained"
-                      sx={{
-                        background: '#282835',
-                        p: 2,
-                        '&:hover': {
-                          backgroundColor: '#0EB634',
-                          color: '#FFFFFF',
-                        },
-                        border:
-                          selectedTeamName === row.match.team1
-                            ? '2px solid #0EB634'
-                            : '',
-                      }}
-                    >
-                      {' '}
-                      {row.match.team1}
-                    </Button>
-
-                    <Button
-                      onClick={() => updateSelectedNftState(row.match.team2)}
-                      variant="contained"
-                      sx={{
-                        background: '#282835',
-                        p: 2,
-                        '&:hover': {
-                          backgroundColor: '#0EB634',
-                          color: '#FFFFFF',
-                        },
-                        border:
-                          selectedTeamName === row.match.team2
-                            ? '2px solid #0EB634'
-                            : '',
-                      }}
-                    >
-                      {' '}
-                      {row.match.team2}
-                    </Button>
-                  </ButtonGroup>
+                <TableCell sx={{ color: '#fff' }} align="center">
+                  {row.match}
                 </TableCell>
-                <TableCell sx={{ color: '#fff' }} align="right">
-                  {selectedTeamName}
+                <TableCell sx={{ color: '#fff' }} align="center">
+                  {row.transactionHash} <br />{' '}
                 </TableCell>
-                <TableCell sx={{ color: '#fff' }} align="right">
-                  {row.bid} <br />{' '}
-                  <Typography color="primary.light">$BUND </Typography>
-                </TableCell>
-                <TableCell sx={{ color: '#fff' }} align="right">
-                  {row.poolFaces}
+                <TableCell sx={{ color: '#fff' }} align="center">
+                  {row.poolSize}
                   <br />
-                  <Typography color="primary.light">Small Pool</Typography>
+                  <Typography color="primary.light">$BUND</Typography>
                 </TableCell>
 
                 <TableCell sx={{ color: '#fff' }} align="right">
-                  <Button
-                    onClick={openConfirmBetModal}
-                    disabled={
-                      account && selectedTeamName !== 'Select Team'
-                        ? false
-                        : true
-                    }
+                  {/* if Won Use this */}
+                  <Paper
+                    variant="outlined"
+                    className={styles.paperWon}
                     sx={{
-                      background: '#282835',
-                      p: 2,
-                      '&:hover': {
-                        backgroundColor: '#0EB634',
-                        color: '#FFFFFF',
-                      },
+                      p: { xs: 0.2, md: 0.5 },
                     }}
                   >
-                    {row.action}
-                  </Button>
-                  {!account || selectedTeamName === 'Select Team'
-                    ? toolTipJsx()
-                    : false}
+                    <Typography> Bet Won </Typography>
+                  </Paper>
                 </TableCell>
               </TableRow>
             ))}
@@ -410,7 +292,6 @@ export default function ActiveTable() {
           </TableFooter>
         </Table>
       </TableContainer>
-      <ConfirmBetModal open={value} handleClose={cancelConfirmBetModal} />
     </>
   )
 }

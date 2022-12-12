@@ -5,6 +5,8 @@ import {
   Typography,
   AccordionDetails,
   Divider,
+  Link,
+  Stack,
 } from '@mui/material'
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown'
 import {
@@ -12,6 +14,7 @@ import {
   accordionSummaryStyles,
   accordionTextStyles,
 } from 'styles/commonStyles'
+import { useRouter } from 'next/router'
 
 /**
  * @param <Pass Props as any>
@@ -21,6 +24,7 @@ import {
 type Props = {}
 
 const SelectPoolAccordion = (props: Props) => {
+  const router = useRouter()
   return (
     <>
       <Accordion sx={accordionStyles} defaultExpanded={true}>
@@ -58,7 +62,7 @@ const SelectPoolAccordion = (props: Props) => {
               fontSize: { xs: '12px', md: '22px', lg: '22px' },
             }}
           >
-            5 Matches /<span style={{ color: '#fff' }}>{''}0.1 $BUNDS </span>
+            5 Matches /<span style={{ color: '#fff' }}>{''}0.1 $BUND </span>
           </Typography>
         </AccordionSummary>
         <AccordionDetails sx={{ bgcolor: '#1C1C26' }}>
@@ -100,7 +104,19 @@ const SelectPoolAccordion = (props: Props) => {
             {' '}
             12,345 Active Bets
           </Typography>
+
           <Divider sx={{ mb: 2 }} />
+          <Stack>
+            <Link
+              component="button"
+              sx={{ cursor: 'pointer', alignItems: 'center' }}
+              onClick={() => {
+                router.push('/select-pool')
+              }}
+            >
+              See More
+            </Link>
+          </Stack>
         </AccordionDetails>
       </Accordion>
     </>
