@@ -33,7 +33,7 @@ const Rewards = (props: Props) => {
               </Typography>
               <Typography className={styles.bets}>
                 6735 <br />
-                <span className={styles.span}> $BOUND </span>
+                <span className={styles.span}> $BUND </span>
               </Typography>
 
               {/* if Won Use this */}

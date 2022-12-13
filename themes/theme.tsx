@@ -14,7 +14,7 @@ const customTheme = createTheme({
       light: '#7D7D8D',
     },
     secondary: {
-      main: '#0EB634 ', //Choose your primary and secondary colors , so you can use <Typography color="primary or color ="secondary"></Typography>
+      main: '#00FFC2 ', //Choose your primary and secondary colors , so you can use <Typography color="primary or color ="secondary"></Typography>
     },
   },
   components: {
@@ -27,12 +27,13 @@ const customTheme = createTheme({
           fontWeight: 700,
           fontSize: '14px',
           lineHeight: '18px',
-          background: '#0EB634',
+          background: '#00FFC2',
           borderRadius: '4px',
-          color: '#FFFFFF',
+          color: '#111111',
+
           '&:hover': {
-            backgroundColor: '#0EB634',
-            color: '#FFFFFF',
+            backgroundColor: '#00FFC2',
+            color: '#111111',
             boxShadow: 20,
           },
         },

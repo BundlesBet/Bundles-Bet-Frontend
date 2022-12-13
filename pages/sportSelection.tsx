@@ -33,7 +33,7 @@ const SportSelection = (_props: Props) => {
         mb={'30px'}
         mt={'50px'}
         fontWeight={700}
-        color={'#0EB634'}
+        color={'#00FFC2'}
         fontSize={'50px'}
         textAlign={'center'}
       >

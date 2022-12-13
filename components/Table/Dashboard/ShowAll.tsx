@@ -267,7 +267,7 @@ export default function ShowAllDashboardTable() {
                     variant="outlined"
                     className={styles.paperLost}
                     sx={{
-                      p: { xs: 0.5, md: 1 },
+                      p: { xs: 0.2, md: 0.5 },
                     }}
                   >
                     Bet Lost

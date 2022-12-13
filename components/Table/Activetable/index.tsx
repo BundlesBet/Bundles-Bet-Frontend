@@ -267,16 +267,16 @@ export default function ActiveTable() {
           <TableHead sx={tableHeadStyle}>
             <TableRow>
               <TableCell sx={{ color: '#fff' }}>Sport</TableCell>
-              <TableCell sx={{ color: '#fff' }} align="right">
+              <TableCell sx={{ color: '#fff' }} align="center">
                 Pool Matches
               </TableCell>
-              <TableCell sx={{ color: '#fff' }} align="right">
+              <TableCell sx={{ color: '#fff' }} align="center">
                 Selected Team
               </TableCell>
-              <TableCell sx={{ color: '#fff' }} align="right">
+              <TableCell sx={{ color: '#fff' }} align="center">
                 Total Bid
               </TableCell>
-              <TableCell sx={{ color: '#fff' }} align="right">
+              <TableCell sx={{ color: '#fff' }} align="center">
                 Pool Faces
               </TableCell>
               <TableCell sx={{ color: '#fff' }} align="right">
@@ -297,7 +297,7 @@ export default function ActiveTable() {
                   {row.sport}
                 </TableCell>
 
-                <TableCell sx={{ color: '#fff' }} align="right">
+                <TableCell sx={{ color: '#fff' }} align="center">
                   <ButtonGroup
                     disableElevation
                     variant="contained"
@@ -310,12 +310,12 @@ export default function ActiveTable() {
                         background: '#282835',
                         p: 2,
                         '&:hover': {
-                          backgroundColor: '#0EB634',
+                          backgroundColor: '#00FFC2',
                           color: '#FFFFFF',
                         },
                         border:
                           selectedTeamName === row.match.team1
-                            ? '2px solid #0EB634'
+                            ? '2px solid #00FFC2'
                             : '',
                       }}
                     >
@@ -330,12 +330,12 @@ export default function ActiveTable() {
                         background: '#282835',
                         p: 2,
                         '&:hover': {
-                          backgroundColor: '#0EB634',
+                          backgroundColor: '#00FFC2',
                           color: '#FFFFFF',
                         },
                         border:
                           selectedTeamName === row.match.team2
-                            ? '2px solid #0EB634'
+                            ? '2px solid #00FFC2'
                             : '',
                       }}
                     >
@@ -344,14 +344,14 @@ export default function ActiveTable() {
                     </Button>
                   </ButtonGroup>
                 </TableCell>
-                <TableCell sx={{ color: '#fff' }} align="right">
+                <TableCell sx={{ color: '#fff' }} align="center">
                   {selectedTeamName}
                 </TableCell>
-                <TableCell sx={{ color: '#fff' }} align="right">
+                <TableCell sx={{ color: '#fff' }} align="center">
                   {row.bid} <br />{' '}
                   <Typography color="primary.light">$BUND </Typography>
                 </TableCell>
-                <TableCell sx={{ color: '#fff' }} align="right">
+                <TableCell sx={{ color: '#fff' }} align="center">
                   {row.poolFaces}
                   <br />
                   <Typography color="primary.light">Small Pool</Typography>
@@ -369,7 +369,7 @@ export default function ActiveTable() {
                       background: '#282835',
                       p: 2,
                       '&:hover': {
-                        backgroundColor: '#0EB634',
+                        backgroundColor: '#00FFC2',
                         color: '#FFFFFF',
                       },
                     }}

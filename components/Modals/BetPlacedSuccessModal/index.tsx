@@ -54,7 +54,7 @@ const BetPlacedSuccessModal = (props: Props) => {
           />
         </div>
         <Stack direction="column" spacing={4} mb={2}>
-          <CheckCircleIcon sx={{ backgroundColor: '#0EB634' }} />
+          <CheckCircleIcon sx={{ backgroundColor: '#00FFC2' }} />
           <Typography fontSize={'24px'} textAlign={'center'}>
             Bet Placed
           </Typography>

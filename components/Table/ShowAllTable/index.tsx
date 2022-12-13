@@ -245,7 +245,7 @@ export default function ShowAllTable() {
                       background: '#282835',
                       p: 2,
                       '&:hover': {
-                        backgroundColor: '#0EB634',
+                        backgroundColor: '#00FFC2',
                         color: '#FFFFFF',
                       },
                     }}

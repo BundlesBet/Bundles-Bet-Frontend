@@ -12,6 +12,7 @@
     "prettier:fix": "prettier --write ./**/*.ts"
   },
   "dependencies": {
+    "@date-io/date-fns": "^2.16.0",
     "@emotion/react": "^11.10.5",
     "@emotion/styled": "^11.10.5",
     "@mui/icons-material": "^5.10.16",
@@ -20,6 +21,7 @@
     "@types/react-modal": "^3.13.1",
     "@types/react-swipeable-views": "^0.13.1",
     "axios": "^1.2.0",
+    "date-fns": "^2.29.3",
     "formik": "^2.2.9",
     "next": "12.0.10",
     "prettier": "^2.8.0",

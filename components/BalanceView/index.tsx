@@ -67,7 +67,7 @@ const BalanceView = (props: Props) => {
               fontSize={'14px'}
               fontWeight={700}
               lineHeight={'18px'}
-              color={'#0EB634'}
+              color={'#00FFC2'}
             >
               $1520.321
             </Typography>

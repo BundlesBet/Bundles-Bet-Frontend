@@ -15,6 +15,7 @@ import {
   accordionTextStyles,
 } from 'styles/commonStyles'
 import { useRouter } from 'next/router'
+import { format } from 'date-fns'
 
 /**
  * @param <Pass Props as any>
@@ -48,7 +49,7 @@ const SelectPoolAccordion = (props: Props) => {
               mb={1}
               fontWeight={600}
             >
-              Start: 09:09:00 PM IST / 12 Dec 2022
+              Start: {format(new Date(), ' HH:mm:ss aaa, MMM do yyyy')}
             </Typography>
             Standard Pool
           </Typography>

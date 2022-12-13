@@ -39,7 +39,7 @@ const SportCard = (props: Props) => {
         maxWidth: 200,
         borderRadius: '4px',
         position: 'relative',
-        background: '#0EB634',
+        background: '#00FFC2',
         ':hover': { cursor: 'pointer' },
       }}
       onClick={() => {
@@ -79,7 +79,7 @@ const SportCard = (props: Props) => {
           mb={'2px'}
           fontWeight={700}
           fontSize={'16px'}
-          color={'#0EB634'}
+          color={'#01FFC2'}
         >
           {sportName}
         </Typography>
