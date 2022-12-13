@@ -1,5 +1,7 @@
 import { Paper, Stack, Typography } from '@mui/material'
 import React from 'react'
+import { format } from 'date-fns'
+
 import styles from './rewards.module.scss'
 
 type Props = {}
@@ -20,7 +22,7 @@ const Rewards = (props: Props) => {
             key={key}
           >
             <Typography className={styles.dateTime}>
-              28 Aug 2022, 09:09:00
+              {format(new Date(), ' HH:mm aaa, MMM do yyyy')}
             </Typography>
             <Stack
               direction="row"

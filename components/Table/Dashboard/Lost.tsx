@@ -18,6 +18,7 @@ import FirstPageIcon from '@mui/icons-material/FirstPage'
 import KeyboardArrowLeft from '@mui/icons-material/KeyboardArrowLeft'
 import KeyboardArrowRight from '@mui/icons-material/KeyboardArrowRight'
 import LastPageIcon from '@mui/icons-material/LastPage'
+import { format } from 'date-fns'
 
 import styles from './Dashboard.module.scss'
 
@@ -236,7 +237,7 @@ export default function LostTable() {
                 sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
               >
                 <TableCell sx={{ color: '#fff' }} component="th" scope="row">
-                  {row.date}
+                  {format(new Date(), ' HH:mm aaa, MMM do yyyy')}
                 </TableCell>
                 <TableCell sx={{ color: '#fff' }} align="center">
                   {row.match}
