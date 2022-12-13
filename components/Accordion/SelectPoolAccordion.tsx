@@ -1,4 +1,7 @@
 import React from 'react'
+import { format } from 'date-fns'
+import { useRouter } from 'next/router'
+import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown'
 import {
   Accordion,
   AccordionSummary,
@@ -8,14 +11,11 @@ import {
   Link,
   Stack,
 } from '@mui/material'
-import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown'
 import {
   accordionStyles,
   accordionSummaryStyles,
   accordionTextStyles,
 } from 'styles/commonStyles'
-import { useRouter } from 'next/router'
-import { format } from 'date-fns'
 
 /**
  * @param <Pass Props as any>
@@ -26,6 +26,7 @@ type Props = {}
 
 const SelectPoolAccordion = (props: Props) => {
   const router = useRouter()
+
   return (
     <>
       <Accordion sx={accordionStyles} defaultExpanded={true}>

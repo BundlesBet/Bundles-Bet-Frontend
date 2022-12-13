@@ -56,12 +56,12 @@ const Header = (props: {}) => {
     }
   }
 
-  useEffect(() => {
-    if (account) {
-      signUpChecker()
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [account])
+  // useEffect(() => {
+  //   if (account) {
+  //     signUpChecker()
+  //   }
+  //   // eslint-disable-next-line react-hooks/exhaustive-deps
+  // }, [account])
 
   return (
     <Box sx={{ flexGrow: 1 }}>
@@ -169,7 +169,10 @@ const Header = (props: {}) => {
                 </Stack>
               ) : (
                 <Button
-                  onClick={connect}
+                  onClick={() => {
+                    connect()
+                    signUpChecker()
+                  }}
                   startIcon={<Image src={wallet} alt="key" />}
                   variant="contained"
                   fullWidth

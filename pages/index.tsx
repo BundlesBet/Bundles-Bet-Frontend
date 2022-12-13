@@ -1,9 +1,9 @@
 // libraries
 import Head from 'next/head'
 import Image from 'next/image'
-import { useRouter } from 'next/router'
 import { NextPage } from 'next'
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
+import { useRouter } from 'next/router'
 import {
   Typography,
   Stack,
@@ -27,6 +27,7 @@ import { secondaryButton } from 'styles/commonStyles'
 
 // assets
 import { Logo, key, wallet } from 'assets/index'
+import SignUpModal from 'components/SignUpModal'
 
 interface Props {}
 
@@ -42,17 +43,26 @@ const ConnectWallet: NextPage<Props> = ({}) => {
   const { login } = useMetamaskLogin()
   const { account, connect } = useMetamask()
 
-  useEffect(() => {
-    if (account) {
-      login()
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [account])
+  const [openSignUp, setOpenSignUp] = useState(false)
 
-  const handleConnect = async () => {
-    connect()
-    router.push('/sportSelection')
+  const signUpChecker = async () => {
+    const signUpCheck = await login()
+
+    if (!signUpCheck) {
+      console.log(51)
+      setOpenSignUp(true)
+    } else {
+      setOpenSignUp(false)
+    }
   }
+
+  // useEffect(() => {
+  //   if (account) {
+  //     signUpChecker()
+  //   }
+  //   // eslint-disable-next-line react-hooks/exhaustive-deps
+  // }, [account])
+
   return (
     <>
       <Head>
@@ -126,6 +136,7 @@ const ConnectWallet: NextPage<Props> = ({}) => {
             </Box>
           </Box>
         </Container>
+
         <Container component="main" maxWidth="xs">
           {' '}
           <Stack
@@ -135,7 +146,10 @@ const ConnectWallet: NextPage<Props> = ({}) => {
             spacing={2}
           >
             <Button
-              onClick={handleConnect}
+              onClick={() => {
+                connect()
+                signUpChecker()
+              }}
               startIcon={<Image src={wallet} alt="key" />}
               variant="contained"
               fullWidth
@@ -178,6 +192,13 @@ const ConnectWallet: NextPage<Props> = ({}) => {
           </Stack>
         </Container>
       </Grid>
+
+      {openSignUp && (
+        <SignUpModal
+          open={openSignUp}
+          handleClose={() => setOpenSignUp(!openSignUp)}
+        />
+      )}
     </>
   )
 }
