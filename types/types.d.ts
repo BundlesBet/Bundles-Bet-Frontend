@@ -71,3 +71,11 @@ export type BlockType =
   | number
   | BN
 export type BaseContract = Omit<Contract, 'clone' | 'once'>
+
+declare global {
+  interface Window {
+    ethereum: any
+    _b: any
+    contracts: any
+  }
+}

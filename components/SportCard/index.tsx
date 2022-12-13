@@ -9,12 +9,8 @@ import {
   SvgIconTypeMap,
   Typography,
 } from '@mui/material'
-
-// contexts and hooks
-
-// styles
-
-// assets
+import { setSportSelected } from 'redux/slices/user'
+import { useDispatch } from 'react-redux'
 
 interface Props {
   sportName: string
@@ -22,18 +18,34 @@ interface Props {
   sportIcon: OverridableComponent<SvgIconTypeMap<{}, 'svg'>> & {
     muiName: string
   }
+  id: string
+  clickHandler?: () => void
+  selectHandler?: () => void
 }
 
 const SportCard = (props: Props) => {
-  const { sportIcon: SportIcon, sportImg, sportName } = props
+  const {
+    sportIcon: SportIcon,
+    sportImg,
+    sportName,
+    id,
+    clickHandler,
+    selectHandler,
+  } = props
+  const dispatch = useDispatch()
   return (
     <Card
       sx={{
         maxWidth: 200,
         borderRadius: '4px',
         position: 'relative',
-        background: '#0EB634',
+        background: '#00FFC2',
         ':hover': { cursor: 'pointer' },
+      }}
+      onClick={() => {
+        ;(props as any).selectHandler()
+        dispatch(setSportSelected(id))
+        clickHandler!()
       }}
     >
       <CardMedia>
@@ -67,7 +79,7 @@ const SportCard = (props: Props) => {
           mb={'2px'}
           fontWeight={700}
           fontSize={'16px'}
-          color={'#0EB634'}
+          color={'#01FFC2'}
         >
           {sportName}
         </Typography>

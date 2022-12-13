@@ -31,7 +31,7 @@ const Footer = (props: {}) => {
           >
             <Image src={Logo} alt="logo" width={'26px'} height={'26px'} />
           </IconButton>
-          <Typography variant="h6" color={'#0EB634'} mr={2}>
+          <Typography variant="h6" color={'#00FFC2'} mr={2}>
             Bundles
           </Typography>
           <Typography variant="h6" color={'#fff'}>
@@ -59,7 +59,7 @@ const Footer = (props: {}) => {
           >
             <Twitter
               fontSize="medium"
-              sx={{ ':hover': { cursor: 'pointer', color: '#0EB634' } }}
+              sx={{ ':hover': { cursor: 'pointer', color: '#00FFC2' } }}
             />
           </a>
 
@@ -71,7 +71,7 @@ const Footer = (props: {}) => {
           >
             <LinkedIn
               fontSize="medium"
-              sx={{ ':hover': { cursor: 'pointer', color: '#0EB634' } }}
+              sx={{ ':hover': { cursor: 'pointer', color: '#00FFC2' } }}
             />
           </a>
 
@@ -84,7 +84,7 @@ const Footer = (props: {}) => {
             <IconButton
               sx={{
                 color: '#fff',
-                ':hover': { cursor: 'pointer', color: '#0EB634' },
+                ':hover': { cursor: 'pointer', color: '#00FFC2' },
               }}
               size="small"
               edge="start"
@@ -102,7 +102,7 @@ const Footer = (props: {}) => {
           >
             <Facebook
               fontSize="medium"
-              sx={{ ':hover': { cursor: 'pointer', color: '#0EB634' } }}
+              sx={{ ':hover': { cursor: 'pointer', color: '#00FFC2' } }}
             />
           </a>
         </Stack>

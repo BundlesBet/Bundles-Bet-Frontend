@@ -2,11 +2,10 @@ import { useState } from 'react'
 import SwipeableViews from 'react-swipeable-views'
 import { AppBar, Box, Tab, Tabs, Typography, useTheme } from '@mui/material'
 
-import ActiveTable from 'components/Table/Activetable'
-import UnActiveTable from 'components/Table/UnActiveTable'
-import ShowAllTable from 'components/Table/ShowAllTable'
-
-import styles from './tabs.module.scss'
+import styles from './bets.module.scss'
+import Lost from 'components/Table/Dashboard/Lost'
+import Won from 'components/Table/Dashboard/Won'
+import ShowAllDashboardTable from 'components/Table/Dashboard/ShowAll'
 
 interface TabPanelProps {
   children?: React.ReactNode
@@ -38,7 +37,7 @@ function a11yProps(index: number) {
   }
 }
 
-export default function SelectPoolTabs() {
+export default function MyBetsTabs() {
   const theme = useTheme()
   const [value, setValue] = useState(0)
 
@@ -52,9 +51,9 @@ export default function SelectPoolTabs() {
 
   return (
     <>
-      <Typography className={styles.heading} textAlign={'start'} mb={2}>
+      <Typography className={styles.heading} textAlign={'start'} mb={1}>
         {' '}
-        Select Pool
+        My Bets
       </Typography>
       <Box sx={{ bgcolor: '#1C1C26', borderRadius: '4px' }}>
         <AppBar position="static">
@@ -67,9 +66,9 @@ export default function SelectPoolTabs() {
               bgcolor: '#1C1C26',
             }}
           >
-            <Tab label="Show" {...a11yProps(0)} />
-            <Tab label="Inactive" {...a11yProps(1)} />
-            <Tab label="Show All (80)" {...a11yProps(2)} />
+            <Tab label="Show All" {...a11yProps(0)} />
+            <Tab label="Lost" {...a11yProps(1)} />
+            <Tab label="Won" {...a11yProps(2)} />
           </Tabs>
         </AppBar>
         <SwipeableViews
@@ -78,13 +77,13 @@ export default function SelectPoolTabs() {
           onChangeIndex={handleChangeIndex}
         >
           <TabPanel value={value} index={0} dir={theme.direction}>
-            <ActiveTable />
+            <ShowAllDashboardTable />
           </TabPanel>
           <TabPanel value={value} index={1} dir={theme.direction}>
-            <UnActiveTable />
+            <Lost />
           </TabPanel>
           <TabPanel value={value} index={2} dir={theme.direction}>
-            <ShowAllTable />
+            <Won />
           </TabPanel>
         </SwipeableViews>
       </Box>

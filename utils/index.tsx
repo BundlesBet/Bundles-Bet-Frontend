@@ -11,9 +11,10 @@ import { Football, NFL } from 'assets'
 // Required URLs
 export const urls = {
   admin: '/admin',
-  dashboard: '/',
+  connectWallet: '/',
   login: '/login',
-  connectWallet: '/connectwallet',
+  viewPool: '/view-pool',
+  dashboard: '/dashboard',
 }
 
 export const api = async (AxiosObj: object) => {
@@ -31,9 +32,10 @@ export interface sportsListType {
   }
   sportName: string
   img: StaticImageData
+  id: string
 }
 
 export const sportsList = [
-  { icon: SportsFootball, sportName: 'NFL League', img: NFL },
-  { icon: SportsSoccer, sportName: 'Football', img: Football },
+  { icon: SportsFootball, sportName: 'NFL League', img: NFL, id: '1' },
+  { icon: SportsSoccer, sportName: 'Football/Soccer', img: Football, id: '2' },
 ]

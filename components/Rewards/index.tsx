@@ -1,14 +1,14 @@
-import { Button, Paper, Stack, Typography } from '@mui/material'
-import { Container } from '@mui/system'
+import { Paper, Stack, Typography } from '@mui/material'
 import React from 'react'
+import { format } from 'date-fns'
+
 import styles from './rewards.module.scss'
-import { useMetamask } from 'contexts/Metamask'
 
 type Props = {}
 
 const Rewards = (props: Props) => {
   return (
-    <Container component="main" maxWidth="md">
+    <>
       <Typography className={styles.heading}>Rewards</Typography>
       {[...new Array(3)].map((item, key) => {
         return (
@@ -22,7 +22,7 @@ const Rewards = (props: Props) => {
             key={key}
           >
             <Typography className={styles.dateTime}>
-              28 Aug 2022, 09:09:00
+              {format(new Date(), ' HH:mm aaa, MMM do yyyy')}
             </Typography>
             <Stack
               direction="row"
@@ -35,7 +35,7 @@ const Rewards = (props: Props) => {
               </Typography>
               <Typography className={styles.bets}>
                 6735 <br />
-                <span className={styles.span}> $BOUND </span>
+                <span className={styles.span}> $BUND </span>
               </Typography>
 
               {/* if Won Use this */}
@@ -63,7 +63,7 @@ const Rewards = (props: Props) => {
           </Paper>
         )
       })}
-    </Container>
+    </>
   )
 }
 

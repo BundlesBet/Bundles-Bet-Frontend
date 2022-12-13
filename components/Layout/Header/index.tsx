@@ -56,12 +56,12 @@ const Header = (props: {}) => {
     }
   }
 
-  useEffect(() => {
-    if (account) {
-      signUpChecker()
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [account])
+  // useEffect(() => {
+  //   if (account) {
+  //     signUpChecker()
+  //   }
+  //   // eslint-disable-next-line react-hooks/exhaustive-deps
+  // }, [account])
 
   return (
     <Box sx={{ flexGrow: 1 }}>
@@ -96,11 +96,14 @@ const Header = (props: {}) => {
               >
                 <Image src={Logo} alt="logo" />
               </IconButton>
-              <Typography variant="h6" color={'#0EB634'} mr={2}>
+              <Typography
+                variant="h6"
+                sx={{ cursor: 'pointer' }}
+                color={'#00FFC2'}
+                mr={2}
+              >
                 Bundles
-              </Typography>
-              <Typography variant="h6" color={'#fff'}>
-                Bets
+                <span style={{ color: '#fff' }}> Bets </span>
               </Typography>
             </Stack>
 
@@ -149,7 +152,7 @@ const Header = (props: {}) => {
                     />
                   </Box>
 
-                  <Badge color="success" badgeContent={17}>
+                  <Badge sx={{ color: '#00FFC2' }} badgeContent={17}>
                     <Notifications
                       fontSize={'medium'}
                       sx={{
@@ -166,7 +169,10 @@ const Header = (props: {}) => {
                 </Stack>
               ) : (
                 <Button
-                  onClick={connect}
+                  onClick={() => {
+                    connect()
+                    signUpChecker()
+                  }}
                   startIcon={<Image src={wallet} alt="key" />}
                   variant="contained"
                   fullWidth

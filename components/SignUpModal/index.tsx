@@ -1,5 +1,6 @@
 import React from 'react'
 import { useFormik } from 'formik'
+import { useRouter } from 'next/router'
 import { Box, Button, Modal, Stack, TextField, Typography } from '@mui/material'
 
 // contexts and hooks
@@ -27,7 +28,7 @@ const style = {
 const SignUpModal = (props: Props) => {
   const { handleClose, open } = props
 
-  console.log(open)
+  const router = useRouter()
 
   const formik = useFormik({
     initialValues: {
@@ -55,6 +56,10 @@ const SignUpModal = (props: Props) => {
     localStorage.setItem('userData', JSON.stringify(userData))
 
     handleClose(true)
+
+    if (router.pathname === '/') {
+      router.push('/sportSelection')
+    }
   }
 
   return (
