@@ -1,26 +1,20 @@
-import React from 'react'
-import { format } from 'date-fns'
+import React, { Fragment } from 'react'
 import { useRouter } from 'next/router'
+import { formatInTimeZone } from 'date-fns-tz'
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown'
 import {
   Accordion,
   AccordionSummary,
-  Typography,
   AccordionDetails,
   Divider,
   Link,
   Stack,
+  Typography,
 } from '@mui/material'
-import {
-  accordionStyles,
-  accordionSummaryStyles,
-  accordionTextStyles,
-} from 'styles/commonStyles'
 
-/**
- * @param <Pass Props as any>
- * @returns <returns the Select pool Accordion>
- */
+import { matches } from 'utils'
+
+import { accordionStyles, accordionTextStyles } from 'styles/commonStyles'
 
 type Props = {}
 
@@ -31,83 +25,76 @@ const SelectPoolAccordion = (props: Props) => {
     <>
       <Accordion sx={accordionStyles} defaultExpanded={true}>
         <AccordionSummary
-          sx={{
-            ...accordionSummaryStyles,
-          }}
           expandIcon={<KeyboardArrowDownIcon />}
           aria-controls="panel1a-content"
           id="panel1a-header"
         >
-          <Typography
-            sx={{
-              ...accordionTextStyles,
-              fontSize: { xs: '14px', md: '24px', lg: '24px' },
-            }}
+          <Stack
+            width={'100%'}
+            direction={'row'}
+            alignItems={'center'}
+            justifyContent={'space-between'}
           >
-            <Typography
-              fontSize={'16px'}
-              color={'#7D7D8D'}
-              mb={1}
-              fontWeight={600}
+            <Stack
+              sx={{
+                ...accordionTextStyles,
+                fontSize: { xs: '14px', md: '24px', lg: '24px' },
+              }}
             >
-              Start: {format(new Date(), ' HH:mm:ss aaa, MMM do yyyy')}
+              <Typography
+                fontSize={'16px'}
+                color={'#7D7D8D'}
+                mb={1}
+                fontWeight={600}
+              >
+                Start:{' '}
+                {formatInTimeZone(
+                  new Date(),
+                  Intl.DateTimeFormat().resolvedOptions().timeZone,
+                  'HH:mm aa, do MMM yyyy'
+                )}
+              </Typography>
+              Standard Pool
+            </Stack>
+
+            <Typography
+              color="secondary"
+              fontWeight={400}
+              sx={{
+                fontSize: { xs: '12px', md: '20px' },
+              }}
+            >
+              5 Matches / <span style={{ color: '#fff' }}>{''}0.1 $BUND </span>
             </Typography>
-            Standard Pool
-          </Typography>
-
-          <Typography
-            variant="h4"
-            color="secondary"
-            fontWeight={400}
-            ml={'auto'}
-            sx={{
-              fontSize: { xs: '12px', md: '22px', lg: '22px' },
-            }}
-          >
-            5 Matches /<span style={{ color: '#fff' }}>{''}0.1 $BUND </span>
-          </Typography>
+          </Stack>
         </AccordionSummary>
-        <AccordionDetails sx={{ bgcolor: '#1C1C26' }}>
-          <Typography
-            textAlign={'center'}
-            sx={{
-              mb: 2,
-              mt: 2,
-              ...accordionTextStyles,
-            }}
-          >
-            Canada Vs Greece
-          </Typography>
-          <Typography
-            mt={1}
-            color={'#7D7D8D'}
-            textAlign={'center'}
-            fontSize={'14px'}
-          >
-            {' '}
-            12,345 Active Bets
-          </Typography>
-          <Divider sx={{ mb: 2 }} />
-          <Typography
-            textAlign={'center'}
-            sx={{
-              mb: 2,
-              ...accordionTextStyles,
-            }}
-          >
-            US vs Germany
-          </Typography>
-          <Typography
-            mt={1}
-            color={'#7D7D8D'}
-            textAlign={'center'}
-            fontSize={'14px'}
-          >
-            {' '}
-            12,345 Active Bets
-          </Typography>
 
-          <Divider sx={{ mb: 2 }} />
+        <AccordionDetails sx={{ bgcolor: '#1C1C26' }}>
+          {matches.map((match, index) => (
+            <Fragment key={index}>
+              <Stack my={1}>
+                <Typography
+                  textAlign={'center'}
+                  sx={{
+                    ...accordionTextStyles,
+                  }}
+                >
+                  {match.teamA} Vs {match.teamB}
+                </Typography>
+                <Typography
+                  mt={1}
+                  fontSize={'14px'}
+                  color={'#7D7D8D'}
+                  textAlign={'center'}
+                >
+                  {' '}
+                  {match.bets} Active Bets
+                </Typography>
+              </Stack>
+              <Divider sx={{ mb: 2 }} />
+            </Fragment>
+          ))}
+
           <Stack>
             <Link
               component="button"
@@ -116,7 +103,7 @@ const SelectPoolAccordion = (props: Props) => {
                 router.push('/select-pool')
               }}
             >
-              See More
+              View Pool details
             </Link>
           </Stack>
         </AccordionDetails>

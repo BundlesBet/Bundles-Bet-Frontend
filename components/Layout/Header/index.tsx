@@ -46,6 +46,12 @@ const Header = (props: {}) => {
   const trimmedAccount = account.slice(0, 5) + '...' + account.slice(-5)
 
   const signUpChecker = async () => {
+    const skip = localStorage.getItem('skip')
+
+    if (skip) {
+      return
+    }
+
     const signUpCheck = await login()
 
     if (!signUpCheck) {
@@ -56,12 +62,12 @@ const Header = (props: {}) => {
     }
   }
 
-  // useEffect(() => {
-  //   if (account) {
-  //     signUpChecker()
-  //   }
-  //   // eslint-disable-next-line react-hooks/exhaustive-deps
-  // }, [account])
+  useEffect(() => {
+    if (account) {
+      signUpChecker()
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [account])
 
   return (
     <Box sx={{ flexGrow: 1 }}>
@@ -171,7 +177,7 @@ const Header = (props: {}) => {
                 <Button
                   onClick={() => {
                     connect()
-                    signUpChecker()
+                    // signUpChecker()
                   }}
                   startIcon={<Image src={wallet} alt="key" />}
                   variant="contained"

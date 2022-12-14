@@ -1,11 +1,11 @@
-import { Grid, Container } from '@mui/material'
-import { NextPage } from 'next'
 import Head from 'next/head'
+import { NextPage } from 'next'
+import { Grid, Container } from '@mui/material'
 
+import MyBetsTabs from 'components/Dashboard/MyBets'
 import CurrentBalance from 'components/CurrentBalance'
 import TotalBets from 'components/Dashboard/TotalBets'
 import TotalToken from 'components/Dashboard/TotalToken'
-import MyBetsTabs from 'components/Dashboard/MyBets'
 
 interface Props {}
 
@@ -16,14 +16,14 @@ const Dashboard: NextPage<Props> = ({}) => {
         <title>Dashboard</title>
       </Head>
       <Container component={'main'} maxWidth="xl">
-        <Grid spacing={4} container mt={2} alignItems="center">
+        <Grid spacing={4} container mt={2} alignItems="flex-start">
           <Grid item xs={12} md={4}>
             <Grid
-              item
               xs
+              item
               container
-              direction="column"
               spacing={2}
+              direction="column"
               justifyContent={'center'}
             >
               <Grid xs item>

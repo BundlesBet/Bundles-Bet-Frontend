@@ -1,25 +1,26 @@
 .heading {
-  font-family: 'DM Sans';
-  font-style: normal;
-  font-weight: 700;
   font-size: 16px;
-  line-height: 16px;
   color: #07070d;
-}
-.balance {
-  font-family: 'DM Sans';
-  font-style: normal;
   font-weight: 700;
-  font-size: 36px;
-  line-height: 47px;
+  line-height: 16px;
+  font-style: normal;
+  font-family: 'DM Sans';
+}
+
+.balance {
+  font-size: 34px;
   color: #07070d;
+  font-weight: 700;
+  line-height: 44px;
+  font-style: normal;
+  font-family: 'DM Sans';
 }
 
 .stack {
-  font-family: 'DM Sans';
-  font-style: normal;
-  font-weight: 400;
   font-size: 16px;
-  line-height: 16px;
   color: #07070d;
+  font-weight: 400;
+  line-height: 16px;
+  font-style: normal;
+  font-family: 'DM Sans';
 }

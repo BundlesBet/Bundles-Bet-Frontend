@@ -1,12 +1,13 @@
 import { useState } from 'react'
+import { useSelector } from 'react-redux'
 import SwipeableViews from 'react-swipeable-views'
-import { AppBar, Box, Tab, Tabs, Typography, useTheme } from '@mui/material'
+import { AppBar, Box, Tab, Tabs, useTheme } from '@mui/material'
+
+import { RootState } from 'redux/store'
 
 import ActiveTable from 'components/Table/Activetable'
-import UnActiveTable from 'components/Table/UnActiveTable'
 import ShowAllTable from 'components/Table/ShowAllTable'
-
-import styles from './tabs.module.scss'
+import UnActiveTable from 'components/Table/UnActiveTable'
 
 interface TabPanelProps {
   children?: React.ReactNode
@@ -42,6 +43,10 @@ export default function SelectPoolTabs() {
   const theme = useTheme()
   const [value, setValue] = useState(0)
 
+  const sportSelected = useSelector(
+    (state: RootState) => state.user
+  ).sportSelected
+
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
     setValue(newValue)
   }
@@ -52,10 +57,6 @@ export default function SelectPoolTabs() {
 
   return (
     <>
-      <Typography className={styles.heading} textAlign={'start'} mb={2}>
-        {' '}
-        Select Pool
-      </Typography>
       <Box sx={{ bgcolor: '#1C1C26', borderRadius: '4px' }}>
         <AppBar position="static">
           <Tabs

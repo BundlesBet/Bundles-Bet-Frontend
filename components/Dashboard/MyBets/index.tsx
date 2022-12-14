@@ -2,10 +2,11 @@ import { useState } from 'react'
 import SwipeableViews from 'react-swipeable-views'
 import { AppBar, Box, Tab, Tabs, Typography, useTheme } from '@mui/material'
 
-import styles from './bets.module.scss'
-import Lost from 'components/Table/Dashboard/Lost'
 import Won from 'components/Table/Dashboard/Won'
+import Lost from 'components/Table/Dashboard/Lost'
 import ShowAllDashboardTable from 'components/Table/Dashboard/ShowAll'
+
+import styles from './bets.module.scss'
 
 interface TabPanelProps {
   children?: React.ReactNode

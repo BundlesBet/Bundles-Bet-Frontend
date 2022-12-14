@@ -1,38 +1,38 @@
 // Libraries
-import ReactModal from "react-modal";
-import Image from "next/image";
+import Image from 'next/image'
+import ReactModal from 'react-modal'
 
 // Styles
-import classes from "./Modal.module.scss";
+import classes from './Modal.module.scss'
 
 // Assets
-import CloseIcon from "./../../assets/close.svg";
+import CloseIcon from './../../assets/close.svg'
 
 const styles = {
   content: {
-    top: "50%",
-    left: "50%",
-    right: "auto",
-    bottom: "auto",
-    marginRight: "-50%",
-    minWidth: "300px",
-    width: "30%",
-    transform: "translate(-50%, -50%)",
+    top: '50%',
+    left: '50%',
+    right: 'auto',
+    bottom: 'auto',
+    marginRight: '-50%',
+    minWidth: '300px',
+    width: '30%',
+    transform: 'translate(-50%, -50%)',
     borderRadius: 10,
-    padding: "20px 30px",
-    fontFamily: "Nunito",
+    padding: '20px 30px',
+    fontFamily: 'Nunito',
   },
   overlay: {
-    backgroundColor: "rgba(0, 0, 0, 0.3)",
+    backgroundColor: 'rgba(0, 0, 0, 0.3)',
   },
-};
+}
 
 // ReactModal.setAppElement("#root");
 
 interface ModalProps {
-  isOpen: boolean;
-  close: () => void;
-  children?: React.ReactNode;
+  isOpen: boolean
+  close: () => void
+  children?: React.ReactNode
 }
 
 const Modal = (props: ModalProps) => {
@@ -42,14 +42,14 @@ const Modal = (props: ModalProps) => {
         <p>Transaction Error</p>
         <Image
           src={CloseIcon}
-          alt='Close Icon'
+          alt="Close Icon"
           className={classes.closeIcon}
           onClick={props.close}
         />
       </div>
       <div className={classes.content}>{props.children}</div>
     </ReactModal>
-  );
-};
+  )
+}
 
-export default Modal;
+export default Modal

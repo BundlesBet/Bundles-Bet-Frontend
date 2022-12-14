@@ -1,14 +1,17 @@
-import { Box, Paper, Stack, Typography } from '@mui/material'
 import React from 'react'
-import { useCopyToClipboard } from 'usehooks-ts'
-import { useMetamask } from 'contexts/Metamask'
 import Image from 'next/image'
+import { toast } from 'react-toastify'
+import { useCopyToClipboard } from 'usehooks-ts'
+import { Box, Paper, Stack, Typography } from '@mui/material'
+
+import { useMetamask } from 'contexts/Metamask'
 
 import {
   currentBalancePaperStyle,
   currentBalancePaperStyle2,
 } from 'styles/commonStyles'
 import styles from './currentBalance.module.scss'
+
 import { Link } from 'assets/index'
 
 type Props = {}
@@ -37,15 +40,14 @@ const CurrentBalance = (props: Props) => {
           </>
         )}
       </Paper>
-      <Paper
-        variant="outlined"
-        sx={{
-          ...currentBalancePaperStyle2,
-        }}
-      >
-        {!account ? (
-          <Typography className={styles.stack}></Typography>
-        ) : (
+
+      {account && (
+        <Paper
+          variant="outlined"
+          sx={{
+            ...currentBalancePaperStyle2,
+          }}
+        >
           <Stack
             direction="row"
             justifyContent={'space-between'}
@@ -64,13 +66,14 @@ const CurrentBalance = (props: Props) => {
                   alt="linkIcon"
                   onClick={() => {
                     copy(account)
+                    toast.success('Account address copied successfully')
                   }}
                 />
               </Box>
             </Stack>
           </Stack>
-        )}
-      </Paper>
+        </Paper>
+      )}
     </>
   )
 }

@@ -3,10 +3,15 @@
  */
 
 import { SvgIconTypeMap } from '@mui/material'
-import { SportsFootball, SportsSoccer } from '@mui/icons-material'
+import {
+  SportsBaseball,
+  SportsFootball,
+  SportsHockey,
+  SportsSoccer,
+} from '@mui/icons-material'
 import { OverridableComponent } from '@mui/material/OverridableComponent'
 
-import { Football, NFL } from 'assets'
+import { Football, Icehockey, NBA, NFL } from 'assets'
 
 // Required URLs
 export const urls = {
@@ -32,10 +37,30 @@ export interface sportsListType {
   }
   sportName: string
   img: StaticImageData
-  id: string
+  id: number
 }
 
 export const sportsList = [
-  { icon: SportsFootball, sportName: 'NFL League', img: NFL, id: '1' },
-  { icon: SportsSoccer, sportName: 'Football/Soccer', img: Football, id: '2' },
+  { icon: SportsFootball, sportName: 'NFL League', img: NFL, id: 1 },
+  { icon: SportsBaseball, sportName: 'NBA League', img: NBA, id: 2 },
+  { icon: SportsHockey, sportName: 'Ice Hockey', img: Icehockey, id: 3 },
+  { icon: SportsSoccer, sportName: 'Football/Soccer', img: Football, id: 4 },
+]
+
+export const matches = [
+  {
+    teamA: 'Canada',
+    teamB: 'Greece',
+    bets: 12345,
+  },
+  {
+    teamA: 'USA',
+    teamB: 'Germany',
+    bets: 12345,
+  },
+  {
+    teamA: 'India',
+    teamB: 'China',
+    bets: 12345,
+  },
 ]

@@ -2,8 +2,8 @@
 import Head from 'next/head'
 import Image from 'next/image'
 import { NextPage } from 'next'
-import { useEffect, useState } from 'react'
 import { useRouter } from 'next/router'
+import { useEffect, useState } from 'react'
 import {
   Typography,
   Stack,
@@ -21,13 +21,13 @@ import { useMetamask } from 'contexts/Metamask'
 import useMetamaskLogin from 'hooks/useMetamaskLogin'
 
 // components
+import SignUpModal from 'components/SignUpModal'
 
 // styles
 import { secondaryButton } from 'styles/commonStyles'
 
 // assets
 import { Logo, key, wallet } from 'assets/index'
-import SignUpModal from 'components/SignUpModal'
 
 interface Props {}
 
@@ -53,15 +53,16 @@ const ConnectWallet: NextPage<Props> = ({}) => {
       setOpenSignUp(true)
     } else {
       setOpenSignUp(false)
+      router.push('/sportSelection')
     }
   }
 
-  // useEffect(() => {
-  //   if (account) {
-  //     signUpChecker()
-  //   }
-  //   // eslint-disable-next-line react-hooks/exhaustive-deps
-  // }, [account])
+  useEffect(() => {
+    if (account) {
+      signUpChecker()
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [account])
 
   return (
     <>
@@ -148,7 +149,7 @@ const ConnectWallet: NextPage<Props> = ({}) => {
             <Button
               onClick={() => {
                 connect()
-                signUpChecker()
+                // signUpChecker()
               }}
               startIcon={<Image src={wallet} alt="key" />}
               variant="contained"
@@ -185,6 +186,7 @@ const ConnectWallet: NextPage<Props> = ({}) => {
               component="button"
               onClick={() => {
                 router.push('/sportSelection')
+                localStorage.setItem('skip', JSON.stringify(true))
               }}
             >
               Skip for now
