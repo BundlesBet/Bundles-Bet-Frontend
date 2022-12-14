@@ -41,7 +41,7 @@ interface Props {}
 const ConnectWallet: NextPage<Props> = ({}) => {
   const router = useRouter()
   const { login } = useMetamaskLogin()
-  const { account, connect } = useMetamask()
+  const { account, connect, connected } = useMetamask()
 
   const [openSignUp, setOpenSignUp] = useState(false)
 
@@ -49,7 +49,6 @@ const ConnectWallet: NextPage<Props> = ({}) => {
     const signUpCheck = await login()
 
     if (!signUpCheck) {
-      console.log(51)
       setOpenSignUp(true)
     } else {
       setOpenSignUp(false)
@@ -58,7 +57,7 @@ const ConnectWallet: NextPage<Props> = ({}) => {
   }
 
   useEffect(() => {
-    if (account) {
+    if (!connected && account) {
       signUpChecker()
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps

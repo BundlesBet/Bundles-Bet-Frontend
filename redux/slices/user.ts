@@ -6,7 +6,18 @@ import { userData } from 'utils/interfaces'
 export const UserSlice = createSlice({
   name: 'user',
   initialState: {
-    userData: {}, // user data
+    userData: {
+      id: 0,
+      name: '',
+      balance: 0,
+      emailAddress: '',
+      walletAddress: '',
+      profilePicture: null,
+      betsPlaced: [],
+      poolId: [],
+      totalRewardsEarned: 0,
+      totalPoolsParticipated: 0,
+    } as userData, // user data
     // ? check - why sportSelected is an array
     sportSelected: {} as sportsListType, // sport selected
   },

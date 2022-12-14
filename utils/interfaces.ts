@@ -1,9 +1,14 @@
 export interface userData {
-  _id: string
-  userName: string
-  emailAddress: string
+  id?: number
+  name: string
+  balance: number
+  emailAddress?: string
   walletAddress: string
-  profilePicture: string
+  profilePicture?: string | null
+  betsPlaced: Array<object>
+  poolId: Array<object>
+  totalRewardsEarned: number
+  totalPoolsParticipated: number
 }
 
 export interface registerUserInterface {

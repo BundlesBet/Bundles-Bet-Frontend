@@ -4,6 +4,8 @@ import { useRouter } from 'next/router'
 import { Box, Button, Modal, Stack, TextField, Typography } from '@mui/material'
 
 // contexts and hooks
+import { saveUserData } from 'utils/apiCalls'
+import { useMetamask } from 'contexts/Metamask'
 import { signUpValidation } from 'helpers/validation'
 
 // assets
@@ -29,6 +31,7 @@ const SignUpModal = (props: Props) => {
   const { handleClose, open } = props
 
   const router = useRouter()
+  const { account } = useMetamask()
 
   const formik = useFormik({
     initialValues: {
@@ -43,17 +46,26 @@ const SignUpModal = (props: Props) => {
     validationSchema: signUpValidation,
   })
 
-  const signUp = () => {
+  const signUp = async () => {
     // api call to save the info passed
-    const userData = {
-      email: formik.values.email,
-      userName: formik.values.userName,
+
+    let userData: any = {
+      balance: 0,
+      walletAddress: account,
+      name: formik.values.userName,
+      emailAddress: formik.values.email,
+    }
+
+    if (formik.values.email == '') {
+      delete userData.emailAddress
     }
 
     // backend api call
     // currently we are only saving in local storage but
     // later on we will use api calls
-    localStorage.setItem('userData', JSON.stringify(userData))
+    // localStorage.setItem('userData', JSON.stringify(userData))
+    const response = await saveUserData(userData)
+    console.log(response)
 
     handleClose(true)
 

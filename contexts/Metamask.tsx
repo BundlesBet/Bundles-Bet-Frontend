@@ -18,6 +18,7 @@ import { allowedChains } from './../config'
 
 const MetamaskContext = createContext({
   account: '',
+  connected: false,
   disconnect: () => {},
   connect: () => {},
   isConnectedToAllowedNetwork: async () => false,
@@ -43,6 +44,7 @@ const isConnectedToAllowedNetwork = async () => {
 const MetamaskProvider = ({ children }: any) => {
   const forceUpdate = useForceUpdate()
   const [account, setAccount] = useState<string>('')
+  const [connected, setConnected] = useState<boolean>(false)
 
   const isTransactionErrorModalOpen = useSwitch()
   const [transactionErrorMessage, setTransactionErrorMessage] = useState('')
@@ -76,6 +78,7 @@ const MetamaskProvider = ({ children }: any) => {
       })
 
       setAccount(accounts[0])
+      setConnected(true)
 
       toast.success('Account successfully connected')
     } catch (e: any) {
@@ -157,6 +160,7 @@ const MetamaskProvider = ({ children }: any) => {
   const value = {
     account,
     connect,
+    connected,
     disconnect,
     isConnectedToAllowedNetwork,
     handleTransactionError,
