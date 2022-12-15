@@ -70,7 +70,7 @@ const SignUpModal = (props: Props) => {
     handleClose(true)
 
     if (router.pathname === '/') {
-      router.push('/sportSelection')
+      router.push('/explore')
     }
   }
 

@@ -61,18 +61,8 @@ const SelectPool: NextPage<Props> = ({}) => {
         </Typography>
 
         <Grid container spacing={4} alignItems="flex-start">
-          <Grid item xs={12} md={8}>
+          <Grid item xs={12} md={12}>
             <SelectPoolTabs />
-          </Grid>
-
-          <Grid item md={4} xs={12} container spacing={4} direction="column">
-            <Grid xs item>
-              <CurrentBalance />
-            </Grid>
-
-            <Grid xs item>
-              <Rewards />
-            </Grid>
           </Grid>
         </Grid>
       </Container>

@@ -18,8 +18,11 @@ export const urls = {
   admin: '/admin',
   connectWallet: '/',
   login: '/login',
+  sportsSelection: '/sportSelection',
   viewPool: '/view-pool',
   dashboard: '/dashboard',
+  storyBook: '/storybook',
+  dailyFantasy: '/dailyfantasy',
 }
 
 export const api = async (AxiosObj: object) => {

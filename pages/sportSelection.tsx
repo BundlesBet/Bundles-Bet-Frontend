@@ -79,17 +79,6 @@ const SportSelection = (_props: Props) => {
           </Fragment>
         ))}
       </Stack>
-
-      <Typography
-        fontWeight={400}
-        color={'#7D7D8D'}
-        fontSize={'18px'}
-        textAlign={'center'}
-      >
-        Get winning payout if your team leads after the first quarter
-        <br /> Money back as a Free Bet on losing bets if the last ball is hit
-        for a boundary
-      </Typography>
     </>
   )
 }

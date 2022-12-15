@@ -23,6 +23,7 @@ import LastPageIcon from '@mui/icons-material/LastPage'
 
 import ConfirmBetModal from 'components/Modals/ConfirmBetModal'
 import { useMetamask } from 'contexts/Metamask'
+import { useState } from 'react'
 
 function createData(
   sport: string,
@@ -173,6 +174,11 @@ export default function ShowAllTable() {
   const cancelConfirmBetModal = () => setValue((x: boolean) => !x)
   const [page, setPage] = React.useState(0)
   const [rowsPerPage, setRowsPerPage] = React.useState(5)
+  const [transactionSuccess, setTransactionSuccess] = useState(false)
+
+  const handleConfirmTransaction = () => {
+    setTransactionSuccess(true)
+  }
 
   // Avoid a layout jump when reaching the last page with empty rows.
   const emptyRows =
@@ -246,7 +252,7 @@ export default function ShowAllTable() {
                       p: 2,
                       '&:hover': {
                         backgroundColor: '#00FFC2',
-                        color: '#FFFFFF',
+                        color: '#111',
                       },
                     }}
                   >
@@ -283,7 +289,11 @@ export default function ShowAllTable() {
           </TableFooter>
         </Table>
       </TableContainer>
-      <ConfirmBetModal open={value} handleClose={cancelConfirmBetModal} />
+      <ConfirmBetModal
+        open={value}
+        handleConfirm={handleConfirmTransaction}
+        handleClose={cancelConfirmBetModal}
+      />
     </>
   )
 }
