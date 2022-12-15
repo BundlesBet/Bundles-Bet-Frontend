@@ -1,9 +1,9 @@
 // libraries
 import Head from 'next/head'
-import { Fragment, useState } from 'react'
 import { Stack } from '@mui/system'
-import { Typography } from '@mui/material'
 import { useRouter } from 'next/router'
+import { Fragment, useRef } from 'react'
+import { Typography } from '@mui/material'
 
 // contexts, utilities and hooks
 import { sportsList, sportsListType } from 'utils'
@@ -15,12 +15,23 @@ import SportSearch from 'components/SearchField'
 interface Props {}
 
 const SportSelection = (_props: Props) => {
-  const [selectedSportIds, setSelectedSportIds] = useState<any>(0)
+  const selectedSportId = useRef<number>(0)
 
   const router = useRouter()
 
-  const updateSelectedNftState = (id: string) => {
-    setSelectedSportIds(id)
+  const updateSelectedNftState = (id: number) => {
+    selectedSportId.current = id
+
+    const sport = sportsList.filter((sport) => sport.id === id)[0]
+
+    const value = {
+      id: sport.id,
+      sportName: sport.sportName,
+      img: JSON.stringify(sport.img),
+      icon: JSON.stringify(sport.icon),
+    }
+
+    localStorage.setItem('selectedSport', JSON.stringify(value))
   }
 
   return (

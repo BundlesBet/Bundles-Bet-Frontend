@@ -1,11 +1,11 @@
 import React from 'react'
-import { Box, Modal, Stack, Typography } from '@mui/material'
+// import { useCopyToClipboard } from 'usehooks-ts'
 import CloseIcon from '@mui/icons-material/Close'
+import CheckCircleIcon from '@mui/icons-material/CheckCircle'
+import { Box, Modal, Stack, Typography } from '@mui/material'
 
 // contexts and hooks
 import { useMetamask } from 'contexts/Metamask'
-import { useCopyToClipboard } from 'usehooks-ts'
-import CheckCircleIcon from '@mui/icons-material/CheckCircle'
 
 // assets
 
@@ -22,7 +22,8 @@ const style = {
   width: 400,
   bgcolor: '#1C1C26',
   border: '2px solid #000',
-  boxShadow: 24,
+  borderRadius: '8px',
+  boxShadow: '0px 40px 40px rgba(0, 0, 0, 0.6)',
   p: 4,
 }
 
@@ -38,10 +39,10 @@ const BetPlacedSuccessModal = (props: Props) => {
   const { handleClose, open } = props
   const { account } = useMetamask()
   const trimmedAccount = account.slice(0, 5) + '...' + account.slice(-5)
-  const [value, copy] = useCopyToClipboard()
-  const copyToClipBoard = () => {
-    copy(account)
-  }
+  // const [value, copy] = useCopyToClipboard()
+  // const copyToClipBoard = () => {
+  //   copy(account)
+  // }
 
   return (
     <Modal open={open} onClose={handleClose}>
@@ -49,12 +50,21 @@ const BetPlacedSuccessModal = (props: Props) => {
         <div>
           <CloseIcon
             sx={crossButton}
-            onClick={() => handleClose(false)}
             fontSize="medium"
+            onClick={() => handleClose(false)}
           />
         </div>
-        <Stack direction="column" spacing={4} mb={2}>
-          <CheckCircleIcon sx={{ backgroundColor: '#00FFC2' }} />
+
+        <Stack direction="column" spacing={1} justifyContent={'center'}>
+          <CheckCircleIcon
+            sx={{
+              mb: 2,
+              mx: 'auto',
+              width: '68px',
+              height: '68px',
+              color: '#00FFC2',
+            }}
+          />
           <Typography fontSize={'24px'} textAlign={'center'}>
             Bet Placed
           </Typography>

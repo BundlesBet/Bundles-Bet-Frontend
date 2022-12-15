@@ -1,24 +1,24 @@
 import * as React from 'react'
-import Table from '@mui/material/Table'
-import TableBody from '@mui/material/TableBody'
-import TableCell from '@mui/material/TableCell'
-import TableContainer from '@mui/material/TableContainer'
-import TableHead from '@mui/material/TableHead'
-import TableRow from '@mui/material/TableRow'
+import { formatInTimeZone } from 'date-fns-tz'
 import {
   Box,
   IconButton,
   Paper,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
   TableFooter,
+  TableHead,
   TablePagination,
+  TableRow,
   Typography,
   useTheme,
 } from '@mui/material'
+import LastPageIcon from '@mui/icons-material/LastPage'
 import FirstPageIcon from '@mui/icons-material/FirstPage'
 import KeyboardArrowLeft from '@mui/icons-material/KeyboardArrowLeft'
 import KeyboardArrowRight from '@mui/icons-material/KeyboardArrowRight'
-import LastPageIcon from '@mui/icons-material/LastPage'
-import { format } from 'date-fns'
 
 import styles from './Dashboard.module.scss'
 
@@ -237,7 +237,11 @@ export default function LostTable() {
                 sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
               >
                 <TableCell sx={{ color: '#fff' }} component="th" scope="row">
-                  {format(new Date(), ' HH:mm aaa, MMM do yyyy')}
+                  {formatInTimeZone(
+                    new Date(),
+                    Intl.DateTimeFormat().resolvedOptions().timeZone,
+                    'HH:mm aa, do MMM yyyy'
+                  )}
                 </TableCell>
                 <TableCell sx={{ color: '#fff' }} align="center">
                   {row.match}

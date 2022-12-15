@@ -1,4 +1,6 @@
 import Image from 'next/image'
+import { useRouter } from 'next/router'
+import { useSelector } from 'react-redux'
 import { MouseEvent, useEffect, useState } from 'react'
 import { Notifications, TableRows } from '@mui/icons-material'
 import {
@@ -13,8 +15,10 @@ import {
 } from '@mui/material'
 
 // contexts and hooks
+import { RootState } from 'redux/store'
 import { useMetamask } from 'contexts/Metamask'
 import useMetamaskLogin from 'hooks/useMetamaskLogin'
+import { userData } from 'utils/interfaces'
 
 // components
 import BalanceView from 'components/BalanceView'
@@ -22,14 +26,17 @@ import BalanceView from 'components/BalanceView'
 // assets
 import { Logo, ProfilePic, wallet } from 'assets'
 import SignUpModal from 'components/SignUpModal'
-import { useRouter } from 'next/router'
 
 const Header = (props: {}) => {
   const { login } = useMetamaskLogin()
-  const { account, connect } = useMetamask()
+  const { account, connect, connected } = useMetamask()
 
   const [openSignUp, setOpenSignUp] = useState(false)
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
+
+  const userData: userData = useSelector(
+    (state: RootState) => state.user
+  ).userData
 
   const open = Boolean(anchorEl)
 
@@ -49,19 +56,18 @@ const Header = (props: {}) => {
     const signUpCheck = await login()
 
     if (!signUpCheck) {
-      console.log(51)
       setOpenSignUp(true)
     } else {
       setOpenSignUp(false)
     }
   }
 
-  // useEffect(() => {
-  //   if (account) {
-  //     signUpChecker()
-  //   }
-  //   // eslint-disable-next-line react-hooks/exhaustive-deps
-  // }, [account])
+  useEffect(() => {
+    if (!connected && account) {
+      signUpChecker()
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [account])
 
   return (
     <Box sx={{ flexGrow: 1 }}>
@@ -133,7 +139,7 @@ const Header = (props: {}) => {
                         fontWeight={700}
                         fontSize={'16px'}
                       >
-                        John Doe
+                        {userData.name}
                       </Typography>
                       <Typography
                         color={'#7D7D8D'}
@@ -171,7 +177,7 @@ const Header = (props: {}) => {
                 <Button
                   onClick={() => {
                     connect()
-                    signUpChecker()
+                    // signUpChecker()
                   }}
                   startIcon={<Image src={wallet} alt="key" />}
                   variant="contained"

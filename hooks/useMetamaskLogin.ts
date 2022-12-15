@@ -2,6 +2,7 @@ import { useDispatch } from 'react-redux'
 
 import { useMetamask } from 'contexts/Metamask'
 import { setUserData } from 'redux/slices/user'
+import { getUserDataByWalletAddress } from 'utils/apiCalls'
 
 export default function useMetamaskLogin() {
   const dispatch = useDispatch()
@@ -29,7 +30,9 @@ export default function useMetamaskLogin() {
     // if it exists, we set it in redux user state
     // else we ask user to enter info
 
-    const userData = localStorage.getItem('userData') as object | null
+    const userData = await getUserDataByWalletAddress(account)
+    console.log(userData)
+    delete userData.error
 
     if (userData != null) {
       dispatch(setUserData(userData as any))

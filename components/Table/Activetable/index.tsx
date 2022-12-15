@@ -1,46 +1,44 @@
-import * as React from 'react'
 import { useState } from 'react'
-import Table from '@mui/material/Table'
-import TableBody from '@mui/material/TableBody'
-import TableCell from '@mui/material/TableCell'
-import TableContainer from '@mui/material/TableContainer'
-import TableHead from '@mui/material/TableHead'
-import TableRow from '@mui/material/TableRow'
+import { useBoolean } from 'usehooks-ts'
 import {
   Box,
   Button,
   ButtonGroup,
   IconButton,
-  Stack,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
   TableFooter,
+  TableHead,
   TablePagination,
+  TableRow,
   Tooltip,
   Typography,
   useTheme,
 } from '@mui/material'
-import { useBoolean } from 'usehooks-ts'
+import LastPageIcon from '@mui/icons-material/LastPage'
 import FirstPageIcon from '@mui/icons-material/FirstPage'
+import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined'
 import KeyboardArrowLeft from '@mui/icons-material/KeyboardArrowLeft'
 import KeyboardArrowRight from '@mui/icons-material/KeyboardArrowRight'
-import LastPageIcon from '@mui/icons-material/LastPage'
-import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined'
 
-import ConfirmBetModal from 'components/Modals/ConfirmBetModal'
 import { useMetamask } from 'contexts/Metamask'
 
-import { FR, US } from 'assets'
+import ConfirmBetModal from 'components/Modals/ConfirmBetModal'
+import BetPlacedSuccessModal from 'components/Modals/BetPlacedSuccessModal'
 
 const tableHeadStyle = {
   '& .MuiTableCell-root': {
-    borderBottom: '1px solid #282835',
     color: '#7D7D8D',
+    borderBottom: '1px solid #282835',
   },
 }
 
 const tableBodyStyle = {
   '& .MuiTableCell-root': {
-    borderBottom: '1px solid #282835',
     borderTop: '1px solid #282835',
+    borderBottom: '1px solid #282835',
   },
 }
 
@@ -154,7 +152,8 @@ function TablePaginationActions(props: TablePaginationActionsProps) {
 
 const rows = [
   {
-    sport: 'Football',
+    id: 1,
+    sport: 'Football/Soccer',
     match: { team1: 'US', team2: 'FR' },
     bid: 0.1,
     poolFaces: 2,
@@ -162,7 +161,8 @@ const rows = [
     action: ' Bet Now',
   },
   {
-    sport: 'Football',
+    id: 2,
+    sport: 'Football/Soccer',
     match: { team1: 'Canada', team2: 'Greece' },
     bid: 0.1,
     poolFaces: 2,
@@ -170,7 +170,8 @@ const rows = [
     action: ' Bet Now',
   },
   {
-    sport: 'Football',
+    id: 3,
+    sport: 'Football/Soccer',
     match: { team1: 'Greece', team2: 'Germany' },
     bid: 0.1,
     poolFaces: 2,
@@ -178,7 +179,8 @@ const rows = [
     action: ' Bet Now',
   },
   {
-    sport: 'Football',
+    id: 4,
+    sport: 'Football/Soccer',
     match: { team1: 'France', team2: 'India' },
     bid: 0.1,
     poolFaces: 2,
@@ -186,15 +188,17 @@ const rows = [
     action: ' Bet Now',
   },
   {
-    sport: 'Football',
-    match: { team1: 'Canada', team2: 'Greece' },
+    id: 5,
+    sport: 'Football/Soccer',
+    match: { team1: 'Argentina', team2: 'Iceland' },
     bid: 0.1,
     poolFaces: 2,
     selectedTeam: 'Manchester United',
     action: ' Bet Now',
   },
   {
-    sport: 'Football',
+    id: 6,
+    sport: 'Football/Soccer',
     match: { team1: 'Portugal', team2: 'Brazil' },
     bid: 0.1,
     poolFaces: 2,
@@ -203,25 +207,45 @@ const rows = [
   },
 ]
 
+type team = {
+  id: number
+  bid: number
+  sport: string
+  action: string
+  selectedTeam: string
+  match: { team1: string; team2: string }
+}
+
 export default function ActiveTable() {
-  const { setTrue, setFalse, setValue, value } = useBoolean(false)
+  const { setTrue, setValue, value } = useBoolean(false)
 
   const openConfirmBetModal = setTrue
 
   const { account } = useMetamask()
+
+  const [page, setPage] = useState(0)
+  const [rowsPerPage, setRowsPerPage] = useState(5)
+  const [selectedTeam, setSelectedTeam] = useState('Select Team')
+  const [transactionSuccess, setTransactionSuccess] = useState(false)
+  const [selectedRow, setSelectedRow] = useState<team>({
+    id: 0,
+    bid: 0,
+    sport: '',
+    action: '',
+    selectedTeam: '',
+    match: { team1: '', team2: '' },
+  })
+
   const cancelConfirmBetModal = () => {
     setValue((x: boolean) => !x)
   }
-  const [page, setPage] = React.useState(0)
-  const [rowsPerPage, setRowsPerPage] = React.useState(5)
-  const [selectedTeamName, setSelectedTeamName] = useState<any>('Select Team')
-  console.log(
-    '🚀 ~ file: index.tsx:193 ~ ActiveTable ~ selectedTeamName',
-    selectedTeamName
-  )
 
-  const updateSelectedNftState = (name: string) => {
-    setSelectedTeamName(name)
+  const updateSelectedMatchState = (team: team) => {
+    setSelectedRow(team)
+  }
+
+  const handleConfirmTransaction = () => {
+    setTransactionSuccess(true)
   }
 
   // Avoid a layout jump when reaching the last page with empty rows.
@@ -242,15 +266,15 @@ export default function ActiveTable() {
     setPage(0)
   }
 
-  const toolTipJsx = () => {
+  const toolTipJsx = (rowId: number) => {
     return (
       <Tooltip
         title={
           !account
             ? 'Connect your Wallet'
-            : '' || selectedTeamName !== 'Select Team'
-            ? ''
-            : 'Please Select Team'
+            : Object.keys(selectedRow).length === 0 || rowId !== selectedRow.id
+            ? 'Please Select Team'
+            : ''
         }
         arrow
       >
@@ -266,24 +290,30 @@ export default function ActiveTable() {
         <Table sx={{ minWidth: 500 }}>
           <TableHead sx={tableHeadStyle}>
             <TableRow>
-              <TableCell sx={{ color: '#fff' }}>Sport</TableCell>
-              <TableCell sx={{ color: '#fff' }} align="center">
+              <TableCell sx={{ color: '#fff', pt: 0 }}>Sport</TableCell>
+
+              <TableCell sx={{ color: '#fff', pt: 0 }} align="center">
                 Pool Matches
               </TableCell>
-              <TableCell sx={{ color: '#fff' }} align="center">
+
+              <TableCell sx={{ color: '#fff', pt: 0 }} align="center">
                 Selected Team
               </TableCell>
-              <TableCell sx={{ color: '#fff' }} align="center">
+
+              <TableCell sx={{ color: '#fff', pt: 0 }} align="center">
                 Total Bid
               </TableCell>
-              <TableCell sx={{ color: '#fff' }} align="center">
+
+              <TableCell sx={{ color: '#fff', pt: 0 }} align="center">
                 Pool Faces
               </TableCell>
-              <TableCell sx={{ color: '#fff' }} align="right">
+
+              <TableCell sx={{ color: '#fff', pt: 0 }} align="center">
                 Action
               </TableCell>
             </TableRow>
           </TableHead>
+
           <TableBody sx={tableBodyStyle}>
             {(rowsPerPage > 0
               ? rows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
@@ -304,9 +334,13 @@ export default function ActiveTable() {
                     aria-label="Disabled elevation buttons"
                   >
                     <Button
-                      onClick={() => updateSelectedNftState(row.match.team1)}
+                      onClick={() => {
+                        updateSelectedMatchState(row)
+                        setSelectedTeam(row.match.team1)
+                      }}
                       variant="contained"
                       sx={{
+                        color: '#FFFFFF',
                         background: '#282835',
                         p: 2,
                         '&:hover': {
@@ -314,7 +348,7 @@ export default function ActiveTable() {
                           color: '#FFFFFF',
                         },
                         border:
-                          selectedTeamName === row.match.team1
+                          selectedRow.match.team1 === row.match.team1
                             ? '2px solid #00FFC2'
                             : '',
                       }}
@@ -324,9 +358,13 @@ export default function ActiveTable() {
                     </Button>
 
                     <Button
-                      onClick={() => updateSelectedNftState(row.match.team2)}
+                      onClick={() => {
+                        updateSelectedMatchState(row)
+                        setSelectedTeam(row.match.team2)
+                      }}
                       variant="contained"
                       sx={{
+                        color: '#FFFFFF',
                         background: '#282835',
                         p: 2,
                         '&:hover': {
@@ -334,7 +372,7 @@ export default function ActiveTable() {
                           color: '#FFFFFF',
                         },
                         border:
-                          selectedTeamName === row.match.team2
+                          selectedRow.match.team2 === row.match.team2
                             ? '2px solid #00FFC2'
                             : '',
                       }}
@@ -345,7 +383,7 @@ export default function ActiveTable() {
                   </ButtonGroup>
                 </TableCell>
                 <TableCell sx={{ color: '#fff' }} align="center">
-                  {selectedTeamName}
+                  {selectedTeam}
                 </TableCell>
                 <TableCell sx={{ color: '#fff' }} align="center">
                   {row.bid} <br />{' '}
@@ -357,15 +395,18 @@ export default function ActiveTable() {
                   <Typography color="primary.light">Small Pool</Typography>
                 </TableCell>
 
-                <TableCell sx={{ color: '#fff' }} align="right">
+                <TableCell sx={{ color: '#fff' }} align="left">
                   <Button
                     onClick={openConfirmBetModal}
                     disabled={
-                      account && selectedTeamName !== 'Select Team'
+                      account &&
+                      Object.keys(selectedRow).length > 0 &&
+                      row.id === selectedRow.id
                         ? false
                         : true
                     }
                     sx={{
+                      color: '#FFFFFF',
                       background: '#282835',
                       p: 2,
                       '&:hover': {
@@ -376,8 +417,10 @@ export default function ActiveTable() {
                   >
                     {row.action}
                   </Button>
-                  {!account || selectedTeamName === 'Select Team'
-                    ? toolTipJsx()
+                  {!account ||
+                  Object.keys(selectedRow).length === 0 ||
+                  row.id !== selectedRow.id
+                    ? toolTipJsx(row.id)
                     : false}
                 </TableCell>
               </TableRow>
@@ -388,6 +431,7 @@ export default function ActiveTable() {
               </TableRow>
             )}
           </TableBody>
+
           <TableFooter>
             <TableRow>
               <TablePagination
@@ -410,7 +454,17 @@ export default function ActiveTable() {
           </TableFooter>
         </Table>
       </TableContainer>
-      <ConfirmBetModal open={value} handleClose={cancelConfirmBetModal} />
+
+      <ConfirmBetModal
+        open={value}
+        handleConfirm={handleConfirmTransaction}
+        handleClose={cancelConfirmBetModal}
+      />
+
+      <BetPlacedSuccessModal
+        open={transactionSuccess}
+        handleClose={setTransactionSuccess}
+      />
     </>
   )
 }

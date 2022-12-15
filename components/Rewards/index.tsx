@@ -1,6 +1,5 @@
+import { formatInTimeZone } from 'date-fns-tz'
 import { Paper, Stack, Typography } from '@mui/material'
-import React from 'react'
-import { format } from 'date-fns'
 
 import styles from './rewards.module.scss'
 
@@ -13,26 +12,32 @@ const Rewards = (props: Props) => {
       {[...new Array(3)].map((item, key) => {
         return (
           <Paper
+            key={key}
             variant="outlined"
             className={styles.paperStyle}
             sx={{
               p: { xs: 1, md: 2 },
               mt: 2,
             }}
-            key={key}
           >
             <Typography className={styles.dateTime}>
-              {format(new Date(), ' HH:mm aaa, MMM do yyyy')}
+              {formatInTimeZone(
+                new Date(),
+                Intl.DateTimeFormat().resolvedOptions().timeZone,
+                'HH:mm aa, do MMM yyyy'
+              )}
             </Typography>
+
             <Stack
-              direction="row"
-              justifyContent={'space-between'}
-              alignItems={'center'}
               mt={2}
+              direction="row"
+              alignItems={'flex-start'}
+              justifyContent={'space-between'}
             >
               <Typography className={styles.bets}>
                 USA <br /> <span style={{ marginTop: '4px' }}> FRN </span>
               </Typography>
+
               <Typography className={styles.bets}>
                 6735 <br />
                 <span className={styles.span}> $BUND </span>
@@ -44,6 +49,7 @@ const Rewards = (props: Props) => {
                 className={styles.paperWon}
                 sx={{
                   p: { xs: 0.5, md: 1 },
+                  fontFamily: 'DM Sans',
                 }}
               >
                 Bet Won

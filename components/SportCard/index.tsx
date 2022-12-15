@@ -1,5 +1,6 @@
 // libraries
 import Image from 'next/image'
+import { useDispatch } from 'react-redux'
 import { OverridableComponent } from '@mui/material/OverridableComponent'
 import {
   Box,
@@ -9,30 +10,25 @@ import {
   SvgIconTypeMap,
   Typography,
 } from '@mui/material'
+
 import { setSportSelected } from 'redux/slices/user'
-import { useDispatch } from 'react-redux'
 
 interface Props {
+  id: number
   sportName: string
   sportImg: StaticImageData
+  clickHandler?: () => void
+  selectHandler?: () => void
   sportIcon: OverridableComponent<SvgIconTypeMap<{}, 'svg'>> & {
     muiName: string
   }
-  id: string
-  clickHandler?: () => void
-  selectHandler?: () => void
 }
 
 const SportCard = (props: Props) => {
-  const {
-    sportIcon: SportIcon,
-    sportImg,
-    sportName,
-    id,
-    clickHandler,
-    selectHandler,
-  } = props
+  const { sportIcon: SportIcon, sportImg, sportName, id, clickHandler } = props
+
   const dispatch = useDispatch()
+
   return (
     <Card
       sx={{
@@ -44,7 +40,14 @@ const SportCard = (props: Props) => {
       }}
       onClick={() => {
         ;(props as any).selectHandler()
-        dispatch(setSportSelected(id))
+        dispatch(
+          setSportSelected({
+            icon: JSON.stringify(SportIcon),
+            img: JSON.stringify(sportImg),
+            sportName,
+            id,
+          })
+        )
         clickHandler!()
       }}
     >

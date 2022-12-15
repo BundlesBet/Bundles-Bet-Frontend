@@ -1,38 +1,77 @@
-import { Container, Grid, Stack } from '@mui/material'
-import CurrentBalance from 'components/CurrentBalance'
+import Head from 'next/head'
+import { NextPage } from 'next'
+import { useSelector } from 'react-redux'
+import { useEffect, useState } from 'react'
+import { SportsFootball } from '@mui/icons-material'
+import { Container, Grid, Typography } from '@mui/material'
+
+import { RootState } from 'redux/store'
+
 import Rewards from 'components/Rewards'
 import SelectPoolTabs from 'components/SelectPool'
-import { NextPage } from 'next'
-import Head from 'next/head'
+import CurrentBalance from 'components/CurrentBalance'
+
+import { NFL } from 'assets'
 
 interface Props {}
 
 const SelectPool: NextPage<Props> = ({}) => {
+  const sportSelected = useSelector(
+    (state: RootState) => state.user
+  ).sportSelected
+
+  const [showSport, setShowSport] = useState(sportSelected)
+
+  useEffect(() => {
+    const localStorageSport = localStorage.getItem('selectedSport')
+
+    if (Object.keys(sportSelected).length) {
+      setShowSport(sportSelected)
+    } else {
+      if (localStorageSport) {
+        setShowSport(JSON.parse(localStorageSport))
+      } else {
+        setShowSport({
+          icon: SportsFootball,
+          sportName: 'Pool Details',
+          img: NFL,
+          id: 0,
+        })
+      }
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
+
   return (
     <div>
       <Head>
-        <title>Select Pool</title>
+        <title>{showSport ? showSport.sportName : 'Pool Details'}</title>
       </Head>
+
       <Container component={'main'} maxWidth="xl">
-        <Grid spacing={4} container mt={2} alignItems="center">
+        <Typography
+          mt={6}
+          mb={3}
+          fontWeight={700}
+          fontSize={'24px'}
+          lineHeight={'26px'}
+          fontFamily={'DM Sans'}
+        >
+          {showSport ? showSport.sportName : 'Pool Details'}
+        </Typography>
+
+        <Grid container spacing={4} alignItems="flex-start">
           <Grid item xs={12} md={8}>
             <SelectPoolTabs />
           </Grid>
-          <Grid item xs={12} md={4}>
-            <Grid
-              item
-              xs
-              container
-              direction="column"
-              spacing={2}
-              justifyContent={'center'}
-            >
-              <Grid xs item>
-                <CurrentBalance />
-              </Grid>
-              <Grid xs item>
-                <Rewards />
-              </Grid>
+
+          <Grid item md={4} xs={12} container spacing={4} direction="column">
+            <Grid xs item>
+              <CurrentBalance />
+            </Grid>
+
+            <Grid xs item>
+              <Rewards />
             </Grid>
           </Grid>
         </Grid>
