@@ -40,6 +40,11 @@ const Explore: NextPage<Props> = ({}) => {
       text: 'Sports Book',
       disable: true,
     },
+    {
+      href: '#',
+      text: 'Sports Prediction',
+      disable: true,
+    },
   ]
 
   return (
@@ -106,37 +111,29 @@ const Explore: NextPage<Props> = ({}) => {
                   <Stack
                     direction={'row'}
                     alignItems={'center'}
-                    justifyContent={'space-between'}
-                    spacing={10}
+                    justifyContent={'center'}
+                    spacing={2}
                   >
-                    <Typography
-                      textAlign={'center'}
-                      sx={{
-                        fontWeight: '400',
-                        fontSize: {
-                          md: '20px',
-                          sm: '14px',
-                        },
-                        lineHeight: '150%',
-                        color: '#F0E9F1',
-                      }}
+                    <Tooltip
+                      arrow
+                      title={link.disable === true ? 'Coming Soon' : ''}
                     >
-                      {link.text}
-                    </Typography>
-                    <Box>
-                      {link.disable === true ? (
-                        <Tooltip
-                          arrow
-                          title={link.disable === true ? 'Coming Soon' : ''}
-                        >
-                          <IconButton>
-                            <InfoIcon sx={{ color: '#fff' }} />
-                          </IconButton>
-                        </Tooltip>
-                      ) : (
-                        false
-                      )}
-                    </Box>
+                      <Typography
+                        component={'div'}
+                        textAlign={'center'}
+                        sx={{
+                          fontWeight: '400',
+                          fontSize: {
+                            md: '20px',
+                            sm: '14px',
+                          },
+                          lineHeight: '150%',
+                          color: '#F0E9F1',
+                        }}
+                      >
+                        {link.text}{' '}
+                      </Typography>
+                    </Tooltip>
                   </Stack>
                 </Paper>
               )

@@ -5,6 +5,7 @@ import {
   Button,
   ButtonGroup,
   IconButton,
+  Stack,
   Table,
   TableBody,
   TableCell,
@@ -290,8 +291,6 @@ export default function ActiveTable() {
         <Table sx={{ minWidth: 500 }}>
           <TableHead sx={tableHeadStyle}>
             <TableRow>
-              <TableCell sx={{ color: '#fff', pt: 0 }}>Sport</TableCell>
-
               <TableCell sx={{ color: '#fff', pt: 0 }} align="center">
                 Home Team
               </TableCell>
@@ -301,14 +300,6 @@ export default function ActiveTable() {
 
               <TableCell sx={{ color: '#fff', pt: 0 }} align="center">
                 Selected Team
-              </TableCell>
-
-              <TableCell sx={{ color: '#fff', pt: 0 }} align="center">
-                Total Bid
-              </TableCell>
-
-              <TableCell sx={{ color: '#fff', pt: 0 }} align="right">
-                Action
               </TableCell>
             </TableRow>
           </TableHead>
@@ -322,10 +313,6 @@ export default function ActiveTable() {
                 key={key}
                 sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
               >
-                <TableCell sx={{ color: '#fff' }} component="th" scope="row">
-                  {row.sport}
-                </TableCell>
-
                 <TableCell sx={{ color: '#fff' }} align="center">
                   <Button
                     onClick={() => {
@@ -379,39 +366,10 @@ export default function ActiveTable() {
                 <TableCell sx={{ color: '#fff' }} align="center">
                   {selectedTeam}
                 </TableCell>
-                <TableCell sx={{ color: '#fff' }} align="center">
+                {/* <TableCell sx={{ color: '#fff' }} align="center">
                   {row.bid} <br />{' '}
                   <Typography color="primary.light">$BUND </Typography>
-                </TableCell>
-
-                <TableCell sx={{ color: '#fff' }} align="right">
-                  <Button
-                    onClick={openConfirmBetModal}
-                    disabled={
-                      account &&
-                      Object.keys(selectedRow).length > 0 &&
-                      row.id === selectedRow.id
-                        ? false
-                        : true
-                    }
-                    sx={{
-                      color: '#FFFFFF',
-                      background: '#282835',
-                      p: 2,
-                      '&:hover': {
-                        backgroundColor: '#00FFC2',
-                        color: '#111',
-                      },
-                    }}
-                  >
-                    {row.action}
-                  </Button>
-                  {!account ||
-                  Object.keys(selectedRow).length === 0 ||
-                  row.id !== selectedRow.id
-                    ? toolTipJsx(row.id)
-                    : false}
-                </TableCell>
+                </TableCell> */}
               </TableRow>
             ))}
             {emptyRows > 0 && (
@@ -419,6 +377,36 @@ export default function ActiveTable() {
                 <TableCell colSpan={6} />
               </TableRow>
             )}
+            <TableRow>
+              <TableCell align="right" colSpan={3}>
+                <Button
+                  onClick={openConfirmBetModal}
+                  // disabled={
+                  //   account &&
+                  //   Object.keys(selectedRow).length > 0 &&
+                  //   row.id === selectedRow.id
+                  //     ? false
+                  //     : true
+                  // }
+                  sx={{
+                    color: '#FFFFFF',
+                    background: '#282835',
+                    p: 2,
+                    '&:hover': {
+                      backgroundColor: '#00FFC2',
+                      color: '#111',
+                    },
+                  }}
+                >
+                  Bet Now
+                </Button>
+              </TableCell>
+            </TableRow>
+            {/* {!account ||
+            Object.keys(selectedRow).length === 0 ||
+            rows.id !== selectedRow.id
+              ? toolTipJsx(rows.id)
+              : false} */}
           </TableBody>
 
           <TableFooter>

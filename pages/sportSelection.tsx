@@ -3,7 +3,7 @@ import Head from 'next/head'
 import { Stack } from '@mui/system'
 import { useRouter } from 'next/router'
 import { Fragment, useRef } from 'react'
-import { Typography } from '@mui/material'
+import { Grid, Typography } from '@mui/material'
 
 // contexts, utilities and hooks
 import { sportsList, sportsListType } from 'utils'
@@ -51,34 +51,39 @@ const SportSelection = (_props: Props) => {
         Select Sport
       </Typography>
 
-      <Stack width={'100%'} alignItems={'center'} justifyContent={'center'}>
+      <Stack
+        width={'100%'}
+        mb={8}
+        alignItems={'center'}
+        justifyContent={'center'}
+      >
         <SportSearch />
       </Stack>
 
-      <Stack
-        gap={3}
-        direction={'row'}
-        justifyContent={'center'}
-        alignItems={'center'}
-        my={4}
+      <Grid
+        container
+        justifyContent={{ lg: 'center', md: 'center', xs: 'center' }}
+        spacing={{ xs: 3, sm: 5 }}
       >
         {sportsList.map((sport: sportsListType, index: any) => (
           <Fragment key={index}>
-            <SportCard
-              clickHandler={() => {
-                router.push(`/viewpool/${sport.id}`)
-              }}
-              selectHandler={() => {
-                updateSelectedNftState(sport.id)
-              }}
-              sportIcon={sport.icon}
-              sportImg={sport.img}
-              sportName={sport.sportName}
-              id={sport.id}
-            />
+            <Grid item lg={3} md={4} sm={6} xs={8}>
+              <SportCard
+                clickHandler={() => {
+                  router.push(`/viewpool/${sport.id}`)
+                }}
+                selectHandler={() => {
+                  updateSelectedNftState(sport.id)
+                }}
+                sportIcon={sport.icon}
+                sportImg={sport.img}
+                sportName={sport.sportName}
+                id={sport.id}
+              />
+            </Grid>
           </Fragment>
         ))}
-      </Stack>
+      </Grid>
     </>
   )
 }

@@ -21,7 +21,6 @@ import FirstPageIcon from '@mui/icons-material/FirstPage'
 import KeyboardArrowLeft from '@mui/icons-material/KeyboardArrowLeft'
 import KeyboardArrowRight from '@mui/icons-material/KeyboardArrowRight'
 
-import styles from './Dashboard.module.scss'
 import { useRouter } from 'next/router'
 
 function createData(
@@ -36,10 +35,10 @@ function createData(
 }
 
 const rows = [
-  createData('Football', 'NFL showdown', 15, 40000, 14.7, 'Enter'),
-  createData('Football', 'NBA showdown', 35, 6000, 11.12, 'Enter'),
-  createData('Football', 'NFL Best Down', 55, 80000, 19.67, 'Enter'),
-  createData('Football', 'NFL Fadeaway', 65, 90000, 23.412, 'Enter'),
+  createData('Football', 'NFL showdown', 15, 40000, 1445, 'Enter'),
+  createData('Football', 'NBA showdown', 35, 6000, 114, 'Enter'),
+  createData('Football', 'NFL Best Down', 55, 80000, 1967, 'Enter'),
+  createData('Football', 'NFL Fadeaway', 65, 90000, 23452, 'Enter'),
 ]
 
 const tableHeadStyle = {
@@ -191,20 +190,17 @@ export default function ViewMatchTable() {
         <Table sx={{ minWidth: 300 }}>
           <TableHead sx={tableHeadStyle}>
             <TableRow>
-              <TableCell sx={{ color: 'primary.light' }}>Sport</TableCell>
               <TableCell sx={{ color: 'primary.light' }} align="center">
                 Contest
               </TableCell>
-              <TableCell sx={{ color: 'primary.light' }} align="center">
-                Entry Fee
-              </TableCell>
+
               <TableCell sx={{ color: 'primary.light' }} align="center">
                 Prize Pool
               </TableCell>
               <TableCell sx={{ color: 'primary.light' }} align="center">
                 Entries
               </TableCell>
-              <TableCell sx={{ color: 'primary.light' }} align="right">
+              <TableCell sx={{ color: 'primary.light' }} align="center">
                 Action
               </TableCell>
             </TableRow>
@@ -218,15 +214,10 @@ export default function ViewMatchTable() {
                 key={key}
                 sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
               >
-                <TableCell sx={{ color: '#fff' }} component="th" scope="row">
-                  {row.sport}
-                </TableCell>
                 <TableCell sx={{ color: '#fff' }} align="center">
                   {row.contest}
                 </TableCell>
-                <TableCell sx={{ color: '#fff' }} align="center">
-                  {row.contestEntry}
-                </TableCell>
+
                 <TableCell sx={{ color: '#fff' }} align="center">
                   {row.totalPricePool}
                   <br />
@@ -236,7 +227,7 @@ export default function ViewMatchTable() {
                   {row.entry}
                 </TableCell>
 
-                <TableCell sx={{ color: '#fff' }} align="right">
+                <TableCell sx={{ color: '#fff' }} align="center">
                   <Button
                     onClick={() => router.push('/select-pool')}
                     sx={{

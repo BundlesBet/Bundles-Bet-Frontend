@@ -25,6 +25,7 @@ import BalanceView from 'components/BalanceView'
 
 // assets
 import { Logo, ProfilePic, wallet } from 'assets'
+import AccountBalanceWalletIcon from '@mui/icons-material/AccountBalanceWallet'
 import SignUpModal from 'components/SignUpModal'
 
 const Header = (props: {}) => {
@@ -100,7 +101,7 @@ const Header = (props: {}) => {
                 color="inherit"
                 aria-label="menu"
               >
-                <Image src={Logo} alt="logo" />
+                <Image src={Logo} height="50%" width="50%" alt="logo" />
               </IconButton>
               <Typography
                 variant="h6"
@@ -179,7 +180,9 @@ const Header = (props: {}) => {
                     connect()
                     // signUpChecker()
                   }}
-                  startIcon={<Image src={wallet} alt="key" />}
+                  startIcon={
+                    <AccountBalanceWalletIcon sx={{ color: '#111' }} />
+                  }
                   variant="contained"
                   fullWidth
                   sx={{

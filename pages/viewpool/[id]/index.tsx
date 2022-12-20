@@ -8,24 +8,28 @@ import {
   Container,
   CssBaseline,
   Grid,
+  IconButton,
   Stack,
-  Toolbar,
+  SvgIconTypeMap,
+  Tooltip,
   Typography,
 } from '@mui/material'
 
-import SelectPoolAccordion from 'components/Accordion/SelectPoolAccordion'
 import ViewMatchTable from 'components/Table/ViewMatches'
-import { Notifications, TableRows } from '@mui/icons-material'
-import { Logo, ProfilePic, wallet } from 'assets'
 import { useRouter } from 'next/router'
-import { connect } from 'react-redux'
 import { sportsList, sportsListType } from 'utils'
 import { Fragment } from 'react'
+import { OverridableComponent } from '@mui/material/OverridableComponent'
 
-interface Props {}
+interface Props {
+  sportIcon: OverridableComponent<SvgIconTypeMap<{}, 'svg'>> & {
+    muiName: string
+  }
+}
 
-const ViewPool: NextPage<Props> = ({}) => {
+const ViewPool: NextPage<Props> = (props: Props) => {
   const router = useRouter()
+
   return (
     <div>
       <Head>
@@ -56,29 +60,28 @@ const ViewPool: NextPage<Props> = ({}) => {
                 direction={'row'}
                 alignItems={'center'}
                 justifyContent={'center'}
+                spacing={6}
               >
                 {sportsList.map((sport: sportsListType, index: any) => (
                   <Fragment key={index}>
-                    <Typography
-                      variant="h6"
-                      sx={{ cursor: 'pointer' }}
-                      color={'#00FFC2'}
-                      component="div"
-                      mr={2}
-                      onClick={() => {
-                        router.push(`/viewpool/${sport.id}`)
-                      }}
-                    >
-                      {sport.sportName}
-                    </Typography>
+                    <Tooltip title={sport.sportName} arrow>
+                      <IconButton
+                        onClick={() => {
+                          router.push(`/viewpool/${sport.id}`)
+                        }}
+                      >
+                        <sport.icon sx={{ color: '#fff' }} fontSize={'large'} />
+                      </IconButton>
+                    </Tooltip>
                   </Fragment>
                 ))}
               </Stack>
             </AppBar>
             <Stack
-              direction={'row'}
+              direction={{ lg: 'row', sm: 'column', xs: 'column' }}
               justifyContent="space-between"
               alignItems={'center'}
+              spacing={4}
             >
               <Button
                 sx={{
@@ -123,6 +126,21 @@ const ViewPool: NextPage<Props> = ({}) => {
                 size="small"
               >
                 Daily Fantasy (Coming Soon)
+              </Button>
+              <Button
+                disabled={true}
+                sx={{
+                  color: '#fff',
+                  background: '#282835',
+                  p: 2,
+                  '&:hover': {
+                    backgroundColor: '#00FFC2',
+                    color: '#fff',
+                  },
+                }}
+                size="small"
+              >
+                Sports Prediction (Coming Soon)
               </Button>
             </Stack>
 

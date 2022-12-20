@@ -23,11 +23,9 @@ import useMetamaskLogin from 'hooks/useMetamaskLogin'
 // components
 import SignUpModal from 'components/SignUpModal'
 
-// styles
-import { secondaryButton } from 'styles/commonStyles'
-
 // assets
-import { Logo, key, wallet } from 'assets/index'
+import { Logo } from 'assets/index'
+import AccountBalanceWalletIcon from '@mui/icons-material/AccountBalanceWallet'
 
 interface Props {}
 
@@ -119,7 +117,7 @@ const ConnectWallet: NextPage<Props> = ({}) => {
                 connect()
                 // signUpChecker()
               }}
-              startIcon={<Image src={wallet} alt="key" />}
+              startIcon={<AccountBalanceWalletIcon sx={{ color: '#111' }} />}
               variant="contained"
               fullWidth
               sx={{
