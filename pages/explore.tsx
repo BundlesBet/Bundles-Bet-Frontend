@@ -26,23 +26,23 @@ const Explore: NextPage<Props> = ({}) => {
   const explore = [
     {
       href: urls.sportsSelection,
-      text: 'Sports Pool',
+      text: 'Prediction Pools',
       disable: false,
     },
     {
       href: '#',
-      text: 'Daily Fantasy',
+      text: 'Daily Fantasy Sports',
       disable: true,
     },
 
     {
       href: '#',
-      text: 'Sports Book',
+      text: 'Sportsbook',
       disable: true,
     },
     {
       href: '#',
-      text: 'Sports Prediction',
+      text: 'Casino Games',
       disable: true,
     },
   ]

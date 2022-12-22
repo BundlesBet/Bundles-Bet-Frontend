@@ -95,7 +95,7 @@ const ViewPool: NextPage<Props> = (props: Props) => {
                 }}
                 size="small"
               >
-                Sports Pool
+                Prediction Pools
               </Button>
               <Button
                 disabled={true}
@@ -110,7 +110,7 @@ const ViewPool: NextPage<Props> = (props: Props) => {
                 }}
                 size="small"
               >
-                Sports Book (Coming Soon)
+                Sportsbook (Coming Soon)
               </Button>
               <Button
                 disabled={true}
@@ -125,7 +125,7 @@ const ViewPool: NextPage<Props> = (props: Props) => {
                 }}
                 size="small"
               >
-                Daily Fantasy (Coming Soon)
+                Daily Fantasy Sports (Coming Soon)
               </Button>
               <Button
                 disabled={true}
@@ -140,7 +140,7 @@ const ViewPool: NextPage<Props> = (props: Props) => {
                 }}
                 size="small"
               >
-                Sports Prediction (Coming Soon)
+                Casino Games (Coming Soon)
               </Button>
             </Stack>
 

@@ -44,10 +44,10 @@ export interface sportsListType {
 }
 
 export const sportsList = [
-  { icon: SportsFootball, sportName: 'NFL League', img: NFL, id: 1 },
-  { icon: SportsBaseball, sportName: 'NBA League', img: NBA, id: 2 },
-  { icon: SportsHockey, sportName: 'Ice Hockey', img: Icehockey, id: 3 },
-  { icon: SportsSoccer, sportName: 'Football/Soccer', img: Football, id: 4 },
+  { icon: SportsFootball, sportName: 'NFL', img: NFL, id: 1 },
+  { icon: SportsBaseball, sportName: 'NBA', img: NBA, id: 2 },
+  { icon: SportsHockey, sportName: 'NHL', img: Icehockey, id: 3 },
+  { icon: SportsSoccer, sportName: 'Soccer', img: Football, id: 4 },
 ]
 
 export const matches = [

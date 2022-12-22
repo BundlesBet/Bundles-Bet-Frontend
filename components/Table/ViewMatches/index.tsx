@@ -193,6 +193,9 @@ export default function ViewMatchTable() {
               <TableCell sx={{ color: 'primary.light' }} align="center">
                 Contest
               </TableCell>
+              <TableCell sx={{ color: 'primary.light' }} align="center">
+                Entry Fee
+              </TableCell>
 
               <TableCell sx={{ color: 'primary.light' }} align="center">
                 Prize Pool
@@ -217,7 +220,9 @@ export default function ViewMatchTable() {
                 <TableCell sx={{ color: '#fff' }} align="center">
                   {row.contest}
                 </TableCell>
-
+                <TableCell sx={{ color: '#fff' }} align="center">
+                  {row.contestEntry}
+                </TableCell>
                 <TableCell sx={{ color: '#fff' }} align="center">
                   {row.totalPricePool}
                   <br />
