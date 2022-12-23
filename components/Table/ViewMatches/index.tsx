@@ -203,9 +203,9 @@ export default function ViewMatchTable() {
               <TableCell sx={{ color: 'primary.light' }} align="center">
                 Entries
               </TableCell>
-              <TableCell sx={{ color: 'primary.light' }} align="center">
+              {/* <TableCell sx={{ color: 'primary.light' }} align="center">
                 Action
-              </TableCell>
+              </TableCell> */}
             </TableRow>
           </TableHead>
           <TableBody sx={tableBodyStyle}>
@@ -217,7 +217,11 @@ export default function ViewMatchTable() {
                 key={key}
                 sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
               >
-                <TableCell sx={{ color: '#fff' }} align="center">
+                <TableCell
+                  sx={{ color: '#fff' }}
+                  align="center"
+                  onClick={() => router.push('/select-pool')}
+                >
                   {row.contest}
                 </TableCell>
                 <TableCell sx={{ color: '#fff' }} align="center">
@@ -232,7 +236,7 @@ export default function ViewMatchTable() {
                   {row.entry}
                 </TableCell>
 
-                <TableCell sx={{ color: '#fff' }} align="center">
+                {/* <TableCell sx={{ color: '#fff' }} align="center">
                   <Button
                     onClick={() => router.push('/select-pool')}
                     sx={{
@@ -247,7 +251,7 @@ export default function ViewMatchTable() {
                   >
                     {row.action}
                   </Button>
-                </TableCell>
+                </TableCell> */}
               </TableRow>
             ))}
             {emptyRows > 0 && (
