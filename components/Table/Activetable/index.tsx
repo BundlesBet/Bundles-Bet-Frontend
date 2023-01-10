@@ -5,6 +5,7 @@ import {
   Button,
   ButtonGroup,
   IconButton,
+  Stack,
   Table,
   TableBody,
   TableCell,
@@ -154,7 +155,7 @@ const rows = [
   {
     id: 1,
     sport: 'Football/Soccer',
-    match: { team1: 'US', team2: 'FR' },
+    match: { team1: 'Brazil', team2: 'Australia' },
     bid: 0.1,
     poolFaces: 2,
     selectedTeam: 'Manchester United',
@@ -290,26 +291,15 @@ export default function ActiveTable() {
         <Table sx={{ minWidth: 500 }}>
           <TableHead sx={tableHeadStyle}>
             <TableRow>
-              <TableCell sx={{ color: '#fff', pt: 0 }}>Sport</TableCell>
-
               <TableCell sx={{ color: '#fff', pt: 0 }} align="center">
-                Pool Matches
+                Home Team
+              </TableCell>
+              <TableCell sx={{ color: '#fff', pt: 0 }} align="center">
+                Away Team
               </TableCell>
 
               <TableCell sx={{ color: '#fff', pt: 0 }} align="center">
                 Selected Team
-              </TableCell>
-
-              <TableCell sx={{ color: '#fff', pt: 0 }} align="center">
-                Total Bid
-              </TableCell>
-
-              <TableCell sx={{ color: '#fff', pt: 0 }} align="center">
-                Pool Faces
-              </TableCell>
-
-              <TableCell sx={{ color: '#fff', pt: 0 }} align="center">
-                Action
               </TableCell>
             </TableRow>
           </TableHead>
@@ -323,106 +313,63 @@ export default function ActiveTable() {
                 key={key}
                 sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
               >
-                <TableCell sx={{ color: '#fff' }} component="th" scope="row">
-                  {row.sport}
-                </TableCell>
-
                 <TableCell sx={{ color: '#fff' }} align="center">
-                  <ButtonGroup
-                    disableElevation
-                    variant="contained"
-                    aria-label="Disabled elevation buttons"
-                  >
-                    <Button
-                      onClick={() => {
-                        updateSelectedMatchState(row)
-                        setSelectedTeam(row.match.team1)
-                      }}
-                      variant="contained"
-                      sx={{
-                        color: '#FFFFFF',
-                        background: '#282835',
-                        p: 2,
-                        '&:hover': {
-                          backgroundColor: '#00FFC2',
-                          color: '#FFFFFF',
-                        },
-                        border:
-                          selectedRow.match.team1 === row.match.team1
-                            ? '2px solid #00FFC2'
-                            : '',
-                      }}
-                    >
-                      {' '}
-                      {row.match.team1}
-                    </Button>
-
-                    <Button
-                      onClick={() => {
-                        updateSelectedMatchState(row)
-                        setSelectedTeam(row.match.team2)
-                      }}
-                      variant="contained"
-                      sx={{
-                        color: '#FFFFFF',
-                        background: '#282835',
-                        p: 2,
-                        '&:hover': {
-                          backgroundColor: '#00FFC2',
-                          color: '#FFFFFF',
-                        },
-                        border:
-                          selectedRow.match.team2 === row.match.team2
-                            ? '2px solid #00FFC2'
-                            : '',
-                      }}
-                    >
-                      {' '}
-                      {row.match.team2}
-                    </Button>
-                  </ButtonGroup>
-                </TableCell>
-                <TableCell sx={{ color: '#fff' }} align="center">
-                  {selectedTeam}
-                </TableCell>
-                <TableCell sx={{ color: '#fff' }} align="center">
-                  {row.bid} <br />{' '}
-                  <Typography color="primary.light">$BUND </Typography>
-                </TableCell>
-                <TableCell sx={{ color: '#fff' }} align="center">
-                  {row.poolFaces}
-                  <br />
-                  <Typography color="primary.light">Small Pool</Typography>
-                </TableCell>
-
-                <TableCell sx={{ color: '#fff' }} align="left">
                   <Button
-                    onClick={openConfirmBetModal}
-                    disabled={
-                      account &&
-                      Object.keys(selectedRow).length > 0 &&
-                      row.id === selectedRow.id
-                        ? false
-                        : true
-                    }
+                    onClick={() => {
+                      updateSelectedMatchState(row)
+                      setSelectedTeam(row.match.team1)
+                    }}
+                    variant="contained"
                     sx={{
                       color: '#FFFFFF',
                       background: '#282835',
                       p: 2,
                       '&:hover': {
                         backgroundColor: '#00FFC2',
-                        color: '#FFFFFF',
+                        color: '#111',
                       },
+                      border:
+                        selectedRow.match.team1 === row.match.team1
+                          ? '2px solid #00FFC2'
+                          : '',
                     }}
                   >
-                    {row.action}
+                    {' '}
+                    {row.match.team1}
                   </Button>
-                  {!account ||
-                  Object.keys(selectedRow).length === 0 ||
-                  row.id !== selectedRow.id
-                    ? toolTipJsx(row.id)
-                    : false}
                 </TableCell>
+                <TableCell sx={{ color: '#fff' }} align="center">
+                  <Button
+                    onClick={() => {
+                      updateSelectedMatchState(row)
+                      setSelectedTeam(row.match.team2)
+                    }}
+                    variant="contained"
+                    sx={{
+                      color: '#FFFFFF',
+                      background: '#282835',
+                      p: 2,
+                      '&:hover': {
+                        backgroundColor: '#00FFC2',
+                        color: '#111',
+                      },
+                      border:
+                        selectedRow.match.team2 === row.match.team2
+                          ? '2px solid #00FFC2'
+                          : '',
+                    }}
+                  >
+                    {' '}
+                    {row.match.team2}
+                  </Button>
+                </TableCell>
+                <TableCell sx={{ color: '#fff' }} align="center">
+                  {selectedTeam}
+                </TableCell>
+                {/* <TableCell sx={{ color: '#fff' }} align="center">
+                  {row.bid} <br />{' '}
+                  <Typography color="primary.light">$BUND </Typography>
+                </TableCell> */}
               </TableRow>
             ))}
             {emptyRows > 0 && (
@@ -430,6 +377,36 @@ export default function ActiveTable() {
                 <TableCell colSpan={6} />
               </TableRow>
             )}
+            <TableRow>
+              <TableCell align="right" colSpan={3}>
+                <Button
+                  onClick={openConfirmBetModal}
+                  // disabled={
+                  //   account &&
+                  //   Object.keys(selectedRow).length > 0 &&
+                  //   row.id === selectedRow.id
+                  //     ? false
+                  //     : true
+                  // }
+                  sx={{
+                    color: '#FFFFFF',
+                    background: '#282835',
+                    p: 2,
+                    '&:hover': {
+                      backgroundColor: '#00FFC2',
+                      color: '#111',
+                    },
+                  }}
+                >
+                  Bet Now
+                </Button>
+              </TableCell>
+            </TableRow>
+            {/* {!account ||
+            Object.keys(selectedRow).length === 0 ||
+            rows.id !== selectedRow.id
+              ? toolTipJsx(rows.id)
+              : false} */}
           </TableBody>
 
           <TableFooter>

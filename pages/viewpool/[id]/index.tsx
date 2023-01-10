@@ -1,67 +1,164 @@
 // libraries
 import Head from 'next/head'
 import { NextPage } from 'next'
-import { Box, Container, CssBaseline, Stack, Typography } from '@mui/material'
+import {
+  AppBar,
+  Box,
+  Button,
+  Container,
+  CssBaseline,
+  Grid,
+  IconButton,
+  Stack,
+  SvgIconTypeMap,
+  Tooltip,
+  Typography,
+} from '@mui/material'
 
-import SelectPoolAccordion from 'components/Accordion/SelectPoolAccordion'
+import ViewMatchTable from 'components/Table/ViewMatches'
+import { useRouter } from 'next/router'
+import { sportsList, sportsListType } from 'utils'
+import { Fragment } from 'react'
+import { OverridableComponent } from '@mui/material/OverridableComponent'
 
-interface Props {}
+interface Props {
+  sportIcon: OverridableComponent<SvgIconTypeMap<{}, 'svg'>> & {
+    muiName: string
+  }
+}
 
-const ViewPool: NextPage<Props> = ({}) => {
+const ViewPool: NextPage<Props> = (props: Props) => {
+  const router = useRouter()
+
   return (
     <div>
       <Head>
         <title>View Pool</title>
       </Head>
 
-      <Stack
+      <Grid
+        container
         spacing={0}
         direction="column"
         alignItems="center"
         justifyContent="center"
+        style={{ minHeight: '90vh' }}
       >
-        <Container component="main" maxWidth="md">
+        <Container component="main" maxWidth="lg">
           <CssBaseline />
 
-          <Typography
-            mb={'50px'}
-            mt={'50px'}
-            variant="h4"
-            fontWeight={600}
-            color="secondary"
-            textAlign={'center'}
-            sx={{ fontSize: { xs: '18px', md: '38px', lg: '38px' } }}
-          >
-            Select Pool
-          </Typography>
-
-          <Box>
-            <Stack
-              spacing={2}
-              direction="column"
-              alignItems={'center'}
-              justifyContent={'center'}
+          <Stack direction={'column'} spacing={3}>
+            <AppBar
+              sx={{
+                bgcolor: '#282835',
+                px: { xs: '5px', sm: '30px', md: '130px' },
+                py: '13px',
+              }}
+              position="static"
             >
-              {[...new Array(1)].map((item, key) => {
-                return <SelectPoolAccordion key={key} />
-              })}
+              <Stack
+                direction={'row'}
+                alignItems={'center'}
+                justifyContent={'center'}
+                spacing={6}
+              >
+                {sportsList.map((sport: sportsListType, index: any) => (
+                  <Fragment key={index}>
+                    <Tooltip title={sport.sportName} arrow>
+                      <IconButton
+                        onClick={() => {
+                          router.push(`/viewpool/${sport.id}`)
+                        }}
+                      >
+                        <sport.icon sx={{ color: '#fff' }} fontSize={'large'} />
+                      </IconButton>
+                    </Tooltip>
+                  </Fragment>
+                ))}
+              </Stack>
+            </AppBar>
+            <Stack
+              direction={{ lg: 'row', sm: 'column', xs: 'column' }}
+              justifyContent="space-between"
+              alignItems={'center'}
+              spacing={4}
+            >
+              <Button
+                sx={{
+                  color: '#fff',
+                  background: '#282835',
+                  p: 2,
+                  '&:hover': {
+                    backgroundColor: '#282835',
+                    color: '#fff',
+                  },
+                }}
+                size="small"
+              >
+                Prediction Pools
+              </Button>
+              <Button
+                disabled={true}
+                sx={{
+                  color: '#fff',
+                  background: '#282835',
+                  p: 2,
+                  '&:hover': {
+                    backgroundColor: '#00FFC2',
+                    color: '#fff',
+                  },
+                }}
+                size="small"
+              >
+                Sportsbook (Coming Soon)
+              </Button>
+              <Button
+                disabled={true}
+                sx={{
+                  color: '#fff',
+                  background: '#282835',
+                  p: 2,
+                  '&:hover': {
+                    backgroundColor: '#00FFC2',
+                    color: '#fff',
+                  },
+                }}
+                size="small"
+              >
+                Daily Fantasy Sports (Coming Soon)
+              </Button>
+              <Button
+                disabled={true}
+                sx={{
+                  color: '#fff',
+                  background: '#282835',
+                  p: 2,
+                  '&:hover': {
+                    backgroundColor: '#00FFC2',
+                    color: '#fff',
+                  },
+                }}
+                size="small"
+              >
+                Casino Games (Coming Soon)
+              </Button>
             </Stack>
-          </Box>
 
-          <Typography
-            color="#7D7D8D"
-            fontWeight={600}
-            mt={6}
-            textAlign="center"
-            sx={{ fontSize: { xs: '12px', md: '16px', lg: '16px' } }}
-          >
-            Get winning payout if your team leads after the first quarter
-            <br />
-            Money back as a Free Bet on losing bets if the last ball is hit for
-            a boundary
-          </Typography>
+            <Box>
+              <Stack
+                spacing={2}
+                direction="column"
+                alignItems={'center'}
+                justifyContent={'center'}
+              >
+                {[...new Array(1)].map((item, key) => {
+                  return <ViewMatchTable key={key} />
+                })}
+              </Stack>
+            </Box>
+          </Stack>
         </Container>
-      </Stack>
+      </Grid>
     </div>
   )
 }

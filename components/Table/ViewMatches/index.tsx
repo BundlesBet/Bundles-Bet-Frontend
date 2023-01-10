@@ -1,48 +1,44 @@
 import * as React from 'react'
-import Table from '@mui/material/Table'
-import TableBody from '@mui/material/TableBody'
-import TableCell from '@mui/material/TableCell'
-import TableContainer from '@mui/material/TableContainer'
-import TableHead from '@mui/material/TableHead'
-import TableRow from '@mui/material/TableRow'
+import { formatInTimeZone } from 'date-fns-tz'
 import {
   Box,
   Button,
   IconButton,
+  Paper,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
   TableFooter,
+  TableHead,
   TablePagination,
-  Tooltip,
+  TableRow,
   Typography,
   useTheme,
 } from '@mui/material'
-import { useBoolean } from 'usehooks-ts'
+import LastPageIcon from '@mui/icons-material/LastPage'
 import FirstPageIcon from '@mui/icons-material/FirstPage'
 import KeyboardArrowLeft from '@mui/icons-material/KeyboardArrowLeft'
 import KeyboardArrowRight from '@mui/icons-material/KeyboardArrowRight'
-import LastPageIcon from '@mui/icons-material/LastPage'
 
-import ConfirmBetModal from 'components/Modals/ConfirmBetModal'
-import { useMetamask } from 'contexts/Metamask'
-import { useState } from 'react'
+import { useRouter } from 'next/router'
 
 function createData(
   sport: string,
-  match: string,
-  bid: number,
-  poolFaces: number,
-  action: any
+  contest: string,
+  contestEntry: number,
+  totalPricePool: number,
+  entry: number,
+  action: string
 ) {
-  return { sport, match, bid, poolFaces, action }
+  return { sport, contest, contestEntry, totalPricePool, entry, action }
 }
 
 const rows = [
-  createData('NPL', 'Canada vs Greece', 126.0, 24, 'Bet Now'),
-  createData('NHL', 'US vs France', 339.0, 37, 'Bet Now'),
-  createData('BasketBall', 'Brazil vs Us', 262, 16.0, 'Bet Now'),
-  createData('NHL', 'US vs France', 339.0, 37, 'Bet Now'),
-  createData('BasketBall', 'Brazil vs Us', 262, 16.0, 'Bet Now'),
-  createData('NHL', 'US vs France', 339.0, 37, 'Bet Now'),
-  createData('BasketBall', 'Brazil vs Us', 262, 16.0, 'Bet Now'),
+  createData('Football', 'NFL showdown', 15, 40000, 1445, 'Enter'),
+  createData('Football', 'NBA showdown', 35, 6000, 114, 'Enter'),
+  createData('Football', 'NFL Best Down', 55, 80000, 1967, 'Enter'),
+  createData('Football', 'NFL Fadeaway', 65, 90000, 23452, 'Enter'),
 ]
 
 const tableHeadStyle = {
@@ -167,19 +163,10 @@ function TablePaginationActions(props: TablePaginationActionsProps) {
   )
 }
 
-export default function ShowAllTable() {
-  const { setTrue, setFalse, setValue, value } = useBoolean(false)
-  const openConfirmBetModal = setTrue
-  const { account } = useMetamask()
-  const cancelConfirmBetModal = () => setValue((x: boolean) => !x)
+export default function ViewMatchTable() {
   const [page, setPage] = React.useState(0)
   const [rowsPerPage, setRowsPerPage] = React.useState(5)
-  const [transactionSuccess, setTransactionSuccess] = useState(false)
-
-  const handleConfirmTransaction = () => {
-    setTransactionSuccess(true)
-  }
-
+  const router = useRouter()
   // Avoid a layout jump when reaching the last page with empty rows.
   const emptyRows =
     page > 0 ? Math.max(0, (1 + page) * rowsPerPage - rows.length) : 0
@@ -200,22 +187,25 @@ export default function ShowAllTable() {
   return (
     <>
       <TableContainer>
-        <Table sx={{ minWidth: 500 }}>
+        <Table sx={{ minWidth: 300 }}>
           <TableHead sx={tableHeadStyle}>
             <TableRow>
-              <TableCell sx={{ color: '#fff' }}>Sport</TableCell>
-              <TableCell sx={{ color: '#fff' }} align="right">
-                Pool Matches
+              <TableCell sx={{ color: 'primary.light' }} align="center">
+                Contest
               </TableCell>
-              <TableCell sx={{ color: '#fff' }} align="right">
-                Total Bid
+              <TableCell sx={{ color: 'primary.light' }} align="center">
+                Entry Fee
               </TableCell>
-              <TableCell sx={{ color: '#fff' }} align="right">
-                Pool Faces
+
+              <TableCell sx={{ color: 'primary.light' }} align="center">
+                Prize Pool
               </TableCell>
-              <TableCell sx={{ color: '#fff' }} align="right">
+              <TableCell sx={{ color: 'primary.light' }} align="center">
+                Entries
+              </TableCell>
+              {/* <TableCell sx={{ color: 'primary.light' }} align="center">
                 Action
-              </TableCell>
+              </TableCell> */}
             </TableRow>
           </TableHead>
           <TableBody sx={tableBodyStyle}>
@@ -227,27 +217,30 @@ export default function ShowAllTable() {
                 key={key}
                 sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
               >
-                <TableCell sx={{ color: '#fff' }} component="th" scope="row">
-                  {row.sport}
+                <TableCell
+                  sx={{ color: '#fff' }}
+                  align="center"
+                  onClick={() => router.push('/select-pool')}
+                >
+                  {row.contest}
                 </TableCell>
-                <TableCell sx={{ color: '#fff' }} align="right">
-                  {row.match}
+                <TableCell sx={{ color: '#fff' }} align="center">
+                  {row.contestEntry}
                 </TableCell>
-                <TableCell sx={{ color: '#fff' }} align="right">
-                  {row.bid} <br />{' '}
-                  <Typography color="primary.light">$BUND </Typography>
-                </TableCell>
-                <TableCell sx={{ color: '#fff' }} align="right">
-                  {row.poolFaces}
+                <TableCell sx={{ color: '#fff' }} align="center">
+                  {row.totalPricePool}
                   <br />
-                  <Typography color="primary.light">Small Pool</Typography>
+                  <Typography color="primary.light">$BUND</Typography>
+                </TableCell>
+                <TableCell sx={{ color: '#fff' }} align="center">
+                  {row.entry}
                 </TableCell>
 
-                <TableCell sx={{ color: '#fff' }} align="right">
+                {/* <TableCell sx={{ color: '#fff' }} align="center">
                   <Button
-                    onClick={openConfirmBetModal}
-                    disabled={account ? false : true}
+                    onClick={() => router.push('/select-pool')}
                     sx={{
+                      color: '#FFFFFF',
                       background: '#282835',
                       p: 2,
                       '&:hover': {
@@ -258,7 +251,7 @@ export default function ShowAllTable() {
                   >
                     {row.action}
                   </Button>
-                </TableCell>
+                </TableCell> */}
               </TableRow>
             ))}
             {emptyRows > 0 && (
@@ -289,11 +282,6 @@ export default function ShowAllTable() {
           </TableFooter>
         </Table>
       </TableContainer>
-      <ConfirmBetModal
-        open={value}
-        handleConfirm={handleConfirmTransaction}
-        handleClose={cancelConfirmBetModal}
-      />
     </>
   )
 }

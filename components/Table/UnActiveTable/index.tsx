@@ -238,7 +238,7 @@ export default function UnActiveTable() {
                       p: 2,
                       '&:hover': {
                         backgroundColor: '#00FFC2',
-                        color: '#FFFFFF',
+                        color: '#111',
                       },
                     }}
                   >

@@ -29,9 +29,9 @@ const Footer = (props: {}) => {
             color="inherit"
             aria-label="menu"
           >
-            <Image src={Logo} alt="logo" width={'26px'} height={'26px'} />
+            <Image src={Logo} alt="logo" width={'30px'} height={'30px'} />
           </IconButton>
-          <Typography variant="h6" color={'#00FFC2'} mr={2}>
+          <Typography variant="h6" color={'#00FFC2'} mr={1}>
             Bundles
           </Typography>
           <Typography variant="h6" color={'#fff'}>
