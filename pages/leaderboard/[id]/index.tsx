@@ -1,8 +1,11 @@
-import * as React from 'react'
+import { NextPage } from 'next'
 import { formatInTimeZone } from 'date-fns-tz'
 import {
   Box,
   Button,
+  Container,
+  CssBaseline,
+  Grid,
   IconButton,
   Paper,
   Table,
@@ -20,32 +23,34 @@ import LastPageIcon from '@mui/icons-material/LastPage'
 import FirstPageIcon from '@mui/icons-material/FirstPage'
 import KeyboardArrowLeft from '@mui/icons-material/KeyboardArrowLeft'
 import KeyboardArrowRight from '@mui/icons-material/KeyboardArrowRight'
-import LeaderboardIcon from '@mui/icons-material/Leaderboard'
+
 import { useRouter } from 'next/router'
+import { useState } from 'react'
+import Head from 'next/head'
+
+interface Props {}
 
 function createData(
-  sport: string,
-  contest: string,
-  contestEntry: number,
-  totalPricePool: number,
-  entry: number,
-  action: string
+  user: string,
+  position: number,
+  winPercentage: number,
+  reward: number
 ) {
-  return { sport, contest, contestEntry, totalPricePool, entry, action }
+  return { user, position, winPercentage, reward }
 }
 
 const rows = [
-  createData('Football', 'NFL showdown', 15, 40000, 1445, 'Leaderboard'),
-  createData('Football', 'NBA showdown', 35, 6000, 114, 'Leaderboard'),
-  createData('Football', 'NFL Best Down', 55, 80000, 1967, 'Leaderboard'),
-  createData('Football', 'NFL Fadeaway', 65, 90000, 23452, 'Leaderboard'),
+  createData('Sourabh', 1, 70, 25680),
+  createData('Shubham', 2, 40, 22780),
+  createData('Jay', 3, 25, 20000),
+  createData('Anshuman', 4, 10, 12345),
 ]
 
 const tableHeadStyle = {
   '& .MuiTableCell-root': {
     borderBottom: '1px solid #282835',
     color: '#7D7D8D',
-    fontSize: '18px',
+    fontSize: '20px',
   },
 }
 
@@ -164,9 +169,9 @@ function TablePaginationActions(props: TablePaginationActionsProps) {
   )
 }
 
-export default function ViewMatchTable() {
-  const [page, setPage] = React.useState(0)
-  const [rowsPerPage, setRowsPerPage] = React.useState(5)
+const Index: NextPage<Props> = ({}) => {
+  const [page, setPage] = useState(0)
+  const [rowsPerPage, setRowsPerPage] = useState(5)
   const router = useRouter()
   // Avoid a layout jump when reaching the last page with empty rows.
   const emptyRows =
@@ -185,105 +190,120 @@ export default function ViewMatchTable() {
     setRowsPerPage(parseInt(event.target.value, 10))
     setPage(0)
   }
+
   return (
-    <>
-      <TableContainer>
-        <Table sx={{ minWidth: 300 }}>
-          <TableHead sx={tableHeadStyle}>
-            <TableRow>
-              <TableCell sx={{ color: 'primary.light' }} align="center">
-                Contest
-              </TableCell>
-              <TableCell sx={{ color: 'primary.light' }} align="center">
-                Entry Fee
-              </TableCell>
+    <div>
+      <Head>
+        <title>Leaderboard</title>
+      </Head>
+      <Grid
+        container
+        spacing={0}
+        direction="column"
+        alignItems="center"
+        justifyContent="center"
+        style={{ minHeight: '70vh' }}
+      >
+        <Container component="main" maxWidth="lg">
+          <CssBaseline />
+          <Box
+            sx={{
+              color: '#fff',
+              background: '#282835',
+              p: 2,
+              mb: 4,
+            }}
+          >
+            <Typography variant="h4" textAlign={'center'}>
+              {' '}
+              Leaderboard
+            </Typography>
+          </Box>
 
-              <TableCell sx={{ color: 'primary.light' }} align="center">
-                Prize Pool
-              </TableCell>
-              <TableCell sx={{ color: 'primary.light' }} align="center">
-                Entries
-              </TableCell>
-              <TableCell sx={{ color: 'primary.light' }} align="center">
-                Action
-              </TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody sx={tableBodyStyle}>
-            {(rowsPerPage > 0
-              ? rows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-              : rows
-            ).map((row, key) => (
-              <TableRow
-                key={key}
-                sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-              >
-                <TableCell
-                  sx={{ color: '#fff' }}
-                  align="center"
-                  onClick={() => router.push('/select-pool')}
-                >
-                  {row.contest}
-                </TableCell>
-                <TableCell sx={{ color: '#fff' }} align="center">
-                  {row.contestEntry}
-                </TableCell>
-                <TableCell sx={{ color: '#fff' }} align="center">
-                  {row.totalPricePool}
-                  <br />
-                  <Typography color="primary.light">$BUND</Typography>
-                </TableCell>
-                <TableCell sx={{ color: '#fff' }} align="center">
-                  {row.entry}
-                </TableCell>
+          <TableContainer>
+            <Table sx={{ minWidth: 300 }}>
+              <TableHead sx={tableHeadStyle}>
+                <TableRow>
+                  <TableCell sx={{ color: 'primary.light' }} align="center">
+                    User
+                  </TableCell>
+                  <TableCell sx={{ color: 'primary.light' }} align="center">
+                    Position
+                  </TableCell>
 
-                <TableCell sx={{ color: '#fff' }} align="center">
-                  <Button
-                    startIcon={<LeaderboardIcon />}
-                    onClick={() => router.push(`/leaderboard/${key}`)}
-                    sx={{
-                      color: '#FFFFFF',
-                      background: '#282835',
-                      p: 2,
-                      '&:hover': {
-                        backgroundColor: '#00FFC2',
-                        color: '#111',
-                      },
-                    }}
+                  <TableCell sx={{ color: 'primary.light' }} align="center">
+                    Win percentage
+                  </TableCell>
+                  <TableCell sx={{ color: 'primary.light' }} align="center">
+                    Prize
+                  </TableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody sx={tableBodyStyle}>
+                {(rowsPerPage > 0
+                  ? rows.slice(
+                      page * rowsPerPage,
+                      page * rowsPerPage + rowsPerPage
+                    )
+                  : rows
+                ).map((row, key) => (
+                  <TableRow
+                    key={key}
+                    sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                   >
-                    {row.action}
-                  </Button>
-                </TableCell>
-              </TableRow>
-            ))}
-            {emptyRows > 0 && (
-              <TableRow style={{ height: 53 * emptyRows }}>
-                <TableCell colSpan={6} />
-              </TableRow>
-            )}
-          </TableBody>
-          <TableFooter>
-            <TableRow>
-              <TablePagination
-                sx={{ color: '#fff' }}
-                rowsPerPageOptions={[5, 10, 25, { label: 'All', value: -1 }]}
-                count={rows.length}
-                rowsPerPage={rowsPerPage}
-                page={page}
-                SelectProps={{
-                  inputProps: {
-                    'aria-label': 'rows per page',
-                  },
-                  native: true,
-                }}
-                onPageChange={handleChangePage}
-                onRowsPerPageChange={handleChangeRowsPerPage}
-                ActionsComponent={TablePaginationActions}
-              />
-            </TableRow>
-          </TableFooter>
-        </Table>
-      </TableContainer>
-    </>
+                    <TableCell sx={{ color: '#fff' }} align="center">
+                      {row.user}
+                    </TableCell>
+                    <TableCell sx={{ color: '#fff' }} align="center">
+                      {row.position}
+                    </TableCell>
+                    <TableCell sx={{ color: '#fff' }} align="center">
+                      {row.winPercentage} %
+                    </TableCell>
+                    <TableCell sx={{ color: '#fff' }} align="center">
+                      {row.reward}
+                      <br />
+                      <Typography color="primary.light">$BUND</Typography>
+                    </TableCell>
+                  </TableRow>
+                ))}
+                {emptyRows > 0 && (
+                  <TableRow style={{ height: 53 * emptyRows }}>
+                    <TableCell colSpan={6} />
+                  </TableRow>
+                )}
+              </TableBody>
+              <TableFooter>
+                <TableRow>
+                  <TablePagination
+                    sx={{ color: '#fff' }}
+                    rowsPerPageOptions={[
+                      5,
+                      10,
+                      25,
+                      { label: 'All', value: -1 },
+                    ]}
+                    count={rows.length}
+                    rowsPerPage={rowsPerPage}
+                    page={page}
+                    SelectProps={{
+                      inputProps: {
+                        'aria-label': 'rows per page',
+                      },
+                      native: true,
+                    }}
+                    onPageChange={handleChangePage}
+                    onRowsPerPageChange={handleChangeRowsPerPage}
+                    ActionsComponent={TablePaginationActions}
+                  />
+                </TableRow>
+              </TableFooter>
+            </Table>
+          </TableContainer>
+        </Container>
+      </Grid>
+    </div>
   )
 }
+
+export default Index
