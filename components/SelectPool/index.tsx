@@ -39,9 +39,14 @@ function a11yProps(index: number) {
   }
 }
 
-export default function SelectPoolTabs() {
+interface Props {
+  matchData: any
+}
+
+export default function SelectPoolTabs(props: Props) {
   const theme = useTheme()
   const [value, setValue] = useState(0)
+  const { matchData } = props
 
   const sportSelected = useSelector(
     (state: RootState) => state.user
@@ -79,7 +84,7 @@ export default function SelectPoolTabs() {
           onChangeIndex={handleChangeIndex}
         >
           <TabPanel value={value} index={0} dir={theme.direction}>
-            <ActiveTable />
+            <ActiveTable matchData={matchData} />
           </TabPanel>
           <TabPanel value={value} index={1} dir={theme.direction}>
             <UnActiveTable />

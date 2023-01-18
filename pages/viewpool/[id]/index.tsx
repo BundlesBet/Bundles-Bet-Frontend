@@ -18,8 +18,12 @@ import {
 import ViewMatchTable from 'components/Table/ViewMatches'
 import { useRouter } from 'next/router'
 import { sportsList, sportsListType } from 'utils'
-import { Fragment } from 'react'
+import { Fragment, useEffect, useState } from 'react'
 import { OverridableComponent } from '@mui/material/OverridableComponent'
+import { getMatchesOfPool, getPoolOfSport } from 'utils/apiCalls'
+import axios from 'utils/axios'
+import { useSelector } from 'react-redux'
+import { RootState } from 'redux/store'
 
 interface Props {
   sportIcon: OverridableComponent<SvgIconTypeMap<{}, 'svg'>> & {
@@ -27,8 +31,35 @@ interface Props {
   }
 }
 
+// export const getStaticProps = async () => {
+//   const poolData = await axios.get('/v1/betting/getPools')
+
+//   const data = poolData
+
+//   return {
+//     props: { users: data },
+//   }
+// }
+
 const ViewPool: NextPage<Props> = (props: Props) => {
   const router = useRouter()
+  const [poolData, setPoolData] = useState<any>([])
+  const [loading, setLoading] = useState<boolean>(true)
+  const sportName = useSelector(
+    (state: RootState) => state.user.sportSelected
+  ).sportName
+
+  const getPoolData = async () => {
+    const fetchPoolData = await getPoolOfSport(sportName)
+
+    setPoolData(fetchPoolData.fetchedPools)
+    setLoading(false)
+  }
+
+  useEffect(() => {
+    getPoolData()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   return (
     <div>
@@ -152,7 +183,7 @@ const ViewPool: NextPage<Props> = (props: Props) => {
                 justifyContent={'center'}
               >
                 {[...new Array(1)].map((item, key) => {
-                  return <ViewMatchTable key={key} />
+                  return <ViewMatchTable poolData={poolData} key={key} />
                 })}
               </Stack>
             </Box>

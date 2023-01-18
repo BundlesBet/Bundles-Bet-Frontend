@@ -1,7 +1,7 @@
 import Head from 'next/head'
 import { NextPage } from 'next'
 import { useSelector } from 'react-redux'
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { SportsFootball } from '@mui/icons-material'
 import { Container, Grid, Typography } from '@mui/material'
 
@@ -12,6 +12,8 @@ import SelectPoolTabs from 'components/SelectPool'
 import CurrentBalance from 'components/CurrentBalance'
 
 import { NFL } from 'assets'
+import { useRouter } from 'next/router'
+import { getMatchesOfPool } from 'utils/apiCalls'
 
 interface Props {}
 
@@ -21,6 +23,21 @@ const SelectPool: NextPage<Props> = ({}) => {
   ).sportSelected
 
   const [showSport, setShowSport] = useState(sportSelected)
+  const router: any = useRouter()
+  const id = parseInt(router.query.id)
+  const finalMatchData = useRef<any>([])
+  const [loading, setLoading] = useState<boolean>(true)
+
+  const getMatchData = async () => {
+    const fetchMatchData = await getMatchesOfPool(id)
+    finalMatchData.current = fetchMatchData.fetchedMatches
+    setLoading(false)
+  }
+
+  useEffect(() => {
+    getMatchData()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   useEffect(() => {
     const localStorageSport = localStorage.getItem('selectedSport')
@@ -62,7 +79,11 @@ const SelectPool: NextPage<Props> = ({}) => {
 
         <Grid container spacing={4} alignItems="flex-start">
           <Grid item xs={12} md={12}>
-            <SelectPoolTabs />
+            {loading ? (
+              'Please Wait Fetching Match Details'
+            ) : (
+              <SelectPoolTabs matchData={finalMatchData.current} />
+            )}
           </Grid>
         </Grid>
       </Container>

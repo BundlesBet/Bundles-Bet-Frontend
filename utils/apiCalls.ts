@@ -10,7 +10,7 @@ const apiCall = async (response: any, error: any) => {
     if (error) return { error: true, ...error.response.data }
     else if (response.data.error) return { ...response.data }
     else {
-      return { error: false, ...response.data }
+      return { ...response.data, error: false }
     }
   } catch (error) {
     console.log(error)
@@ -31,3 +31,20 @@ export const getUserDataByWalletAddress = async (walletAddress: string) => {
   )
   return apiCall(response, error)
 }
+
+export const getPoolOfSport = async (sportName: string) => {
+  const [response, error] = await api(
+    axios.get(`/betting/getPools?sportName=${sportName}`)
+  )
+  return apiCall(response, error)
+}
+
+export const getMatchesOfPool = async (poolId: Number) => {
+  const [response, error] = await api(
+    axios.get(`/betting/getPoolMatches?poolId=${poolId}`)
+  )
+
+  return apiCall(response, error)
+}
+
+export const createBet = async (body: any) => {}
