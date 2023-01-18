@@ -222,7 +222,7 @@ export default function ViewMatchTable(props: Props) {
                 <TableCell
                   sx={{ color: '#fff', cursor: 'pointer' }}
                   align="center"
-                  onClick={() => router.push(`/selectpool/${row.id}`)}
+                  onClick={() => router.push(`/viewPool/${row.id}`)}
                 >
                   {row.poolName}
                 </TableCell>

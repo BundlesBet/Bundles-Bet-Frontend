@@ -26,8 +26,6 @@ export const UserSlice = createSlice({
       state.userData = action.payload
     },
     setSportSelected: (state, action) => {
-      console.log(action)
-
       state.sportSelected = action.payload
     },
   },

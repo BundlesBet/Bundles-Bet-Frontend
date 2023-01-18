@@ -32,6 +32,11 @@ export const getUserDataByWalletAddress = async (walletAddress: string) => {
   return apiCall(response, error)
 }
 
+export const getSports = async () => {
+  const [response, error] = await api(axios.get('/admin/getSports'))
+  return apiCall(response, error)
+}
+
 export const getPoolOfSport = async (sportName: string) => {
   const [response, error] = await api(
     axios.get(`/betting/getPools?sportName=${sportName}`)

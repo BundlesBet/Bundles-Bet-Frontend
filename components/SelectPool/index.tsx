@@ -40,17 +40,19 @@ function a11yProps(index: number) {
 }
 
 interface Props {
-  matchData: any
+  // matchData: any
 }
 
 export default function SelectPoolTabs(props: Props) {
+  // const { matchData } = props
+
   const theme = useTheme()
   const [value, setValue] = useState(0)
-  const { matchData } = props
 
   const sportSelected = useSelector(
     (state: RootState) => state.user
   ).sportSelected
+  const matchData = useSelector((state: RootState) => state.betting).poolData
 
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
     setValue(newValue)

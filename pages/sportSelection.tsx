@@ -2,7 +2,7 @@
 import Head from 'next/head'
 import { Stack } from '@mui/system'
 import { useRouter } from 'next/router'
-import { Fragment, useRef } from 'react'
+import { Fragment, useEffect, useRef } from 'react'
 import { Grid, Typography } from '@mui/material'
 
 // contexts, utilities and hooks
@@ -11,6 +11,8 @@ import { sportsList, sportsListType } from 'utils'
 // components
 import SportCard from 'components/SportCard'
 import SportSearch from 'components/SearchField'
+import { getSports } from 'utils/apiCalls'
+import { SportsDataInterface } from 'utils/interfaces'
 
 interface Props {}
 
@@ -33,6 +35,15 @@ const SportSelection = (_props: Props) => {
 
     localStorage.setItem('selectedSport', JSON.stringify(value))
   }
+
+  const fetchSports = async () => {
+    const sports: SportsDataInterface = await getSports()
+    const sportsData = sports.sportsData.items
+  }
+
+  useEffect(() => {
+    fetchSports()
+  }, [])
 
   return (
     <>
@@ -70,7 +81,7 @@ const SportSelection = (_props: Props) => {
             <Grid item lg={3} md={4} sm={6} xs={8}>
               <SportCard
                 clickHandler={() => {
-                  router.push(`/viewpool/${sport.id}`)
+                  router.push(`/viewSportPools/${sport.id}`)
                 }}
                 selectHandler={() => {
                   updateSelectedNftState(sport.id)

@@ -30,3 +30,27 @@ export interface loginUserInterface {
     walletAddress: string
   }
 }
+
+export interface SportsDataInterface {
+  error: boolean
+  sportsData: {
+    count: number
+    items: { $ref: string; name: string; slug: string }[]
+    pageCount: number
+    pageIndex: number
+    pageSize: number
+  }
+}
+
+export interface PoolDataInterface {
+  id: number
+  endTime: string
+  fee: string
+  leagueName: string
+  matches: Array<object>
+  poolName: string
+  reward: string
+  sport: string
+  startTime: string
+  totalMatches: number
+}

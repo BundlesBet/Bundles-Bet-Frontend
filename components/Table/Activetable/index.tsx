@@ -266,7 +266,11 @@ export default function ActiveTable(props: ActiveTableProps) {
                 <TableCell sx={{ color: '#fff' }} align="center">
                   <Button
                     startIcon={
-                      <Image src={row.teamA.logo} alt="homeTeamLogo" />
+                      <Image
+                        src={row.teamA.logo}
+                        alt="homeTeamLogo"
+                        layout="fill"
+                      />
                     }
                     // onClick={() => {
                     //   updateSelectedMatchState(row)
@@ -294,7 +298,11 @@ export default function ActiveTable(props: ActiveTableProps) {
                 <TableCell sx={{ color: '#fff' }} align="center">
                   <Button
                     startIcon={
-                      <Image src={row.teamB.logo} alt="awayTeamLogo" />
+                      <Image
+                        src={row.teamB.logo}
+                        alt="awayTeamLogo"
+                        layout="fill"
+                      />
                     }
                     // onClick={() => {
                     //   updateSelectedMatchState(row)

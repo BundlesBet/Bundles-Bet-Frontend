@@ -1,197 +1,110 @@
-// libraries
 import Head from 'next/head'
 import { NextPage } from 'next'
-import {
-  AppBar,
-  Box,
-  Button,
-  Container,
-  CssBaseline,
-  Grid,
-  IconButton,
-  Stack,
-  SvgIconTypeMap,
-  Tooltip,
-  Typography,
-} from '@mui/material'
+import { useDispatch, useSelector } from 'react-redux'
+import { useEffect, useRef, useState } from 'react'
+import { SportsFootball } from '@mui/icons-material'
+import { Container, Grid, Typography } from '@mui/material'
 
-import ViewMatchTable from 'components/Table/ViewMatches'
-import { useRouter } from 'next/router'
-import { sportsList, sportsListType } from 'utils'
-import { Fragment, useEffect, useState } from 'react'
-import { OverridableComponent } from '@mui/material/OverridableComponent'
-import { getMatchesOfPool, getPoolOfSport } from 'utils/apiCalls'
-import axios from 'utils/axios'
-import { useSelector } from 'react-redux'
 import { RootState } from 'redux/store'
 
-interface Props {
-  sportIcon: OverridableComponent<SvgIconTypeMap<{}, 'svg'>> & {
-    muiName: string
-  }
-}
+import Rewards from 'components/Rewards'
+import SelectPoolTabs from 'components/SelectPool'
+import CurrentBalance from 'components/CurrentBalance'
 
-// export const getStaticProps = async () => {
-//   const poolData = await axios.get('/v1/betting/getPools')
+import { NFL } from 'assets'
+import { useRouter } from 'next/router'
+import { getMatchesOfPool } from 'utils/apiCalls'
+import { setPoolsData } from 'redux/slices/betting'
 
-//   const data = poolData
+interface Props {}
 
-//   return {
-//     props: { users: data },
-//   }
-// }
+const SelectPool: NextPage<Props> = ({}) => {
+  const sportSelected = useSelector(
+    (state: RootState) => state.user
+  ).sportSelected
 
-const ViewPool: NextPage<Props> = (props: Props) => {
-  const router = useRouter()
-  const [poolData, setPoolData] = useState<any>([])
+  const [showSport, setShowSport] = useState(sportSelected)
+  const dispatch = useDispatch()
+  const router: any = useRouter()
+  const id = parseInt(router.query.id)
+  const finalMatchData = useRef<any>([])
   const [loading, setLoading] = useState<boolean>(true)
-  const sportName = useSelector(
-    (state: RootState) => state.user.sportSelected
-  ).sportName
 
-  const getPoolData = async () => {
-    const fetchPoolData = await getPoolOfSport(sportName)
+  const getMatchData = async () => {
+    const fetchMatchData = await getMatchesOfPool(id)
 
-    setPoolData(fetchPoolData.fetchedPools)
-    setLoading(false)
+    finalMatchData.current = fetchMatchData.fetchedMatches
+    dispatch(setPoolsData(finalMatchData.current))
+
+    setTimeout(() => {
+      setLoading(false)
+    }, 2000)
   }
 
   useEffect(() => {
-    getPoolData()
+    if (!id) return
+
+    getMatchData()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [id])
+
+  useEffect(() => {
+    if (!finalMatchData.current.length) return
+    else setLoading(false)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [finalMatchData.current])
+
+  useEffect(() => {
+    const localStorageSport = localStorage.getItem('selectedSport')
+
+    if (Object.keys(sportSelected).length) {
+      setShowSport(sportSelected)
+    } else {
+      if (localStorageSport) {
+        setShowSport(JSON.parse(localStorageSport))
+      } else {
+        setShowSport({
+          icon: SportsFootball,
+          sportName: 'Pool Details',
+          img: NFL,
+          id: 0,
+        })
+      }
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   return (
     <div>
       <Head>
-        <title>View Pool</title>
+        <title>{showSport ? showSport.sportName : 'Pool Details'}</title>
       </Head>
 
-      <Grid
-        container
-        spacing={0}
-        direction="column"
-        alignItems="center"
-        justifyContent="center"
-        style={{ minHeight: '90vh' }}
-      >
-        <Container component="main" maxWidth="lg">
-          <CssBaseline />
+      <Container component={'main'} maxWidth="xl">
+        <Typography
+          mt={6}
+          mb={3}
+          fontWeight={700}
+          fontSize={'24px'}
+          lineHeight={'26px'}
+          fontFamily={'DM Sans'}
+        >
+          {showSport ? showSport.sportName : 'Pool Details'}
+        </Typography>
 
-          <Stack direction={'column'} spacing={3}>
-            <AppBar
-              sx={{
-                bgcolor: '#282835',
-                px: { xs: '5px', sm: '30px', md: '130px' },
-                py: '13px',
-              }}
-              position="static"
-            >
-              <Stack
-                direction={'row'}
-                alignItems={'center'}
-                justifyContent={'center'}
-                spacing={6}
-              >
-                {sportsList.map((sport: sportsListType, index: any) => (
-                  <Fragment key={index}>
-                    <Tooltip title={sport.sportName} arrow>
-                      <IconButton
-                        onClick={() => {
-                          router.push(`/viewpool/${sport.id}`)
-                        }}
-                      >
-                        <sport.icon sx={{ color: '#fff' }} fontSize={'large'} />
-                      </IconButton>
-                    </Tooltip>
-                  </Fragment>
-                ))}
-              </Stack>
-            </AppBar>
-            <Stack
-              direction={{ lg: 'row', sm: 'column', xs: 'column' }}
-              justifyContent="space-between"
-              alignItems={'center'}
-              spacing={4}
-            >
-              <Button
-                sx={{
-                  color: '#fff',
-                  background: '#282835',
-                  p: 2,
-                  '&:hover': {
-                    backgroundColor: '#282835',
-                    color: '#fff',
-                  },
-                }}
-                size="small"
-              >
-                Prediction Pools
-              </Button>
-              <Button
-                disabled={true}
-                sx={{
-                  color: '#fff',
-                  background: '#282835',
-                  p: 2,
-                  '&:hover': {
-                    backgroundColor: '#00FFC2',
-                    color: '#fff',
-                  },
-                }}
-                size="small"
-              >
-                Sportsbook (Coming Soon)
-              </Button>
-              <Button
-                disabled={true}
-                sx={{
-                  color: '#fff',
-                  background: '#282835',
-                  p: 2,
-                  '&:hover': {
-                    backgroundColor: '#00FFC2',
-                    color: '#fff',
-                  },
-                }}
-                size="small"
-              >
-                Daily Fantasy Sports (Coming Soon)
-              </Button>
-              <Button
-                disabled={true}
-                sx={{
-                  color: '#fff',
-                  background: '#282835',
-                  p: 2,
-                  '&:hover': {
-                    backgroundColor: '#00FFC2',
-                    color: '#fff',
-                  },
-                }}
-                size="small"
-              >
-                Casino Games (Coming Soon)
-              </Button>
-            </Stack>
-
-            <Box>
-              <Stack
-                spacing={2}
-                direction="column"
-                alignItems={'center'}
-                justifyContent={'center'}
-              >
-                {[...new Array(1)].map((item, key) => {
-                  return <ViewMatchTable poolData={poolData} key={key} />
-                })}
-              </Stack>
-            </Box>
-          </Stack>
-        </Container>
-      </Grid>
+        <Grid container spacing={4} alignItems="flex-start">
+          <Grid item xs={12} md={12}>
+            {loading ? (
+              'Please Wait Fetching Match Details'
+            ) : (
+              // <>hello</>
+              <SelectPoolTabs />
+            )}
+          </Grid>
+        </Grid>
+      </Container>
     </div>
   )
 }
 
-export default ViewPool
+export default SelectPool
