@@ -22,8 +22,8 @@ import KeyboardArrowRight from '@mui/icons-material/KeyboardArrowRight'
 import LastPageIcon from '@mui/icons-material/LastPage'
 
 import ConfirmBetModal from 'components/Modals/ConfirmBetModal'
-import { useMetamask } from 'contexts/Metamask'
 import { useState } from 'react'
+import { useAccount } from 'wagmi'
 
 function createData(
   sport: string,
@@ -170,7 +170,7 @@ function TablePaginationActions(props: TablePaginationActionsProps) {
 export default function ShowAllTable() {
   const { setTrue, setFalse, setValue, value } = useBoolean(false)
   const openConfirmBetModal = setTrue
-  const { account } = useMetamask()
+  const { isConnected } = useAccount()
   const cancelConfirmBetModal = () => setValue((x: boolean) => !x)
   const [page, setPage] = React.useState(0)
   const [rowsPerPage, setRowsPerPage] = React.useState(5)
@@ -246,7 +246,7 @@ export default function ShowAllTable() {
                 <TableCell sx={{ color: '#fff' }} align="right">
                   <Button
                     onClick={openConfirmBetModal}
-                    disabled={account ? false : true}
+                    disabled={isConnected ? false : true}
                     sx={{
                       background: '#282835',
                       p: 2,

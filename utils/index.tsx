@@ -8,6 +8,7 @@ import {
   SportsFootball,
   SportsHockey,
   SportsSoccer,
+  SportsBasketball,
 } from '@mui/icons-material'
 import { OverridableComponent } from '@mui/material/OverridableComponent'
 
@@ -41,13 +42,45 @@ export interface sportsListType {
   sportName: string
   img: StaticImageData
   id: number
+  value: string
 }
 
 export const sportsList = [
-  { icon: SportsFootball, sportName: 'NFL', img: NFL, id: 1 },
-  { icon: SportsBaseball, sportName: 'NBA', img: NBA, id: 2 },
-  { icon: SportsHockey, sportName: 'NHL', img: Icehockey, id: 3 },
-  { icon: SportsSoccer, sportName: 'Soccer', img: Football, id: 4 },
+  {
+    icon: SportsFootball,
+    sportName: 'NFL',
+    img: NFL,
+    id: 1,
+    value: 'Football',
+  },
+  {
+    icon: SportsBaseball,
+    sportName: 'NBA',
+    img: NBA,
+    id: 2,
+    value: 'Baseball',
+  },
+  {
+    icon: SportsSoccer,
+    sportName: 'NCAAM',
+    img: SportsBasketball,
+    id: 3,
+    value: 'Basketball',
+  },
+  {
+    icon: SportsSoccer,
+    sportName: 'Soccer',
+    img: Football,
+    id: 4,
+    value: 'Soccer',
+  },
+  {
+    icon: SportsHockey,
+    sportName: 'NHL',
+    img: Icehockey,
+    id: 5,
+    value: 'Hockey',
+  },
 ]
 
 export const matches = [

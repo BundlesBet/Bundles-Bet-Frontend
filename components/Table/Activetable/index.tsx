@@ -3,9 +3,7 @@ import { useBoolean } from 'usehooks-ts'
 import {
   Box,
   Button,
-  ButtonGroup,
   IconButton,
-  Stack,
   Table,
   TableBody,
   TableCell,
@@ -14,22 +12,17 @@ import {
   TableHead,
   TablePagination,
   TableRow,
-  Tooltip,
-  Typography,
   useTheme,
 } from '@mui/material'
 import LastPageIcon from '@mui/icons-material/LastPage'
 import FirstPageIcon from '@mui/icons-material/FirstPage'
-import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined'
 import KeyboardArrowLeft from '@mui/icons-material/KeyboardArrowLeft'
 import KeyboardArrowRight from '@mui/icons-material/KeyboardArrowRight'
-import Image from 'next/image'
-
-import { useMetamask } from 'contexts/Metamask'
 
 import ConfirmBetModal from 'components/Modals/ConfirmBetModal'
 import BetPlacedSuccessModal from 'components/Modals/BetPlacedSuccessModal'
 import id from 'date-fns/esm/locale/id/index.js'
+import { useAccount } from 'wagmi'
 
 const tableHeadStyle = {
   '& .MuiTableCell-root': {
@@ -172,9 +165,7 @@ export default function ActiveTable(props: ActiveTableProps) {
 
   const rows = matchData.matches
   const openConfirmBetModal = setTrue
-
-  const { account } = useMetamask()
-
+  const { isConnected } = useAccount()
   const [page, setPage] = useState(0)
   const [rowsPerPage, setRowsPerPage] = useState(20)
   const [selectedTeam, setSelectedTeam] = useState('Select Team')
@@ -270,74 +261,48 @@ export default function ActiveTable(props: ActiveTableProps) {
                 sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
               >
                 <TableCell sx={{ color: '#fff' }} align="center">
-                  <Stack
-                    direction={'row'}
-                    justifyContent="center"
-                    alignItems={'center'}
-                    spacing={2}
+                  <Button
+                    onClick={() => handleSelectTeam(key, row.id, 0)}
+                    variant="contained"
+                    sx={{
+                      color: '#FFFFFF',
+                      background: '#282835',
+                      p: 2,
+                      '&:hover': {
+                        backgroundColor: '#00FFC2',
+                        color: '#111',
+                      },
+                      border:
+                        selectTeam[key].selection === 0
+                          ? '2px solid #00FFC2'
+                          : '',
+                    }}
                   >
-                    <Image
-                      height={40}
-                      width={40}
-                      src={row.teamA.logo}
-                      alt="homeTeamLogo"
-                    />
-                    <Button
-                      onClick={() => handleSelectTeam(key, row.id, 0)}
-                      variant="contained"
-                      sx={{
-                        color: '#FFFFFF',
-                        background: '#282835',
-                        p: 2,
-                        '&:hover': {
-                          backgroundColor: '#00FFC2',
-                          color: '#111',
-                        },
-                        border:
-                          selectTeam[key].selection === 0
-                            ? '2px solid #00FFC2'
-                            : '',
-                      }}
-                    >
-                      {' '}
-                      {row.teamA.abbreviation}
-                    </Button>
-                  </Stack>
+                    {' '}
+                    {row.teamA.abbreviation}
+                  </Button>
                 </TableCell>
                 <TableCell sx={{ color: '#fff' }} align="center">
-                  <Stack
-                    direction={'row'}
-                    justifyContent="center"
-                    alignItems={'center'}
-                    spacing={2}
+                  <Button
+                    onClick={() => handleSelectTeam(key, row.id, 1)}
+                    variant="contained"
+                    sx={{
+                      color: '#FFFFFF',
+                      background: '#282835',
+                      p: 2,
+                      '&:hover': {
+                        backgroundColor: '#00FFC2',
+                        color: '#111',
+                      },
+                      border:
+                        selectTeam[key].selection === 1
+                          ? '2px solid #00FFC2'
+                          : '',
+                    }}
                   >
-                    <Image
-                      height={40}
-                      width={40}
-                      src={row.teamB.logo}
-                      alt="awayTeamLogo"
-                    />
-                    <Button
-                      onClick={() => handleSelectTeam(key, row.id, 1)}
-                      variant="contained"
-                      sx={{
-                        color: '#FFFFFF',
-                        background: '#282835',
-                        p: 2,
-                        '&:hover': {
-                          backgroundColor: '#00FFC2',
-                          color: '#111',
-                        },
-                        border:
-                          selectTeam[key].selection === 1
-                            ? '2px solid #00FFC2'
-                            : '',
-                      }}
-                    >
-                      {' '}
-                      {row.teamB.abbreviation}
-                    </Button>
-                  </Stack>
+                    {' '}
+                    {row.teamB.abbreviation}
+                  </Button>
                 </TableCell>
                 <TableCell sx={{ color: '#fff' }} align="center">
                   {selectedTeam}
@@ -353,6 +318,7 @@ export default function ActiveTable(props: ActiveTableProps) {
               <TableCell align="right" colSpan={3}>
                 <Button
                   onClick={openConfirmBetModal}
+                  disabled={isConnected ? false : true}
                   sx={{
                     color: '#FFFFFF',
                     background: '#282835',

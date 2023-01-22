@@ -1,6 +1,7 @@
 import Image from 'next/image'
 import { useRouter } from 'next/router'
 import { useSelector } from 'react-redux'
+import { ConnectButton } from '@rainbow-me/rainbowkit'
 import { MouseEvent, useEffect, useState } from 'react'
 import { Notifications, TableRows } from '@mui/icons-material'
 import {
@@ -16,8 +17,7 @@ import {
 
 // contexts and hooks
 import { RootState } from 'redux/store'
-import { useMetamask } from 'contexts/Metamask'
-import useMetamaskLogin from 'hooks/useMetamaskLogin'
+import useWagmiLogin from 'hooks/useMetamaskLogin'
 import { userData } from 'utils/interfaces'
 
 // components
@@ -27,10 +27,11 @@ import BalanceView from 'components/BalanceView'
 import { Logo, ProfilePic, wallet } from 'assets'
 import AccountBalanceWalletIcon from '@mui/icons-material/AccountBalanceWallet'
 import SignUpModal from 'components/SignUpModal'
+import { useAccount } from 'wagmi'
 
 const Header = (props: {}) => {
-  const { login } = useMetamaskLogin()
-  const { account, connect, connected } = useMetamask()
+  const { login } = useWagmiLogin()
+  const { isConnected, address }: any = useAccount()
 
   const [openSignUp, setOpenSignUp] = useState(false)
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
@@ -51,7 +52,9 @@ const Header = (props: {}) => {
     setAnchorEl(null)
   }
 
-  const trimmedAccount = account.slice(0, 5) + '...' + account.slice(-5)
+  const trimmedAccount = isConnected
+    ? address.slice(0, 5) + '...' + address.slice(-5)
+    : 'Account'
 
   const signUpChecker = async () => {
     const signUpCheck = await login()
@@ -64,11 +67,11 @@ const Header = (props: {}) => {
   }
 
   useEffect(() => {
-    if (!connected && account) {
+    if (!isConnected && address) {
       signUpChecker()
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [account])
+  }, [address])
 
   return (
     <Box sx={{ flexGrow: 1 }}>
@@ -115,13 +118,14 @@ const Header = (props: {}) => {
             </Stack>
 
             <Stack>
-              {account ? (
+              {isConnected ? (
                 <Stack
                   gap={2}
                   direction={'row'}
                   alignItems={'center'}
                   justifyContent={'center'}
                 >
+                  <ConnectButton />
                   <Box
                     display={'flex'}
                     flexDirection={'row'}
@@ -142,21 +146,15 @@ const Header = (props: {}) => {
                       >
                         {userData.name}
                       </Typography>
-                      <Typography
-                        color={'#7D7D8D'}
-                        fontWeight={400}
-                        fontSize={'14px'}
-                      >
-                        {trimmedAccount}
-                      </Typography>
                     </Box>
-
-                    <Image
-                      width={'30px'}
-                      height={'30px'}
-                      alt="ProfilePic"
-                      src={ProfilePic}
-                    />
+                    <IconButton size="large">
+                      <Image
+                        width={'30px'}
+                        height={'30px'}
+                        alt="ProfilePic"
+                        src={ProfilePic}
+                      />
+                    </IconButton>
                   </Box>
 
                   <Badge sx={{ color: '#00FFC2' }} badgeContent={17}>
@@ -175,22 +173,7 @@ const Header = (props: {}) => {
                   />
                 </Stack>
               ) : (
-                <Button
-                  onClick={() => {
-                    connect()
-                    // signUpChecker()
-                  }}
-                  startIcon={
-                    <AccountBalanceWalletIcon sx={{ color: '#111' }} />
-                  }
-                  variant="contained"
-                  fullWidth
-                  sx={{
-                    height: '50px',
-                  }}
-                >
-                  Connect Wallet
-                </Button>
+                <ConnectButton showBalance={false} chainStatus="none" />
               )}
             </Stack>
           </Stack>

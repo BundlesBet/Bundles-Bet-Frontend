@@ -3,7 +3,13 @@ import { NextPage } from 'next'
 import { useDispatch, useSelector } from 'react-redux'
 import { useEffect, useRef, useState } from 'react'
 import { SportsFootball } from '@mui/icons-material'
-import { Container, Grid, Typography } from '@mui/material'
+import {
+  CircularProgress,
+  Container,
+  Grid,
+  Stack,
+  Typography,
+} from '@mui/material'
 
 import { RootState } from 'redux/store'
 
@@ -95,7 +101,9 @@ const SelectPool: NextPage<Props> = ({}) => {
         <Grid container spacing={4} alignItems="flex-start">
           <Grid item xs={12} md={12}>
             {loading ? (
-              'Please Wait Fetching Match Details'
+              <Stack alignItems="center">
+                <CircularProgress />
+              </Stack>
             ) : (
               // <>hello</>
               <SelectPoolTabs />

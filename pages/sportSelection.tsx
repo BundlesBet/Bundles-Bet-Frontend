@@ -31,6 +31,7 @@ const SportSelection = (_props: Props) => {
       sportName: sport.sportName,
       img: JSON.stringify(sport.img),
       icon: JSON.stringify(sport.icon),
+      value: sport.value,
     }
 
     localStorage.setItem('selectedSport', JSON.stringify(value))
@@ -78,7 +79,7 @@ const SportSelection = (_props: Props) => {
       >
         {sportsList.map((sport: sportsListType, index: any) => (
           <Fragment key={index}>
-            <Grid item lg={3} md={4} sm={6} xs={8}>
+            <Grid item lg={2} md={4} sm={6} xs={8}>
               <SportCard
                 clickHandler={() => {
                   router.push(`/viewSportPools/${sport.id}`)
@@ -90,6 +91,7 @@ const SportSelection = (_props: Props) => {
                 sportImg={sport.img}
                 sportName={sport.sportName}
                 id={sport.id}
+                sportValue={sport.value}
               />
             </Grid>
           </Fragment>

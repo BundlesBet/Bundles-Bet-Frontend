@@ -12,7 +12,6 @@ import {
   Stack,
   SvgIconTypeMap,
   Tooltip,
-  Typography,
 } from '@mui/material'
 
 import ViewMatchTable from 'components/Table/ViewMatches'
@@ -20,8 +19,8 @@ import { useRouter } from 'next/router'
 import { sportsList, sportsListType } from 'utils'
 import { Fragment, useEffect, useState } from 'react'
 import { OverridableComponent } from '@mui/material/OverridableComponent'
-import { getMatchesOfPool, getPoolOfSport } from 'utils/apiCalls'
-import axios from 'utils/axios'
+import { getPoolOfSport } from 'utils/apiCalls'
+
 import { useDispatch, useSelector } from 'react-redux'
 import { RootState } from 'redux/store'
 import { setSportSelected } from 'redux/slices/user'
@@ -110,6 +109,7 @@ const ViewPool: NextPage<Props> = (props: Props) => {
                               img: JSON.stringify(sport.img),
                               sportName: sport.sportName,
                               id: sport.id,
+                              value: sportValue,
                             })
                           )
                         }}

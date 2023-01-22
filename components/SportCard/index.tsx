@@ -14,10 +14,18 @@ interface Props {
   sportIcon: OverridableComponent<SvgIconTypeMap<{}, 'svg'>> & {
     muiName: string
   }
+  sportValue: string
 }
 
 const SportCard = (props: Props) => {
-  const { sportIcon: SportIcon, sportImg, sportName, id, clickHandler } = props
+  const {
+    sportIcon: SportIcon,
+    sportImg,
+    sportName,
+    id,
+    clickHandler,
+    sportValue,
+  } = props
 
   const dispatch = useDispatch()
 
@@ -32,6 +40,7 @@ const SportCard = (props: Props) => {
               img: JSON.stringify(sportImg),
               sportName,
               id,
+              value: sportValue,
             })
           )
           clickHandler!()
@@ -39,6 +48,7 @@ const SportCard = (props: Props) => {
         direction="column"
         justifyContent={'center'}
         alignItems={'center'}
+        sx={{ cursor: 'pointer' }}
       >
         <SportIcon sx={{ width: '40px', height: '40px', color: '#fff' }} />
 

@@ -36,6 +36,9 @@ const customTheme = createTheme({
             color: '#111111',
             boxShadow: 20,
           },
+          '&.Mui-disabled': {
+            color: '#111',
+          },
         },
       },
     },

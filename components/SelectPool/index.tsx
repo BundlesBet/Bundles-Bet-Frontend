@@ -75,9 +75,13 @@ export default function SelectPoolTabs(props: Props) {
               bgcolor: '#1C1C26',
             }}
           >
-            <Tab label="Show" {...a11yProps(0)} />
-            <Tab label="Inactive" {...a11yProps(1)} />
-            <Tab label="Show All (80)" {...a11yProps(2)} />
+            <Tab sx={{ color: '#fff' }} label="Show" {...a11yProps(0)} />
+            {/* <Tab sx={{ color: '#fff' }} label="Inactive" {...a11yProps(1)} />
+            <Tab
+              sx={{ color: '#fff' }}
+              label="Show All (80)"
+              {...a11yProps(2)}
+            /> */}
           </Tabs>
         </AppBar>
         <SwipeableViews
