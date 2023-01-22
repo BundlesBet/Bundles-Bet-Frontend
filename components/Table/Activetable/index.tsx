@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useBoolean } from 'usehooks-ts'
 import {
   Box,
@@ -29,6 +29,7 @@ import { useMetamask } from 'contexts/Metamask'
 
 import ConfirmBetModal from 'components/Modals/ConfirmBetModal'
 import BetPlacedSuccessModal from 'components/Modals/BetPlacedSuccessModal'
+import id from 'date-fns/esm/locale/id/index.js'
 
 const tableHeadStyle = {
   '& .MuiTableCell-root': {
@@ -175,24 +176,44 @@ export default function ActiveTable(props: ActiveTableProps) {
   const { account } = useMetamask()
 
   const [page, setPage] = useState(0)
-  const [rowsPerPage, setRowsPerPage] = useState(5)
+  const [rowsPerPage, setRowsPerPage] = useState(20)
   const [selectedTeam, setSelectedTeam] = useState('Select Team')
+  const [selectTeam, setSelectTeam] = useState<
+    Array<{ id: string; selection: number }>
+  >([])
+  const [selectCount, setSelectCount] = useState(0)
   const [transactionSuccess, setTransactionSuccess] = useState(false)
-  const [selectedRow, setSelectedRow] = useState<team>({
-    id: 0,
-    bid: 0,
-    sport: '',
-    action: '',
-    selectedTeam: '',
-    match: { team1: '', team2: '' },
-  })
+  const [loader, setLoader] = useState(true)
+  useEffect(() => {
+    let newTeamArr: any = []
+
+    for (let i = 0; i < rows.length; i++) {
+      newTeamArr.push({ id: '0', selection: -2 })
+    }
+
+    setSelectTeam(newTeamArr)
+    setLoader(false)
+  }, [])
+
+  const handleSelectTeam = (rowId: number, id: string, selection: number) => {
+    console.log(id, selection, rowId)
+    if (selectTeam[rowId].selection === -2) {
+      console.log('hi')
+      setSelectCount(selectCount + 1)
+      const updateState = selectTeam
+      updateState[rowId] = { id, selection }
+      setSelectTeam(updateState)
+    } else {
+      console.log('hello')
+      const updateState = selectTeam
+      updateState[rowId] = { id, selection }
+      setSelectTeam(updateState)
+    }
+  }
+  const setTeamSelections = () => {}
 
   const cancelConfirmBetModal = () => {
     setValue((x: boolean) => !x)
-  }
-
-  const updateSelectedMatchState = (team: team) => {
-    setSelectedRow(team)
   }
 
   const handleConfirmTransaction = () => {
@@ -217,23 +238,8 @@ export default function ActiveTable(props: ActiveTableProps) {
     setPage(0)
   }
 
-  const toolTipJsx = (rowId: number) => {
-    return (
-      <Tooltip
-        title={
-          !account
-            ? 'Connect your Wallet'
-            : Object.keys(selectedRow).length === 0 || rowId !== selectedRow.id
-            ? 'Please Select Team'
-            : ''
-        }
-        arrow
-      >
-        <IconButton>
-          <InfoOutlinedIcon color="primary" />
-        </IconButton>
-      </Tooltip>
-    )
+  if (loader) {
+    return <></>
   }
   return (
     <>
@@ -264,68 +270,74 @@ export default function ActiveTable(props: ActiveTableProps) {
                 sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
               >
                 <TableCell sx={{ color: '#fff' }} align="center">
-                  <Button
-                    startIcon={
-                      <Image
-                        src={row.teamA.logo}
-                        alt="homeTeamLogo"
-                        layout="fill"
-                      />
-                    }
-                    // onClick={() => {
-                    //   updateSelectedMatchState(row)
-                    //   setSelectedTeam(row.match.team1)
-                    // }}
-                    variant="contained"
-                    sx={{
-                      color: '#FFFFFF',
-                      background: '#282835',
-                      p: 2,
-                      '&:hover': {
-                        backgroundColor: '#00FFC2',
-                        color: '#111',
-                      },
-                      // border:
-                      //   selectedRow.match.team1 === row.match.team1
-                      //     ? '2px solid #00FFC2'
-                      //     : '',
-                    }}
+                  <Stack
+                    direction={'row'}
+                    justifyContent="center"
+                    alignItems={'center'}
+                    spacing={2}
                   >
-                    {' '}
-                    {row.teamA.abbreviation}
-                  </Button>
+                    <Image
+                      height={40}
+                      width={40}
+                      src={row.teamA.logo}
+                      alt="homeTeamLogo"
+                    />
+                    <Button
+                      onClick={() => handleSelectTeam(key, row.id, 0)}
+                      variant="contained"
+                      sx={{
+                        color: '#FFFFFF',
+                        background: '#282835',
+                        p: 2,
+                        '&:hover': {
+                          backgroundColor: '#00FFC2',
+                          color: '#111',
+                        },
+                        border:
+                          selectTeam[key].selection === 0
+                            ? '2px solid #00FFC2'
+                            : '',
+                      }}
+                    >
+                      {' '}
+                      {row.teamA.abbreviation}
+                    </Button>
+                  </Stack>
                 </TableCell>
                 <TableCell sx={{ color: '#fff' }} align="center">
-                  <Button
-                    startIcon={
-                      <Image
-                        src={row.teamB.logo}
-                        alt="awayTeamLogo"
-                        layout="fill"
-                      />
-                    }
-                    // onClick={() => {
-                    //   updateSelectedMatchState(row)
-                    //   setSelectedTeam(row.match.team2)
-                    // }}
-                    variant="contained"
-                    sx={{
-                      color: '#FFFFFF',
-                      background: '#282835',
-                      p: 2,
-                      '&:hover': {
-                        backgroundColor: '#00FFC2',
-                        color: '#111',
-                      },
-                      // border:
-                      //   selectedRow.match.team2 === row.match.team2
-                      //     ? '2px solid #00FFC2'
-                      //     : '',
-                    }}
+                  <Stack
+                    direction={'row'}
+                    justifyContent="center"
+                    alignItems={'center'}
+                    spacing={2}
                   >
-                    {' '}
-                    {row.teamB.abbreviation}
-                  </Button>
+                    <Image
+                      height={40}
+                      width={40}
+                      src={row.teamB.logo}
+                      alt="awayTeamLogo"
+                    />
+                    <Button
+                      onClick={() => handleSelectTeam(key, row.id, 1)}
+                      variant="contained"
+                      sx={{
+                        color: '#FFFFFF',
+                        background: '#282835',
+                        p: 2,
+                        '&:hover': {
+                          backgroundColor: '#00FFC2',
+                          color: '#111',
+                        },
+                        border:
+                          selectTeam[key].selection === 1
+                            ? '2px solid #00FFC2'
+                            : '',
+                      }}
+                    >
+                      {' '}
+                      {row.teamB.abbreviation}
+                    </Button>
+                  </Stack>
                 </TableCell>
                 <TableCell sx={{ color: '#fff' }} align="center">
                   {selectedTeam}
