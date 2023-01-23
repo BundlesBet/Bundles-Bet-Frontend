@@ -3,9 +3,7 @@ import React from 'react'
 import CloseIcon from '@mui/icons-material/Close'
 import CheckCircleIcon from '@mui/icons-material/CheckCircle'
 import { Box, Modal, Stack, Typography } from '@mui/material'
-
-// contexts and hooks
-import { useMetamask } from 'contexts/Metamask'
+import { useAccount } from 'wagmi'
 
 // assets
 
@@ -37,8 +35,10 @@ const crossButton = {
 
 const BetPlacedSuccessModal = (props: Props) => {
   const { handleClose, open } = props
-  const { account } = useMetamask()
-  const trimmedAccount = account.slice(0, 5) + '...' + account.slice(-5)
+  const { address, isConnected }: any = useAccount()
+  const trimmedAccount = isConnected
+    ? address.slice(0, 5) + '...' + address.slice(-5)
+    : 'Account'
   // const [value, copy] = useCopyToClipboard()
   // const copyToClipBoard = () => {
   //   copy(account)

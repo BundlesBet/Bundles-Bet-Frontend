@@ -13,11 +13,9 @@ import {
 } from '@mui/material'
 import CloseIcon from '@mui/icons-material/Close'
 
-// contexts and hooks
-import { useMetamask } from 'contexts/Metamask'
-
 // assets
 import { Link } from 'assets/index'
+import { useAccount } from 'wagmi'
 
 type Props = {
   open: boolean
@@ -48,10 +46,12 @@ const crossButton = {
 const ConfirmBetModal = (props: Props) => {
   const { handleClose, handleConfirm, open } = props
 
-  const { account } = useMetamask()
+  const { address, isConnected }: any = useAccount()
   const [value, copy] = useCopyToClipboard()
 
-  const trimmedAccount = account.slice(0, 5) + '...' + account.slice(-5)
+  const trimmedAccount = isConnected
+    ? address.slice(0, 5) + '...' + address.slice(-5)
+    : 'Account'
 
   return (
     <>
@@ -95,7 +95,7 @@ const ConfirmBetModal = (props: Props) => {
                       src={Link}
                       alt="linkIcon"
                       onClick={() => {
-                        copy(account)
+                        copy(address)
                       }}
                     />
                   </Box>

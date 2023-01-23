@@ -6,11 +6,9 @@ import { Person } from '@mui/icons-material'
 import { useCopyToClipboard } from 'usehooks-ts'
 import { Box, Menu, MenuItem, Typography } from '@mui/material'
 
-// contexts and hooks
-import { useMetamask } from 'contexts/Metamask'
-
 // assets
 import { Link } from 'assets/index'
+import { useAccount } from 'wagmi'
 
 type Props = {
   anchorEl: HTMLElement | null
@@ -20,9 +18,8 @@ type Props = {
 
 const BalanceView = (props: Props) => {
   const { anchorEl, handleClose, open } = props
-
+  const { address }: any = useAccount()
   const router = useRouter()
-  const { account } = useMetamask()
   const [value, copy] = useCopyToClipboard()
   console.log('🚀 ~ file: index.tsx:16 ~ CurrentBalance ~ value', value)
 
@@ -95,8 +92,8 @@ const BalanceView = (props: Props) => {
 
             <Stack direction={'row'} alignItems={'center'}>
               <Typography color={'#7D7D8D'} mr={1}>
-                {account
-                  ? account.slice(0, 6) + '...' + account.slice(-4)
+                {address
+                  ? address.slice(0, 6) + '...' + address.slice(-4)
                   : 'Account'}
               </Typography>
               <Image
@@ -104,7 +101,7 @@ const BalanceView = (props: Props) => {
                 src={Link}
                 alt="linkIcon"
                 onClick={() => {
-                  copy(account)
+                  copy(address)
                 }}
               />
             </Stack>

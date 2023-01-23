@@ -52,7 +52,6 @@ export default function SportSearch() {
           />
         )}
         onChange={(e, option) => {
-          console.log(option)
           const obj = {
             id: (option as sportsListType).id,
             sportName: (option as sportsListType).sportName,
@@ -61,7 +60,7 @@ export default function SportSearch() {
           }
           dispatch(setSportSelected(obj))
           localStorage.setItem('selectedSport', JSON.stringify(obj))
-          router.push(`/viewpool/${(option as sportsListType).id}`)
+          router.push(`/viewSportPools/${(option as sportsListType).id}`)
         }}
       />
     </Stack>

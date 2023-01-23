@@ -5,9 +5,6 @@ const axios = Axios.create({
     process.env.NODE_ENV === 'production'
       ? `${process.env.NEXT_PUBLIC_PROD_BASE_URL}/${process.env.NEXT_PUBLIC_VERSION}`
       : `${process.env.NEXT_PUBLIC_BASE_URL}/${process.env.NEXT_PUBLIC_VERSION}`,
-  headers: {
-    'Content-Type': 'application/json',
-  },
 })
 
 export default axios

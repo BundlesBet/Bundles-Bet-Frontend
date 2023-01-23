@@ -26,36 +26,7 @@ export const UserSlice = createSlice({
       state.userData = action.payload
     },
     setSportSelected: (state, action) => {
-      console.log(action)
-
       state.sportSelected = action.payload
-      // if (action.payload.length === 0) {
-      //   state.sportSelected = []
-      // } else {
-      //   const sportIdSelected = action.payload
-
-      //   // check if sport exists or not
-      //   const sportsExists = (
-      //     state.sportSelected! as Array<sportsListType>
-      //   ).some((sport: sportsListType) => sport.id === sportIdSelected)
-
-      //   if (sportsExists) {
-      //     // if sport exists, then we remove
-      //     const sportsToKeep = (
-      //       state.sportSelected! as Array<sportsListType>
-      //     ).filter((sport: sportsListType) => sport.id !== sportIdSelected)
-      //     ;(state.sportSelected as sportsListType[]) = [...sportsToKeep]
-      //   } else {
-      //     // else we add the sport
-      //     const sportSelected = (
-      //       state.sportSelected! as Array<sportsListType>
-      //     ).filter((sport: sportsListType) => sport.id === sportIdSelected)
-      //     ;(state.sportSelected as sportsListType[]) = [
-      //       ...state.sportSelected,
-      //       ...sportSelected,
-      //     ]
-      //   }
-      // }
     },
   },
 })

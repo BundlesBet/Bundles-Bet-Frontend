@@ -39,13 +39,20 @@ function a11yProps(index: number) {
   }
 }
 
-export default function SelectPoolTabs() {
+interface Props {
+  // matchData: any
+}
+
+export default function SelectPoolTabs(props: Props) {
+  // const { matchData } = props
+
   const theme = useTheme()
   const [value, setValue] = useState(0)
 
   const sportSelected = useSelector(
     (state: RootState) => state.user
   ).sportSelected
+  const matchData = useSelector((state: RootState) => state.betting).poolData
 
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
     setValue(newValue)
@@ -68,9 +75,13 @@ export default function SelectPoolTabs() {
               bgcolor: '#1C1C26',
             }}
           >
-            <Tab label="Show" {...a11yProps(0)} />
-            <Tab label="Inactive" {...a11yProps(1)} />
-            <Tab label="Show All (80)" {...a11yProps(2)} />
+            <Tab sx={{ color: '#fff' }} label="Show" {...a11yProps(0)} />
+            {/* <Tab sx={{ color: '#fff' }} label="Inactive" {...a11yProps(1)} />
+            <Tab
+              sx={{ color: '#fff' }}
+              label="Show All (80)"
+              {...a11yProps(2)}
+            /> */}
           </Tabs>
         </AppBar>
         <SwipeableViews
@@ -79,7 +90,7 @@ export default function SelectPoolTabs() {
           onChangeIndex={handleChangeIndex}
         >
           <TabPanel value={value} index={0} dir={theme.direction}>
-            <ActiveTable />
+            <ActiveTable matchData={matchData} />
           </TabPanel>
           <TabPanel value={value} index={1} dir={theme.direction}>
             <UnActiveTable />

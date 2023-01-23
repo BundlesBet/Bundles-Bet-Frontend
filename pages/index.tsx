@@ -4,6 +4,7 @@ import Image from 'next/image'
 import { NextPage } from 'next'
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
+import { ConnectButton } from '@rainbow-me/rainbowkit'
 import {
   Typography,
   Stack,
@@ -12,20 +13,18 @@ import {
   Container,
   CssBaseline,
   Box,
-  Button,
   Link,
 } from '@mui/material'
 
 // contexts and hooks
-import { useMetamask } from 'contexts/Metamask'
-import useMetamaskLogin from 'hooks/useMetamaskLogin'
+import { useAccount } from 'wagmi'
 
 // components
 import SignUpModal from 'components/SignUpModal'
 
 // assets
 import { Logo } from 'assets/index'
-import AccountBalanceWalletIcon from '@mui/icons-material/AccountBalanceWallet'
+import useWagmiLogin from 'hooks/useMetamaskLogin'
 
 interface Props {}
 
@@ -38,8 +37,8 @@ interface Props {}
 
 const ConnectWallet: NextPage<Props> = ({}) => {
   const router = useRouter()
-  const { login } = useMetamaskLogin()
-  const { account, connect, connected } = useMetamask()
+  const { login } = useWagmiLogin()
+  const { address, isConnected }: any = useAccount()
 
   const [openSignUp, setOpenSignUp] = useState(false)
 
@@ -55,11 +54,11 @@ const ConnectWallet: NextPage<Props> = ({}) => {
   }
 
   useEffect(() => {
-    if (!connected && account) {
+    if (!isConnected && address) {
       signUpChecker()
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [account])
+  }, [address])
 
   return (
     <>
@@ -112,26 +111,7 @@ const ConnectWallet: NextPage<Props> = ({}) => {
             direction="column"
             spacing={2}
           >
-            <Button
-              onClick={() => {
-                connect()
-                // signUpChecker()
-              }}
-              startIcon={<AccountBalanceWalletIcon sx={{ color: '#111' }} />}
-              variant="contained"
-              fullWidth
-              sx={{
-                mt: 3,
-                mb: 1,
-                height: '50px',
-                fontWeight: 700,
-                borderRadius: '5px',
-                lineHeight: '21px',
-                fontSize: '16px',
-              }}
-            >
-              Connect Your Wallet
-            </Button>
+            <ConnectButton showBalance={false} chainStatus="none" />
 
             <Link
               component="button"

@@ -4,8 +4,6 @@ import { toast } from 'react-toastify'
 import { useCopyToClipboard } from 'usehooks-ts'
 import { Box, Paper, Stack, Typography } from '@mui/material'
 
-import { useMetamask } from 'contexts/Metamask'
-
 import {
   currentBalancePaperStyle,
   currentBalancePaperStyle2,
@@ -13,11 +11,12 @@ import {
 import styles from './currentBalance.module.scss'
 
 import { Link } from 'assets/index'
+import { useAccount } from 'wagmi'
 
 type Props = {}
 
 const CurrentBalance = (props: Props) => {
-  const { account } = useMetamask()
+  const { isConnected, address }: any = useAccount()
   const [value, copy] = useCopyToClipboard()
   console.log('🚀 ~ file: index.tsx:16 ~ CurrentBalance ~ value', value)
 
@@ -29,7 +28,7 @@ const CurrentBalance = (props: Props) => {
           ...currentBalancePaperStyle,
         }}
       >
-        {!account ? (
+        {!isConnected ? (
           <Typography className={styles.heading} textAlign="center">
             Connect Your Wallet
           </Typography>
@@ -41,7 +40,7 @@ const CurrentBalance = (props: Props) => {
         )}
       </Paper>
 
-      {account && (
+      {isConnected && (
         <Paper
           variant="outlined"
           sx={{
@@ -56,8 +55,8 @@ const CurrentBalance = (props: Props) => {
             <Typography className={styles.stack}>56,123.45 $BUND</Typography>
             <Stack direction="row">
               <Typography className={styles.stack} mr={1}>
-                {account
-                  ? account.slice(0, 6) + '...' + account.slice(-4)
+                {isConnected
+                  ? address.slice(0, 6) + '...' + address.slice(-4)
                   : 'Account'}
               </Typography>
               <Box sx={{ cursor: 'pointer' }}>
@@ -65,7 +64,7 @@ const CurrentBalance = (props: Props) => {
                   src={Link}
                   alt="linkIcon"
                   onClick={() => {
-                    copy(account)
+                    copy(address)
                     toast.success('Account address copied successfully')
                   }}
                 />

@@ -1,10 +1,12 @@
 import { configureStore, combineReducers } from '@reduxjs/toolkit'
 
 import UserSlice from './slices/user'
+import BettingSlice from './slices/betting'
 
 const store = configureStore({
   reducer: combineReducers({
     user: UserSlice,
+    betting: BettingSlice,
   }),
 })
 

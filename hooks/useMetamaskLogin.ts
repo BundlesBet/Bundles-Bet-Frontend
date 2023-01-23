@@ -1,23 +1,21 @@
 import { useDispatch } from 'react-redux'
 
-import { useMetamask } from 'contexts/Metamask'
 import { setUserData } from 'redux/slices/user'
 import { getUserDataByWalletAddress } from 'utils/apiCalls'
+import { useAccount } from 'wagmi'
 
-export default function useMetamaskLogin() {
+export default function useWagmiLogin() {
   const dispatch = useDispatch()
-  const { account } = useMetamask()
+  const { isConnected, address }: any = useAccount()
 
   const login = async () => {
-    console.log(account)
-
     const signedData = await (window as any).ethereum?.request({
       method: 'personal_sign',
       params: [
         JSON.stringify(
           'Welcome to BundlesBets. Sign the message to proceed further.'
         ),
-        account,
+        isConnected,
       ],
     })
 
@@ -30,7 +28,7 @@ export default function useMetamaskLogin() {
     // if it exists, we set it in redux user state
     // else we ask user to enter info
 
-    const userData = await getUserDataByWalletAddress(account)
+    const userData = await getUserDataByWalletAddress(address)
     console.log(userData)
     delete userData.error
 

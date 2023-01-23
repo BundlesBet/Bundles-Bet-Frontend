@@ -65,22 +65,6 @@ export const allowedChains: AllowedChainConfig[] = [
 ];
 ```
 
-### Metamask Context
-
-- `account`: The account that is currently selected in the Metamask.
-
-- `connect`: Connects the app to the Metamask.
-
-- `discconect`: Disconnects the app from the Metamask.
-
-- `isConnectedToAllowedNetwork`: Checks if the Metamask is connected to the allowed network.
-
-- `handleTransactionError`: Use this function to handle transaction (contract interaction) errors.
-
-- `refresh`:
-  - `rerender`: Use this function to force re-render the appliction.
-  - `triggerValue`: Include this as an dependency to hooks like the `useEffect` if required. This value will change when the user changes the network, account and when `rerender` is called, thus triggering the hook.
-
 # Available Scripts
 
 In the project directory, you can run:

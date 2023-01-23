@@ -20,31 +20,14 @@ import LastPageIcon from '@mui/icons-material/LastPage'
 import FirstPageIcon from '@mui/icons-material/FirstPage'
 import KeyboardArrowLeft from '@mui/icons-material/KeyboardArrowLeft'
 import KeyboardArrowRight from '@mui/icons-material/KeyboardArrowRight'
-
+import LeaderboardIcon from '@mui/icons-material/Leaderboard'
 import { useRouter } from 'next/router'
-
-function createData(
-  sport: string,
-  contest: string,
-  contestEntry: number,
-  totalPricePool: number,
-  entry: number,
-  action: string
-) {
-  return { sport, contest, contestEntry, totalPricePool, entry, action }
-}
-
-const rows = [
-  createData('Football', 'NFL showdown', 15, 40000, 1445, 'Enter'),
-  createData('Football', 'NBA showdown', 35, 6000, 114, 'Enter'),
-  createData('Football', 'NFL Best Down', 55, 80000, 1967, 'Enter'),
-  createData('Football', 'NFL Fadeaway', 65, 90000, 23452, 'Enter'),
-]
 
 const tableHeadStyle = {
   '& .MuiTableCell-root': {
     borderBottom: '1px solid #282835',
     color: '#7D7D8D',
+    fontSize: '18px',
   },
 }
 
@@ -163,8 +146,27 @@ function TablePaginationActions(props: TablePaginationActionsProps) {
   )
 }
 
-export default function ViewMatchTable() {
+interface Props {
+  poolData: any
+}
+
+export default function ViewMatchTable(props: Props) {
+  const { poolData } = props
+  function createData(
+    sport: string,
+    contest: string,
+    contestEntry: number,
+    totalPricePool: number,
+    entry: number,
+    action: string
+  ) {
+    return { sport, contest, contestEntry, totalPricePool, entry, action }
+  }
+
+  const rows = poolData
+
   const [page, setPage] = React.useState(0)
+
   const [rowsPerPage, setRowsPerPage] = React.useState(5)
   const router = useRouter()
   // Avoid a layout jump when reaching the last page with empty rows.
@@ -200,45 +202,46 @@ export default function ViewMatchTable() {
               <TableCell sx={{ color: 'primary.light' }} align="center">
                 Prize Pool
               </TableCell>
-              <TableCell sx={{ color: 'primary.light' }} align="center">
-                Entries
-              </TableCell>
               {/* <TableCell sx={{ color: 'primary.light' }} align="center">
-                Action
+                Entries
               </TableCell> */}
+              <TableCell sx={{ color: 'primary.light' }} align="center">
+                Action
+              </TableCell>
             </TableRow>
           </TableHead>
           <TableBody sx={tableBodyStyle}>
             {(rowsPerPage > 0
               ? rows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
               : rows
-            ).map((row, key) => (
+            ).map((row: any, key: any) => (
               <TableRow
                 key={key}
                 sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
               >
                 <TableCell
-                  sx={{ color: '#fff' }}
+                  sx={{ color: '#fff', cursor: 'pointer' }}
                   align="center"
-                  onClick={() => router.push('/select-pool')}
+                  onClick={() => router.push(`/viewpool/${row.id}`)}
                 >
-                  {row.contest}
+                  {row.poolName}
                 </TableCell>
                 <TableCell sx={{ color: '#fff' }} align="center">
-                  {row.contestEntry}
+                  {row.fee}
                 </TableCell>
                 <TableCell sx={{ color: '#fff' }} align="center">
-                  {row.totalPricePool}
+                  {row.reward}
                   <br />
                   <Typography color="primary.light">$BUND</Typography>
                 </TableCell>
-                <TableCell sx={{ color: '#fff' }} align="center">
-                  {row.entry}
-                </TableCell>
-
                 {/* <TableCell sx={{ color: '#fff' }} align="center">
+                  {row.fee}
+                </TableCell> */}
+
+                <TableCell sx={{ color: '#fff' }} align="center">
                   <Button
-                    onClick={() => router.push('/select-pool')}
+                    startIcon={<LeaderboardIcon />}
+                    onClick={() => router.push(`/leaderboard/${key}`)}
                     sx={{
                       color: '#FFFFFF',
                       background: '#282835',
@@ -251,7 +254,7 @@ export default function ViewMatchTable() {
                   >
                     {row.action}
                   </Button>
-                </TableCell> */}
+                </TableCell>
               </TableRow>
             ))}
             {emptyRows > 0 && (

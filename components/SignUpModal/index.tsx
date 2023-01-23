@@ -5,8 +5,8 @@ import { Box, Button, Modal, Stack, TextField, Typography } from '@mui/material'
 
 // contexts and hooks
 import { saveUserData } from 'utils/apiCalls'
-import { useMetamask } from 'contexts/Metamask'
 import { signUpValidation } from 'helpers/validation'
+import { useAccount } from 'wagmi'
 
 // assets
 
@@ -31,7 +31,7 @@ const SignUpModal = (props: Props) => {
   const { handleClose, open } = props
 
   const router = useRouter()
-  const { account } = useMetamask()
+  const { address }: any = useAccount()
 
   const formik = useFormik({
     initialValues: {
@@ -51,7 +51,7 @@ const SignUpModal = (props: Props) => {
 
     let userData: any = {
       balance: 0,
-      walletAddress: account,
+      walletAddress: address,
       name: formik.values.userName,
       emailAddress: formik.values.email,
     }
