@@ -21,7 +21,6 @@ import KeyboardArrowRight from '@mui/icons-material/KeyboardArrowRight'
 
 import ConfirmBetModal from 'components/Modals/ConfirmBetModal'
 import BetPlacedSuccessModal from 'components/Modals/BetPlacedSuccessModal'
-import id from 'date-fns/esm/locale/id/index.js'
 import { useAccount } from 'wagmi'
 
 const tableHeadStyle = {
@@ -161,47 +160,46 @@ interface ActiveTableProps {
 
 export default function ActiveTable(props: ActiveTableProps) {
   const { setTrue, setValue, value } = useBoolean(false)
+
   const { matchData } = props
 
   const rows = matchData.matches
+
   const openConfirmBetModal = setTrue
+
   const { isConnected } = useAccount()
   const [page, setPage] = useState(0)
   const [rowsPerPage, setRowsPerPage] = useState(20)
-  const [selectedTeam, setSelectedTeam] = useState('Select Team')
-  const [selectTeam, setSelectTeam] = useState<
-    Array<{ id: string; selection: number }>
+  const [selectTeams, setSelectTeams] = useState<
+    Array<{ match: string; selection: number }>
   >([])
   const [selectCount, setSelectCount] = useState(0)
   const [transactionSuccess, setTransactionSuccess] = useState(false)
   const [loader, setLoader] = useState(true)
+
   useEffect(() => {
+    if (!rows || !rows?.length) return
     let newTeamArr: any = []
 
     for (let i = 0; i < rows.length; i++) {
-      newTeamArr.push({ id: '0', selection: -2 })
+      newTeamArr.push({ id: 0, selection: -2 })
     }
 
-    setSelectTeam(newTeamArr)
+    setSelectTeams(newTeamArr)
+
     setLoader(false)
-  }, [])
+  }, [rows])
 
   const handleSelectTeam = (rowId: number, id: string, selection: number) => {
-    console.log(id, selection, rowId)
-    if (selectTeam[rowId].selection === -2) {
-      console.log('hi')
+    if (selectTeams[rowId].selection === -2) {
       setSelectCount(selectCount + 1)
-      const updateState = selectTeam
-      updateState[rowId] = { id, selection }
-      setSelectTeam(updateState)
-    } else {
-      console.log('hello')
-      const updateState = selectTeam
-      updateState[rowId] = { id, selection }
-      setSelectTeam(updateState)
     }
+
+    const updateState = selectTeams
+    updateState[rowId] = { match: id, selection }
+
+    setSelectTeams([...updateState])
   }
-  const setTeamSelections = () => {}
 
   const cancelConfirmBetModal = () => {
     setValue((x: boolean) => !x)
@@ -273,7 +271,7 @@ export default function ActiveTable(props: ActiveTableProps) {
                         color: '#111',
                       },
                       border:
-                        selectTeam[key].selection === 0
+                        selectTeams[key].selection === 0
                           ? '2px solid #00FFC2'
                           : '',
                     }}
@@ -295,7 +293,7 @@ export default function ActiveTable(props: ActiveTableProps) {
                         color: '#111',
                       },
                       border:
-                        selectTeam[key].selection === 1
+                        selectTeams[key].selection === 1
                           ? '2px solid #00FFC2'
                           : '',
                     }}
@@ -305,7 +303,11 @@ export default function ActiveTable(props: ActiveTableProps) {
                   </Button>
                 </TableCell>
                 <TableCell sx={{ color: '#fff' }} align="center">
-                  {selectedTeam}
+                  {selectTeams[key].selection === -2
+                    ? 'Select A Team'
+                    : selectTeams[key].selection === 0
+                    ? row.teamA.abbreviation
+                    : row.teamB.abbreviation}
                 </TableCell>
               </TableRow>
             ))}
@@ -318,7 +320,9 @@ export default function ActiveTable(props: ActiveTableProps) {
               <TableCell align="right" colSpan={3}>
                 <Button
                   onClick={openConfirmBetModal}
-                  disabled={isConnected ? false : true}
+                  disabled={
+                    !isConnected || selectCount != rows.length ? true : false
+                  }
                   sx={{
                     color: '#FFFFFF',
                     background: '#282835',
@@ -360,6 +364,7 @@ export default function ActiveTable(props: ActiveTableProps) {
 
       <ConfirmBetModal
         open={value}
+        teamsSelected={selectTeams}
         handleConfirm={handleConfirmTransaction}
         handleClose={cancelConfirmBetModal}
       />

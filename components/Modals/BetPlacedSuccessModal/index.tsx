@@ -4,6 +4,8 @@ import CloseIcon from '@mui/icons-material/Close'
 import CheckCircleIcon from '@mui/icons-material/CheckCircle'
 import { Box, Modal, Stack, Typography } from '@mui/material'
 import { useAccount } from 'wagmi'
+import { useSelector } from 'react-redux'
+import { RootState } from 'redux/store'
 
 // assets
 
@@ -44,6 +46,8 @@ const BetPlacedSuccessModal = (props: Props) => {
   //   copy(account)
   // }
 
+  const poolData = useSelector((state: RootState) => state.betting).poolData
+
   return (
     <Modal open={open} onClose={handleClose}>
       <Box sx={style}>
@@ -69,7 +73,7 @@ const BetPlacedSuccessModal = (props: Props) => {
             Bet Placed
           </Typography>
           <Typography fontSize={'20px'} color="secondary" textAlign={'center'}>
-            1234.7 $BUND
+            {poolData.fee} $BUND
           </Typography>
           <Typography
             fontSize={'16px'}

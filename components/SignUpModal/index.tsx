@@ -7,6 +7,8 @@ import { Box, Button, Modal, Stack, TextField, Typography } from '@mui/material'
 import { saveUserData } from 'utils/apiCalls'
 import { signUpValidation } from 'helpers/validation'
 import { useAccount } from 'wagmi'
+import { setUserData } from 'redux/slices/user'
+import { useDispatch } from 'react-redux'
 
 // assets
 
@@ -31,7 +33,8 @@ const SignUpModal = (props: Props) => {
   const { handleClose, open } = props
 
   const router = useRouter()
-  const { address }: any = useAccount()
+  const dispatch = useDispatch()
+  const { address } = useAccount()
 
   const formik = useFormik({
     initialValues: {
@@ -66,6 +69,10 @@ const SignUpModal = (props: Props) => {
     // localStorage.setItem('userData', JSON.stringify(userData))
     const response = await saveUserData(userData)
     console.log(response)
+    delete response.error
+
+    // saving in redux state
+    dispatch(setUserData(response))
 
     handleClose(true)
 
@@ -77,7 +84,10 @@ const SignUpModal = (props: Props) => {
   return (
     <Modal
       open={open}
-      onClose={handleClose}
+      onClose={(event, reason) => {
+        if (reason && reason == 'backdropClick') return
+        return handleClose(true)
+      }}
       aria-labelledby="modal-modal-title"
       aria-describedby="modal-modal-description"
     >

@@ -2,7 +2,6 @@ import Head from 'next/head'
 import { NextPage } from 'next'
 import { useDispatch, useSelector } from 'react-redux'
 import { useEffect, useRef, useState } from 'react'
-import { SportsFootball } from '@mui/icons-material'
 import {
   CircularProgress,
   Container,
@@ -38,9 +37,10 @@ const SelectPool: NextPage<Props> = ({}) => {
 
   const getMatchData = async () => {
     const fetchMatchData = await getMatchesOfPool(id)
+    console.log(fetchMatchData)
 
-    finalMatchData.current = fetchMatchData.fetchedMatches
-    dispatch(setPoolsData(finalMatchData.current))
+    finalMatchData.current = fetchMatchData.fetchedMatches.matches
+    dispatch(setPoolsData(fetchMatchData.fetchedMatches))
 
     setTimeout(() => {
       setLoading(false)
@@ -48,6 +48,8 @@ const SelectPool: NextPage<Props> = ({}) => {
   }
 
   useEffect(() => {
+    console.log(id)
+
     if (!id) return
 
     getMatchData()
@@ -55,7 +57,7 @@ const SelectPool: NextPage<Props> = ({}) => {
   }, [id])
 
   useEffect(() => {
-    if (!finalMatchData.current.length) return
+    if (!finalMatchData.current && !finalMatchData.current.length) return
     else setLoading(false)
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [finalMatchData.current])
@@ -69,12 +71,7 @@ const SelectPool: NextPage<Props> = ({}) => {
       if (localStorageSport) {
         setShowSport(JSON.parse(localStorageSport))
       } else {
-        setShowSport({
-          icon: SportsFootball,
-          sportName: 'Pool Details',
-          img: NFL,
-          id: 0,
-        })
+        setShowSport(sportSelected)
       }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps

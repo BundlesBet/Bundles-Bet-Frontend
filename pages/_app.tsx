@@ -18,8 +18,7 @@ import { urls } from 'utils'
 import { useRouter } from 'next/router'
 import { configureChains, createClient, WagmiConfig } from 'wagmi'
 import { polygonMumbai, polygon } from 'wagmi/chains'
-import { alchemyProvider } from 'wagmi/providers/alchemy'
-import { publicProvider } from 'wagmi/providers/public'
+import { jsonRpcProvider } from 'wagmi/providers/jsonRpc'
 import {
   RainbowKitProvider,
   darkTheme,
@@ -44,12 +43,11 @@ const { chains, provider, webSocketProvider } = configureChains(
       : []),
   ],
   [
-    alchemyProvider({
-      // This is Alchemy's default API key.
-      // You can get your own at https://dashboard.alchemyapi.io
-      apiKey: 'xqBUec8hwYcXLPpMua9lzav4spEPGcn6',
+    jsonRpcProvider({
+      rpc: (chain) => ({
+        http: process.env.NEXT_PUBLIC_PROVIDER!,
+      }),
     }),
-    publicProvider(),
   ]
 )
 

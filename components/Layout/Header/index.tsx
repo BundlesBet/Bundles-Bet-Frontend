@@ -31,7 +31,7 @@ import { useAccount } from 'wagmi'
 
 const Header = (props: {}) => {
   const { login } = useWagmiLogin()
-  const { isConnected, address }: any = useAccount()
+  const { isConnected, address, isConnecting } = useAccount()
 
   const [openSignUp, setOpenSignUp] = useState(false)
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
@@ -53,7 +53,7 @@ const Header = (props: {}) => {
   }
 
   const trimmedAccount = isConnected
-    ? address.slice(0, 5) + '...' + address.slice(-5)
+    ? address?.slice(0, 5) + '...' + address?.slice(-5)
     : 'Account'
 
   const signUpChecker = async () => {
@@ -67,7 +67,8 @@ const Header = (props: {}) => {
   }
 
   useEffect(() => {
-    if (!isConnected && address) {
+    if (!isConnected || !address || isConnecting) return
+    if (isConnected && address) {
       signUpChecker()
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps

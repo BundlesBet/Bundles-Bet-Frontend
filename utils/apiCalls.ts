@@ -4,6 +4,7 @@ import { userData } from './interfaces'
 
 const authRoute = '/auth'
 const userRoute = '/users'
+const bettingRoute = '/betting'
 
 const apiCall = async (response: any, error: any) => {
   try {
@@ -39,17 +40,23 @@ export const getSports = async () => {
 
 export const getPoolOfSport = async (sportName: string) => {
   const [response, error] = await api(
-    axios.get(`/betting/getPools?sportName=${sportName}`)
+    axios.get(`${bettingRoute}/getPools?sportName=${sportName}`)
   )
   return apiCall(response, error)
 }
 
 export const getMatchesOfPool = async (poolId: Number) => {
   const [response, error] = await api(
-    axios.get(`/betting/getPoolMatches?poolId=${poolId}`)
+    axios.get(`${bettingRoute}/getPoolMatches?poolId=${poolId}`)
   )
 
   return apiCall(response, error)
 }
 
-export const createBet = async (body: any) => {}
+export const createBet = async (body: object) => {
+  const [response, error] = await api(
+    axios.post(`${bettingRoute}/createBet`, body)
+  )
+
+  return apiCall(response, error)
+}

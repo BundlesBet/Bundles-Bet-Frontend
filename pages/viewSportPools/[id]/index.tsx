@@ -31,16 +31,6 @@ interface Props {
   }
 }
 
-// export const getStaticProps = async () => {
-//   const poolData = await axios.get('/v1/betting/getPools')
-
-//   const data = poolData
-
-//   return {
-//     props: { users: data },
-//   }
-// }
-
 const ViewPool: NextPage<Props> = (props: Props) => {
   const router = useRouter()
   const dispatch = useDispatch()
@@ -48,22 +38,28 @@ const ViewPool: NextPage<Props> = (props: Props) => {
   const [loading, setLoading] = useState<boolean>(true)
   const sportName = useSelector(
     (state: RootState) => state.user.sportSelected
-  ).sportName
+  ).value
   const sportSelected = useSelector(
     (state: RootState) => state.user.sportSelected
   )
 
   const getPoolData = async () => {
-    const fetchPoolData = await getPoolOfSport(sportName)
+    console.log(sportName)
 
-    setPoolData(fetchPoolData.fetchedPools)
-    setLoading(false)
+    const fetchPoolData = await getPoolOfSport(sportName)
+    console.log(fetchPoolData)
+
+    setPoolData(fetchPoolData.pools)
+
+    setTimeout(() => setLoading(false), 2000)
   }
 
   useEffect(() => {
     getPoolData()
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [sportSelected])
+
+  if (loading) return <></>
 
   return (
     <div>
@@ -109,7 +105,7 @@ const ViewPool: NextPage<Props> = (props: Props) => {
                               img: JSON.stringify(sport.img),
                               sportName: sport.sportName,
                               id: sport.id,
-                              value: sportValue,
+                              value: sport.value,
                             })
                           )
                         }}

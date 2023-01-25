@@ -16,10 +16,14 @@ import CloseIcon from '@mui/icons-material/Close'
 // assets
 import { Link } from 'assets/index'
 import { useAccount } from 'wagmi'
+import { useSelector } from 'react-redux'
+import { RootState } from 'redux/store'
+import { createBet } from 'utils/apiCalls'
 
 type Props = {
   open: boolean
   handleConfirm: () => void
+  teamsSelected: { match: string; selection: number }[]
   handleClose: (state: boolean) => void
 }
 
@@ -53,6 +57,29 @@ const ConfirmBetModal = (props: Props) => {
     ? address.slice(0, 5) + '...' + address.slice(-5)
     : 'Account'
 
+  const userData = useSelector((state: RootState) => state.user).userData
+
+  const poolData = useSelector((state: RootState) => state.betting).poolData
+
+  const processTransaction = async () => {
+    try {
+      const body = {
+        userId: userData.id,
+        poolId: poolData.id,
+        teamSelections: props.teamsSelected,
+        betAmount: parseInt(poolData.fee),
+      }
+
+      const response = await createBet(body)
+      console.log(response)
+
+      handleClose(false)
+      handleConfirm()
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
   return (
     <>
       <Modal open={open} onClose={handleClose}>
@@ -68,7 +95,7 @@ const ConfirmBetModal = (props: Props) => {
             <Typography fontSize={'24px'} textAlign={'center'}>
               Checkout
             </Typography>
-            <Typography
+            {/* <Typography
               fontSize={'20px'}
               color="secondary"
               textAlign={'center'}
@@ -81,7 +108,7 @@ const ConfirmBetModal = (props: Props) => {
               textAlign={'center'}
             >
               {trimmedAccount}
-            </Typography>
+            </Typography> */}
           </Stack>
 
           <TextField
@@ -123,7 +150,7 @@ const ConfirmBetModal = (props: Props) => {
             >
               {' '}
               <Typography color="primary.light">Buy Price </Typography>
-              <Typography> 123 $BUND</Typography>
+              <Typography>{poolData.fee} $BUND</Typography>
             </Stack>
             <Divider />
             <Stack
@@ -133,7 +160,7 @@ const ConfirmBetModal = (props: Props) => {
             >
               {' '}
               <Typography color="primary.light">Total Price </Typography>
-              <Typography> 124 $BUND</Typography>
+              <Typography>{poolData.fee} $BUND</Typography>
             </Stack>
 
             <Stack
@@ -149,10 +176,7 @@ const ConfirmBetModal = (props: Props) => {
                   p: 3,
                 }}
                 type="submit"
-                onClick={() => {
-                  handleClose(false)
-                  handleConfirm()
-                }}
+                onClick={processTransaction}
               >
                 Confirm
               </Button>

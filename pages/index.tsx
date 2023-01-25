@@ -38,7 +38,7 @@ interface Props {}
 const ConnectWallet: NextPage<Props> = ({}) => {
   const router = useRouter()
   const { login } = useWagmiLogin()
-  const { address, isConnected }: any = useAccount()
+  const { address, isConnected, isConnecting } = useAccount()
 
   const [openSignUp, setOpenSignUp] = useState(false)
 
@@ -54,11 +54,13 @@ const ConnectWallet: NextPage<Props> = ({}) => {
   }
 
   useEffect(() => {
-    if (!isConnected && address) {
+    if (!isConnected || !address || isConnecting) return
+
+    if (isConnected && address) {
       signUpChecker()
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [address])
+  }, [isConnected, address])
 
   return (
     <>
