@@ -237,6 +237,9 @@ export default function ActiveTable(props: ActiveTableProps) {
           <TableHead sx={tableHeadStyle}>
             <TableRow>
               <TableCell sx={{ color: '#fff', pt: 0 }} align="center">
+                Match Name
+              </TableCell>
+              <TableCell sx={{ color: '#fff', pt: 0 }} align="center">
                 Home Team
               </TableCell>
               <TableCell sx={{ color: '#fff', pt: 0 }} align="center">
@@ -258,6 +261,9 @@ export default function ActiveTable(props: ActiveTableProps) {
                 key={key}
                 sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
               >
+                <TableCell sx={{ color: '#fff' }} align="center" width={'30%'}>
+                  {row.name}
+                </TableCell>
                 <TableCell sx={{ color: '#fff' }} align="center">
                   <Button
                     onClick={() => handleSelectTeam(key, row.id, 0)}
@@ -317,7 +323,7 @@ export default function ActiveTable(props: ActiveTableProps) {
               </TableRow>
             )}
             <TableRow>
-              <TableCell align="right" colSpan={3}>
+              <TableCell align="right" colSpan={4}>
                 <Button
                   onClick={openConfirmBetModal}
                   disabled={
