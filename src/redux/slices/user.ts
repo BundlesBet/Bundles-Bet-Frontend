@@ -1,5 +1,3 @@
-/* eslint-disable no-param-reassign */
-/* eslint-disable @typescript-eslint/ban-types */
 import { createSlice } from "@reduxjs/toolkit";
 
 import type { SportsListType } from "utils";
@@ -22,7 +20,10 @@ export const UserSlice = createSlice({
     sportSelected: {} as SportsListType, // sport selected
   },
   reducers: {
-    setUserData: (state: { userData: {} }, action: { payload: UserData }) => {
+    setUserData: (
+      state: { userData: UserData },
+      action: { payload: UserData }
+    ) => {
       state.userData = action.payload;
     },
     setSportSelected: (state, action) => {
