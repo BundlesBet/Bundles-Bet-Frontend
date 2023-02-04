@@ -1,12 +1,4 @@
-import {
-  Box,
-  Container,
-  Heading,
-  HStack,
-  Text,
-  VStack,
-  Icon,
-} from "@chakra-ui/react";
+import { Box, Heading, HStack, Text, VStack, Icon } from "@chakra-ui/react";
 import { AiFillTrophy } from "react-icons/ai";
 
 const TotalBets = () => {

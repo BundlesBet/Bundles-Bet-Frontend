@@ -1,16 +1,16 @@
-import { configureStore, combineReducers } from '@reduxjs/toolkit'
+import { configureStore, combineReducers } from "@reduxjs/toolkit";
 
-import UserSlice from './slices/user'
-import BettingSlice from './slices/betting'
+import { BettingSlice } from "./slices/betting";
+import { UserSlice } from "./slices/user";
 
 const store = configureStore({
   reducer: combineReducers({
-    user: UserSlice,
-    betting: BettingSlice,
+    user: UserSlice.reducer,
+    betting: BettingSlice.reducer,
   }),
-})
+});
 
-export default store
+export default store;
 
-export type RootState = ReturnType<typeof store.getState>
-export type AppDispatch = typeof store.dispatch
+export type RootState = ReturnType<typeof store.getState>;
+export type AppDispatch = typeof store.dispatch;
