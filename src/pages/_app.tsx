@@ -1,31 +1,27 @@
-/* eslint-disable react/jsx-props-no-spreading */
-/* eslint-disable import/order */
-
-import { DefaultSeo } from "next-seo";
-import type { AppProps } from "next/app";
-import Head from "next/head";
-
-import { configureChains, createClient, WagmiConfig } from "wagmi";
-import { polygonMumbai, polygon } from "wagmi/chains";
-import { alchemyProvider } from "wagmi/providers/alchemy";
-import { publicProvider } from "wagmi/providers/public";
-import "@rainbow-me/rainbowkit/styles.css";
-import type { ThemeOptions } from "@rainbow-me/rainbowkit/dist/themes/baseTheme";
 import {
   RainbowKitProvider,
   darkTheme,
   getDefaultWallets,
 } from "@rainbow-me/rainbowkit";
+import type { ThemeOptions } from "@rainbow-me/rainbowkit/dist/themes/baseTheme";
+import type { AppProps } from "next/app";
+import Head from "next/head";
+import { useRouter } from "next/router";
+import { DefaultSeo } from "next-seo";
+import { Provider } from "react-redux";
+import { configureChains, createClient, WagmiConfig } from "wagmi";
+import { polygonMumbai, polygon } from "wagmi/chains";
+import { alchemyProvider } from "wagmi/providers/alchemy";
+import { publicProvider } from "wagmi/providers/public";
+import "@rainbow-me/rainbowkit/styles.css";
 
 import defaultSEOConfig from "../../next-seo.config";
 import { Chakra } from "lib/components/Chakra";
 import Layout from "lib/layout";
 import "lib/styles/globals.css";
-import { useRouter } from "next/router";
-import { urls } from "utils";
 import Footer from "lib/layout/Footer";
-import { Provider } from "react-redux";
 import store from "redux/store";
+import { urls } from "utils";
 
 const { chains, provider, webSocketProvider } = configureChains(
   [

@@ -137,8 +137,7 @@ const UnActiveTable = (props: TableProps) => {
             </Tr>
           </Thead>
           <Tbody>
-            {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
-            {posts?.map((match: any, index: number) => {
+            {posts?.map((match, index: number) => {
               return (
                 <Tr key={uniqueID()}>
                   <Td color="#fff" fontSize="md" fontWeight="hairline">
