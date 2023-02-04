@@ -9,9 +9,9 @@ import {
   Text,
 } from "@chakra-ui/react";
 import { AiFillCheckCircle } from "react-icons/ai";
-// import { useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 
-// import type { RootState } from "redux/store";
+import type { RootState } from "redux/store";
 
 interface ModalProps {
   isOpen: boolean;
@@ -20,7 +20,7 @@ interface ModalProps {
 
 export const BetPlaced = (props: ModalProps) => {
   const { isOpen, close } = props;
-  // const { poolData } = useSelector((state: RootState) => state.betting);
+  const { poolData } = useSelector((state: RootState) => state.betting);
   return (
     <Modal
       isOpen={isOpen}
@@ -47,7 +47,7 @@ export const BetPlaced = (props: ModalProps) => {
             >
               <Icon as={AiFillCheckCircle} color="green.500" boxSize="6rem" />
               <Heading size="2xl">Bet Placed</Heading>
-              <Text fontSize="lg"> 25 $BUND </Text>
+              <Text fontSize="lg"> {poolData.fee} $BUND </Text>
             </Stack>
           </Stack>
         </ModalBody>

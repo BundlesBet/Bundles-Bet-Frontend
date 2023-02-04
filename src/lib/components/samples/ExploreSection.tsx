@@ -48,14 +48,7 @@ const ExploreSection = () => {
           </Heading>
         </Flex>
         {explore.map(
-          (
-            link: {
-              href: string;
-              text: string;
-              disable: boolean;
-            }
-            // index: number
-          ) => (
+          (link: { href: string; text: string; disable: boolean }) => (
             <Tooltip
               key={uniqueID()}
               hasArrow
@@ -63,7 +56,6 @@ const ExploreSection = () => {
               aria-label="A tooltip"
             >
               <Box
-                // eslint-disable-next-line react/no-array-index-key
                 as="button"
                 borderRadius="md"
                 bg="#282835"

@@ -21,12 +21,7 @@ export const BettingSlice = createSlice({
     } as Pool,
   },
   reducers: {
-    setPoolsData: (
-      // eslint-disable-next-line @typescript-eslint/ban-types
-      state: { poolData: {} },
-      action: { payload: [Pool] }
-    ) => {
-      // eslint-disable-next-line prefer-destructuring, no-param-reassign
+    setPoolsData: (state: { poolData: Pool }, action: { payload: Pool }) => {
       state.poolData = action.payload;
     },
   },

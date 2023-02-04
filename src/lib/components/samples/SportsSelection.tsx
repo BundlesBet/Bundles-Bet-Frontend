@@ -6,8 +6,8 @@ import { useDispatch } from "react-redux";
 import { SportsGrid } from "../common/CommonGrid";
 import { setSportSelected } from "redux/slices/user";
 import { sportsList, uniqueID } from "utils";
-import { getSports } from "utils/apiCalls";
-import type { SportsDataInterface } from "utils/interfaces";
+// import { getSports } from "utils/apiCalls";
+// import type { SportsDataInterface } from "utils/interfaces";
 
 import SearchBar from "./SearchBar";
 
@@ -19,8 +19,7 @@ const SportsSelection = () => {
   const updateSelectedNftState = (id: number) => {
     selectedSportId.current = id;
 
-    // eslint-disable-next-line @typescript-eslint/no-shadow
-    const sport = sportsList.filter((sport) => sport.id === id)[0];
+    const sport = sportsList.filter((s) => s.id === id)[0];
 
     const value = {
       id: sport.id,
@@ -35,10 +34,8 @@ const SportsSelection = () => {
   };
 
   const fetchSports = async () => {
-    const sports: SportsDataInterface = await getSports();
-
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const sportsData = sports.sportsData.items;
+    // const sports: SportsDataInterface = await getSports();
+    // const sportsData = sports.sportsData.items;
   };
 
   useEffect(() => {

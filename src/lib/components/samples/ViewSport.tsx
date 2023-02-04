@@ -9,8 +9,7 @@ const ViewSport = () => {
   const dispatch = useDispatch();
 
   const updateSelectedNftState = (id: number) => {
-    // eslint-disable-next-line @typescript-eslint/no-shadow
-    const sport = sportsList.filter((sport) => sport.id === id)[0];
+    const sport = sportsList.filter((s) => s.id === id)[0];
 
     const value = {
       id: sport.id,
