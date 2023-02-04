@@ -1,8 +1,3 @@
-/* eslint-disable @typescript-eslint/no-shadow */
-/* eslint-disable @typescript-eslint/no-explicit-any */
-/* eslint-disable consistent-return */
-/* eslint-disable react/no-unstable-nested-components */
-/* eslint-disable react/no-array-index-key */
 import {
   Table,
   Thead,
@@ -16,29 +11,34 @@ import {
   TableContainer,
 } from "@chakra-ui/react";
 import Pagination from "@choc-ui/paginator";
-import React, { forwardRef } from "react";
+import { useRouter } from "next/router";
+import { forwardRef, useEffect, useState } from "react";
 
-// interface TableProps {
-//   //   poolData: any;
-// }
+import CustomLoader from "../samples/CustomLoader";
+import { uniqueID } from "utils";
+import { getLeaderboard } from "utils/apiCalls";
+import type { LeaderBoard } from "utils/interfaces";
+
 const LeaderboardTable = () => {
-  //   const { poolData } = props;
+  const header = ["User", "Position", "Accuracy", "Reward"];
 
-  const header = ["User", "Position", "Win Percentage", "Prize"];
+  const router = useRouter();
+  const poolId = parseInt(router.query.id as string);
 
-  const data = [
-    { name: "Sourabh", position: 1, winPercentage: 50, prize: "1000" },
-    { name: "Jay", position: 2, winPercentage: 30, prize: "700" },
-    { name: "Anshuman", position: 3, winPercentage: 20, prize: "500" },
-    { name: "Shubham", position: 4, winPercentage: 10, prize: "400" },
-  ];
+  const [current, setCurrent] = useState(1);
+  const [loading, setLoading] = useState(true);
+  const [leaderboardData, setLeaderboardData] = useState<LeaderBoard | null>(
+    null
+  );
 
-  //   const data = poolData;
-  const [current, setCurrent] = React.useState(1);
   const pageSize = 5;
   const offset = (current - 1) * pageSize;
-  const posts = data.length > 0 ? data.slice(offset, offset + pageSize) : [];
+  const posts =
+    leaderboardData?.predictionAccuracy.length === 0
+      ? []
+      : leaderboardData?.predictionAccuracy.slice(offset, offset + pageSize);
 
+  // eslint-disable-next-line react/no-unstable-nested-components, @typescript-eslint/no-explicit-any
   const Prev = forwardRef((props, ref: any) => {
     return (
       <Button ref={ref} {...props}>
@@ -46,6 +46,7 @@ const LeaderboardTable = () => {
       </Button>
     );
   });
+  // eslint-disable-next-line react/no-unstable-nested-components, @typescript-eslint/no-explicit-any
   const Next = forwardRef((props, ref: any) => {
     return (
       <Button ref={ref} {...props}>
@@ -54,6 +55,7 @@ const LeaderboardTable = () => {
     );
   });
 
+  // eslint-disable-next-line consistent-return, @typescript-eslint/no-explicit-any
   const itemRender: any = (_: any, type: string) => {
     if (type === "prev") {
       return Prev;
@@ -63,6 +65,23 @@ const LeaderboardTable = () => {
     }
   };
 
+  const getLeaderboardData = async () => {
+    const leaderboardDataRes = await getLeaderboard(poolId);
+    setLeaderboardData(leaderboardDataRes.poolLeaderboard);
+    setTimeout(() => setLoading(false), 2000);
+  };
+
+  useEffect(() => {
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    if (!poolId || (leaderboardData && Object.keys(leaderboardData!).length))
+      return;
+
+    getLeaderboardData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [poolId]);
+
+  if (loading) return <CustomLoader />;
+
   return (
     <Flex w="full" alignItems="center" justifyContent="center">
       <TableContainer w="full">
@@ -70,11 +89,9 @@ const LeaderboardTable = () => {
           <TableCaption>
             <Pagination
               current={current}
-              onChange={(page: any) => {
-                setCurrent(page);
-              }}
+              onChange={(page: number | undefined) => setCurrent(page || 1)}
               pageSize={pageSize}
-              total={data.length}
+              total={leaderboardData?.predictionAccuracy.length}
               itemRender={itemRender}
               paginationProps={{
                 display: "flex",
@@ -104,25 +121,27 @@ const LeaderboardTable = () => {
             </Tr>
           </Thead>
           <Tbody>
-            {posts.map((pool: any, index: any) => {
-              return (
-                <Tr key={index}>
-                  <Td color="#fff" fontSize="md" fontWeight="hairline">
-                    {pool.name}
-                  </Td>
-                  <Td color="#fff" fontSize="md" fontWeight="hairline">
-                    {pool.position}
-                  </Td>
-                  <Td color="#fff" fontSize="md" fontWeight="hairline">
-                    {pool.winPercentage}
-                  </Td>
+            {posts &&
+              posts?.length &&
+              posts.map((post, index: number) => {
+                return (
+                  <Tr key={uniqueID()}>
+                    <Td color="#fff" fontSize="md" fontWeight="hairline">
+                      {post.user.name}
+                    </Td>
+                    <Td color="#fff" fontSize="md" fontWeight="hairline">
+                      {leaderboardData?.positions[index].position}
+                    </Td>
+                    <Td color="#fff" fontSize="md" fontWeight="hairline">
+                      {leaderboardData?.predictionAccuracy[index].accuracy}
+                    </Td>
 
-                  <Td color="#fff" fontSize="md" fontWeight="hairline">
-                    {pool.prize}
-                  </Td>
-                </Tr>
-              );
-            })}
+                    <Td color="#fff" fontSize="md" fontWeight="hairline">
+                      {leaderboardData?.rewards[index].reward}
+                    </Td>
+                  </Tr>
+                );
+              })}
           </Tbody>
         </Table>
       </TableContainer>

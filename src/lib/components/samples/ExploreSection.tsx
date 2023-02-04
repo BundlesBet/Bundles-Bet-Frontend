@@ -1,7 +1,7 @@
 import { Box, Flex, Grid, Heading, Highlight, Tooltip } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 
-import { urls } from "utils";
+import { uniqueID, urls } from "utils";
 
 import HelperImage from "./HelperImage";
 
@@ -53,17 +53,17 @@ const ExploreSection = () => {
               href: string;
               text: string;
               disable: boolean;
-            },
-            index: number
+            }
+            // index: number
           ) => (
             <Tooltip
+              key={uniqueID()}
               hasArrow
               label={link.disable === true ? "Coming Soon" : ""}
               aria-label="A tooltip"
             >
               <Box
                 // eslint-disable-next-line react/no-array-index-key
-                key={index}
                 as="button"
                 borderRadius="md"
                 bg="#282835"

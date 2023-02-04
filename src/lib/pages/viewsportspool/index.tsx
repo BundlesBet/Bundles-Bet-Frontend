@@ -1,20 +1,23 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-/* eslint-disable no-console */
 import { Box, Flex } from "@chakra-ui/react";
 import { NextSeo } from "next-seo";
-import { useState, useEffect } from "react";
-import { useSelector } from "react-redux";
+import { useState, useEffect, useRef } from "react";
+import { useDispatch, useSelector } from "react-redux";
 
 import CustomLoader from "lib/components/samples/CustomLoader";
 import ExploreViewPool from "lib/components/samples/Explore";
 import ViewSport from "lib/components/samples/ViewSport";
 import PoolTable from "lib/components/table/PoolTable";
+import { setSportSelected } from "redux/slices/user";
 import type { RootState } from "redux/store";
 import { getPoolOfSport } from "utils/apiCalls";
+import type { Pool } from "utils/interfaces";
 
 const ViewSportPools = () => {
-  const [poolData, setPoolData] = useState<any>([]);
+  const [poolData, setPoolData] = useState<Pool[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
+  const currentSportsName = useRef("");
+
+  const dispatch = useDispatch();
   const sportName = useSelector(
     (state: RootState) => state.user.sportSelected
   ).value;
@@ -23,15 +26,34 @@ const ViewSportPools = () => {
   );
 
   const getPoolData = async () => {
-    const fetchPoolData = await getPoolOfSport(sportName);
+    setLoading(true);
 
-    setPoolData(fetchPoolData.pools);
+    if (sportName) {
+      const fetchPoolData = await getPoolOfSport(sportName);
+      setPoolData(fetchPoolData.pools);
+      currentSportsName.current = sportName;
+      setTimeout(() => setLoading(false), 2000);
+      return;
+    }
+    const localStorageSport = localStorage.getItem("selectedSport");
+    if (localStorageSport) {
+      const sportData = JSON.parse(localStorageSport);
+      dispatch(setSportSelected(sportData));
+      const fetchPoolData = await getPoolOfSport(sportData.value);
+      setPoolData(fetchPoolData.pools);
+      currentSportsName.current = sportData.value;
+    }
 
     setTimeout(() => setLoading(false), 2000);
   };
 
   useEffect(() => {
-    getPoolData();
+    if (
+      !poolData.length ||
+      (currentSportsName.current !== sportName && poolData.length)
+    ) {
+      getPoolData();
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [sportSelected]);
 

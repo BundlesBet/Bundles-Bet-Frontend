@@ -3,28 +3,26 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 import type { SportsListType } from "utils";
-import type { userData } from "utils/interfaces";
+import type { UserData } from "utils/interfaces";
 
 export const UserSlice = createSlice({
   name: "user",
   initialState: {
     userData: {
       id: 0,
-      name: "",
-      balance: 0,
-      emailAddress: "",
       walletAddress: "",
-      profilePicture: null,
-      betsPlaced: [],
-      poolId: [],
+      emailAddress: "",
+      name: "",
+      profilePic: null,
+      balance: 0,
       totalRewardsEarned: 0,
       totalPoolsParticipated: 0,
-    } as userData, // user data
+    } as UserData, // user data
     // ? check - why sportSelected is an array
     sportSelected: {} as SportsListType, // sport selected
   },
   reducers: {
-    setUserData: (state: { userData: {} }, action: { payload: userData }) => {
+    setUserData: (state: { userData: {} }, action: { payload: UserData }) => {
       state.userData = action.payload;
     },
     setSportSelected: (state, action) => {

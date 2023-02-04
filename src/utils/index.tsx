@@ -44,32 +44,32 @@ export const sportsList = [
     icon: IoAmericanFootballSharp,
     sportName: "NFL",
     id: 1,
-    value: "Football",
+    value: "football",
   },
   {
     icon: MdSportsBaseball,
     sportName: "NBA",
     img: "NBA",
     id: 2,
-    value: "Baseball",
+    value: "baseball",
   },
   {
     icon: FaBasketballBall,
     sportName: "NCAAM",
     id: 3,
-    value: "Basketball",
+    value: "basketball",
   },
   {
     icon: MdSportsSoccer,
     sportName: "Soccer",
     id: 4,
-    value: "Soccer",
+    value: "soccer",
   },
   {
     icon: MdSportsHockey,
     sportName: "NHL",
     id: 5,
-    value: "Hockey",
+    value: "hockey",
   },
 ];
 
@@ -90,3 +90,7 @@ export const matches = [
     bets: 12345,
   },
 ];
+
+export function uniqueID() {
+  return Math.floor(Math.random() * Date.now());
+}

@@ -1,8 +1,3 @@
-/* eslint-disable @typescript-eslint/no-shadow */
-/* eslint-disable @typescript-eslint/no-explicit-any */
-/* eslint-disable consistent-return */
-/* eslint-disable react/no-unstable-nested-components */
-/* eslint-disable react/no-array-index-key */
 import {
   Table,
   Thead,
@@ -18,13 +13,15 @@ import {
   Tooltip,
 } from "@chakra-ui/react";
 import Pagination from "@choc-ui/paginator";
-import React, { forwardRef } from "react";
+import { forwardRef, useState } from "react";
 import { MdLeaderboard } from "react-icons/md";
 
 import CustomLink from "../common/CustomLink";
+import { uniqueID } from "utils";
+import type { Pool } from "utils/interfaces";
 
 interface TableProps {
-  poolData: any;
+  poolData: Pool[];
 }
 const PoolTable = (props: TableProps) => {
   const { poolData } = props;
@@ -32,27 +29,30 @@ const PoolTable = (props: TableProps) => {
   const header = ["Contest", "Entry Fee", "Reward Percentage", ""];
 
   const data = poolData;
-  const [current, setCurrent] = React.useState(1);
+  const [current, setCurrent] = useState(1);
   const pageSize = 5;
   const offset = (current - 1) * pageSize;
   const posts = data.length > 0 ? data.slice(offset, offset + pageSize) : [];
 
-  const Prev = forwardRef((props, ref: any) => {
+  // eslint-disable-next-line react/no-unstable-nested-components, @typescript-eslint/no-explicit-any
+  const Prev = forwardRef((forwardprops, ref: any) => {
     return (
-      <Button ref={ref} {...props}>
+      <Button ref={ref} {...forwardprops}>
         Prev
       </Button>
     );
   });
-  const Next = forwardRef((props, ref: any) => {
+  // eslint-disable-next-line react/no-unstable-nested-components, @typescript-eslint/no-explicit-any
+  const Next = forwardRef((forwardprops, ref: any) => {
     return (
-      <Button ref={ref} {...props}>
+      <Button ref={ref} {...forwardprops}>
         Next
       </Button>
     );
   });
 
-  const itemRender: any = (_: any, type: string) => {
+  // eslint-disable-next-line consistent-return, @typescript-eslint/no-explicit-any
+  const itemRender: any = (_: unknown, type: string) => {
     if (type === "prev") {
       return Prev;
     }
@@ -61,6 +61,10 @@ const PoolTable = (props: TableProps) => {
     }
   };
 
+  if (!poolData.length) {
+    return <h1>No pools to show</h1>;
+  }
+
   return (
     <Flex w="full" alignItems="center" justifyContent="center">
       <TableContainer w="full">
@@ -68,9 +72,7 @@ const PoolTable = (props: TableProps) => {
           <TableCaption>
             <Pagination
               current={current}
-              onChange={(page: any) => {
-                setCurrent(page);
-              }}
+              onChange={(page: number | undefined) => setCurrent(page || 1)}
               pageSize={pageSize}
               total={data.length}
               itemRender={itemRender}
@@ -102,86 +104,48 @@ const PoolTable = (props: TableProps) => {
             </Tr>
           </Thead>
           <Tbody>
-            {posts.map(
-              (
-                pool: {
-                  id: any;
-                  poolName:
-                    | string
-                    | number
-                    | boolean
-                    | React.ReactElement<
-                        any,
-                        string | React.JSXElementConstructor<any>
-                      >
-                    | React.ReactFragment
-                    | React.ReactPortal
-                    | null
-                    | undefined;
-                  fee:
-                    | string
-                    | number
-                    | boolean
-                    | React.ReactElement<
-                        any,
-                        string | React.JSXElementConstructor<any>
-                      >
-                    | React.ReactFragment
-                    | React.ReactPortal
-                    | null
-                    | undefined;
-                  rewardPercentage:
-                    | string
-                    | number
-                    | boolean
-                    | React.ReactElement<
-                        any,
-                        string | React.JSXElementConstructor<any>
-                      >
-                    | React.ReactFragment
-                    | React.ReactPortal
-                    | null
-                    | undefined;
-                },
-                index: React.Key | null | undefined
-              ) => {
-                return (
-                  <Tr key={index}>
-                    <Td color="#fff" fontSize="md" fontWeight="hairline">
-                      <CustomLink href={`/viewpool/${pool.id}`}>
-                        {pool.poolName}
-                      </CustomLink>
-                    </Td>
-                    <Td color="#fff" fontSize="md" fontWeight="hairline">
-                      {pool.fee}
-                    </Td>
-                    <Td color="#fff" fontSize="md" fontWeight="hairline">
-                      {pool.rewardPercentage} %
-                    </Td>
+            {posts.map((pool) => {
+              return (
+                <Tr key={uniqueID()}>
+                  <Td
+                    color="#fff"
+                    fontSize="md"
+                    cursor="pointer"
+                    fontWeight="hairline"
+                  >
+                    <CustomLink href={`/viewpool/${pool.id}`}>
+                      {pool.poolName}
+                    </CustomLink>
+                  </Td>
+                  <Td color="#fff" fontSize="md" fontWeight="hairline">
+                    {pool.fee}
+                  </Td>
+                  <Td color="#fff" fontSize="md" fontWeight="hairline">
+                    {pool.rewardPercentage} %
+                  </Td>
 
-                    <Td color="#fff" fontSize="md" fontWeight="hairline">
-                      <Tooltip
-                        hasArrow
-                        aria-label="leaderboard"
-                        label="Leaderboard"
-                        placement="right-end"
-                      >
-                        <div>
-                          <CustomLink href={`/leaderboard/${pool.id}`}>
-                            <IconButton
-                              colorScheme="red"
-                              variant="outline"
-                              icon={<MdLeaderboard />}
-                              aria-label="Leaderboard"
-                            />
-                          </CustomLink>
-                        </div>
-                      </Tooltip>
-                    </Td>
-                  </Tr>
-                );
-              }
-            )}
+                  <Td color="#fff" fontSize="md" fontWeight="hairline">
+                    <Tooltip
+                      hasArrow
+                      aria-label="leaderboard"
+                      label="Leaderboard"
+                      placement="right-end"
+                    >
+                      <div>
+                        <CustomLink href={`/leaderboard/${pool.id}`}>
+                          <IconButton
+                            colorScheme="red"
+                            variant="outline"
+                            icon={<MdLeaderboard />}
+                            aria-label="Leaderboard"
+                          />
+                        </CustomLink>
+                      </div>
+                    </Tooltip>
+                  </Td>
+                </Tr>
+              );
+            })}
           </Tbody>
         </Table>
       </TableContainer>

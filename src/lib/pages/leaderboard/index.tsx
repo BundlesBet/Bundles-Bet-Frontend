@@ -1,4 +1,4 @@
-import { Box, Flex, Heading } from "@chakra-ui/react";
+import { Box, Flex, Heading, Text } from "@chakra-ui/react";
 import { NextSeo } from "next-seo";
 
 import LeaderboardTable from "lib/components/table/LeaderBoardTable";
@@ -21,6 +21,9 @@ const Leaderboard = () => {
           Leaderboard
         </Heading>
       </Box>
+      <Text fontSize="small">
+        * Leaderboard table updates everytime a match in a pool ends. *
+      </Text>
       <LeaderboardTable />
     </Flex>
   );

@@ -1,6 +1,6 @@
 import { Button, Flex, Grid, Tooltip } from "@chakra-ui/react";
 
-import { urls } from "utils";
+import { uniqueID, urls } from "utils";
 
 const explore = [
   {
@@ -39,12 +39,13 @@ const ExploreViewPool = () => {
           {explore.map(
             (link: { href: string; text: string; disable: boolean }) => (
               <Tooltip
+                key={uniqueID()}
                 hasArrow
                 label={link.disable === true ? "Coming Soon" : ""}
               >
                 <Button
                   as="a"
-                  disabled={link.disable}
+                  isDisabled={link.disable}
                   target="_blank"
                   size="sm"
                 >

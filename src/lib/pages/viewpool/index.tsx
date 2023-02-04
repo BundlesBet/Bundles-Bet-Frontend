@@ -1,5 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-/* eslint-disable no-console */
 import { Flex, Heading } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import { NextSeo } from "next-seo";
@@ -11,23 +9,24 @@ import MatchesTabs from "lib/components/tabs/MatchesTabs";
 import { setPoolsData } from "redux/slices/betting";
 import type { RootState } from "redux/store";
 import { getMatchesOfPool } from "utils/apiCalls";
+import type { ESPNMatch } from "utils/interfaces";
 
 const ViewPoolMatches = () => {
   const { sportSelected } = useSelector((state: RootState) => state.user);
 
   const [showSport, setShowSport] = useState(sportSelected);
   const dispatch = useDispatch();
-  const router: any = useRouter();
-  const id = parseInt(router.query.id, 10);
-  const finalMatchData = useRef<any>([]);
+  const router = useRouter();
+  const id = parseInt(router.query.id as string, 10);
+  const finalMatchData = useRef<ESPNMatch[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
 
   const getMatchData = async () => {
     const fetchMatchData = await getMatchesOfPool(id);
 
-    finalMatchData.current = fetchMatchData.fetchedMatches.matches;
+    finalMatchData.current = fetchMatchData.fetchedMatches;
 
-    dispatch(setPoolsData(fetchMatchData.fetchedMatches.matches));
+    dispatch(setPoolsData(fetchMatchData.fetchedMatches));
 
     setTimeout(() => {
       setLoading(false);
@@ -42,7 +41,9 @@ const ViewPoolMatches = () => {
   }, [id]);
 
   useEffect(() => {
-    if (!finalMatchData.current && !finalMatchData.current.length) return;
+    if (!finalMatchData.current && !(finalMatchData.current as []).length) {
+      return;
+    }
     setLoading(false);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [finalMatchData.current]);

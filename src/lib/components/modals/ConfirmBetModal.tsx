@@ -30,19 +30,20 @@ import { createBet } from "utils/apiCalls";
 interface ModalProps {
   isOpen: boolean;
   close: () => void;
-  teamsSelected: { match: string; selection: number }[];
+  teamsSelected: { match: number; selection: number }[];
   handleConfirm: () => void;
 }
 
 export const ConfirmBetModal = (props: ModalProps) => {
-  const { isOpen, close, handleConfirm } = props;
+  const { isOpen, close, handleConfirm, teamsSelected } = props;
   const { onCopy, setValue } = useClipboard("");
-  const { address, isConnected }: any = useAccount();
+  const { address, isConnected } = useAccount();
   const trimmedAccount = isConnected
     ? `${address?.slice(0, 5)}...${address?.slice(-5)}`
     : "Account";
   useEffect(() => {
-    setValue(address);
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    setValue(address!);
   }, [address, setValue]);
 
   const { userData } = useSelector((state: RootState) => state.user);
@@ -54,9 +55,8 @@ export const ConfirmBetModal = (props: ModalProps) => {
       const body = {
         userId: userData.id,
         poolId: poolData.id,
-        // eslint-disable-next-line react/destructuring-assignment
-        teamSelections: props.teamsSelected,
-        betAmount: parseInt(poolData.fee, 10),
+        teamSelections: teamsSelected,
+        betAmount: poolData.fee,
       };
 
       await createBet(body);
@@ -137,12 +137,20 @@ export const ConfirmBetModal = (props: ModalProps) => {
               >
                 <HStack justifyContent="space-between" alignItems="center">
                   <Text color="#7D7D8D"> Buy Price </Text>
-                  <Text>25 $BUND</Text>
+                  <Text>{poolData.fee} $BUND</Text>
                 </HStack>
                 <HStack justifyContent="space-between" alignItems="center">
-                  <Text color="#7D7D8D"> Total Price </Text>
-                  <Text>25 $BUND</Text>
+                  <Text color="#7D7D8D"> Protocol Price </Text>
+                  <Text>{poolData.protocolFee} MATIC</Text>
                 </HStack>
+                {/* <HStack justifyContent="space-between" alignItems="center">
+                  <Text color="#7D7D8D"> Total Price </Text>
+                  <Text>
+                    {parseInt(poolData.fee.toString()) +
+                      parseInt(poolData.protocolFee.toString())}{" "}
+                    $BUND
+                  </Text>
+                </HStack> */}
               </Stack>
             </Stack>
           </Stack>

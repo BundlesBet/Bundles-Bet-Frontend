@@ -5,15 +5,16 @@ import { useDispatch } from "react-redux";
 
 import { SportsGrid } from "../common/CommonGrid";
 import { setSportSelected } from "redux/slices/user";
-import { sportsList } from "utils";
+import { sportsList, uniqueID } from "utils";
 import { getSports } from "utils/apiCalls";
 import type { SportsDataInterface } from "utils/interfaces";
 
 import SearchBar from "./SearchBar";
 
 const SportsSelection = () => {
-  const selectedSportId = useRef<number>(0);
   const dispatch = useDispatch();
+
+  const selectedSportId = useRef<number>(0);
 
   const updateSelectedNftState = (id: number) => {
     selectedSportId.current = id;
@@ -27,6 +28,8 @@ const SportsSelection = () => {
       icon: JSON.stringify(sport.icon),
       value: sport.value,
     };
+
+    dispatch(setSportSelected(value));
 
     localStorage.setItem("selectedSport", JSON.stringify(value));
   };
@@ -57,22 +60,12 @@ const SportsSelection = () => {
         <SportsGrid>
           {sportsList.map((sport) => (
             <Link
+              key={uniqueID()}
               as={NextLink}
               rel="noopener noreferrer"
               href={`/viewsportpools/${sport.id}`}
-              onClick={() => {
-                updateSelectedNftState(sport.id);
-                dispatch(
-                  setSportSelected({
-                    id: sport.id,
-                    sportName: sport.sportName,
-                    icon: JSON.stringify(sport.icon),
-                    value: sport.value,
-                  })
-                );
-              }}
             >
-              <div>
+              <div onClick={() => updateSelectedNftState(sport.id)}>
                 <Icon as={sport.icon} w={20} h={25} />
                 <Heading color="#0EB634" size="md" cursor="pointer">
                   {sport.sportName}
