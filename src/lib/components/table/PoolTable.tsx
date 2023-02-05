@@ -28,11 +28,11 @@ const PoolTable = (props: TableProps) => {
 
   const header = ["Contest", "Entry Fee", "Reward Percentage", ""];
 
-  const data = poolData;
+  const data = poolData || [];
   const [current, setCurrent] = useState(1);
   const pageSize = 5;
   const offset = (current - 1) * pageSize;
-  const posts = data.length > 0 ? data.slice(offset, offset + pageSize) : [];
+  const posts = data?.length === 0 ? [] : data.slice(offset, offset + pageSize);
 
   // eslint-disable-next-line react/no-unstable-nested-components, @typescript-eslint/no-explicit-any
   const Prev = forwardRef((forwardprops, ref: any) => {
@@ -61,7 +61,7 @@ const PoolTable = (props: TableProps) => {
     }
   };
 
-  if (!poolData.length) {
+  if (!poolData || !poolData?.length) {
     return <h1>No pools to show</h1>;
   }
 

@@ -49,6 +49,7 @@ const ViewSportPools = () => {
 
   useEffect(() => {
     if (
+      !poolData ||
       !poolData.length ||
       (currentSportsName.current !== sportName && poolData.length)
     ) {

@@ -25,10 +25,9 @@ import { urls } from "utils";
 
 const { chains, provider, webSocketProvider } = configureChains(
   [
-    polygon,
     ...(process.env.NEXT_PUBLIC_ENABLE_TESTNETS === "true"
       ? [polygonMumbai]
-      : []),
+      : [polygon]),
   ],
   [
     alchemyProvider({
