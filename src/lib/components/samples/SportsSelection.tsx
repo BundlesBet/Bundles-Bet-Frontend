@@ -5,21 +5,21 @@ import { useDispatch } from "react-redux";
 
 import { SportsGrid } from "../common/CommonGrid";
 import { setSportSelected } from "redux/slices/user";
-import { sportsList } from "utils";
-import { getSports } from "utils/apiCalls";
-import type { SportsDataInterface } from "utils/interfaces";
+import { sportsList, uniqueID } from "utils";
+// import { getSports } from "utils/apiCalls";
+// import type { SportsDataInterface } from "utils/interfaces";
 
 import SearchBar from "./SearchBar";
 
 const SportsSelection = () => {
-  const selectedSportId = useRef<number>(0);
   const dispatch = useDispatch();
+
+  const selectedSportId = useRef<number>(0);
 
   const updateSelectedNftState = (id: number) => {
     selectedSportId.current = id;
 
-    // eslint-disable-next-line @typescript-eslint/no-shadow
-    const sport = sportsList.filter((sport) => sport.id === id)[0];
+    const sport = sportsList.filter((s) => s.id === id)[0];
 
     const value = {
       id: sport.id,
@@ -28,14 +28,14 @@ const SportsSelection = () => {
       value: sport.value,
     };
 
+    dispatch(setSportSelected(value));
+
     localStorage.setItem("selectedSport", JSON.stringify(value));
   };
 
   const fetchSports = async () => {
-    const sports: SportsDataInterface = await getSports();
-
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const sportsData = sports.sportsData.items;
+    // const sports: SportsDataInterface = await getSports();
+    // const sportsData = sports.sportsData.items;
   };
 
   useEffect(() => {
@@ -57,22 +57,12 @@ const SportsSelection = () => {
         <SportsGrid>
           {sportsList.map((sport) => (
             <Link
+              key={uniqueID()}
               as={NextLink}
               rel="noopener noreferrer"
               href={`/viewsportpools/${sport.id}`}
-              onClick={() => {
-                updateSelectedNftState(sport.id);
-                dispatch(
-                  setSportSelected({
-                    id: sport.id,
-                    sportName: sport.sportName,
-                    icon: JSON.stringify(sport.icon),
-                    value: sport.value,
-                  })
-                );
-              }}
             >
-              <div>
+              <div onClick={() => updateSelectedNftState(sport.id)}>
                 <Icon as={sport.icon} w={20} h={25} />
                 <Heading color="#0EB634" size="md" cursor="pointer">
                   {sport.sportName}

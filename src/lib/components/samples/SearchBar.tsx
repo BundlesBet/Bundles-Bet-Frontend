@@ -1,4 +1,3 @@
-/* eslint-disable react/no-array-index-key */
 import { Icon, Text } from "@chakra-ui/react";
 import {
   AutoComplete,
@@ -7,16 +6,16 @@ import {
   AutoCompleteList,
 } from "@choc-ui/chakra-autocomplete";
 
-import { sportsList } from "utils";
+import { sportsList, uniqueID } from "utils";
 
 export default function App() {
   return (
     <AutoComplete rollNavigation>
       <AutoCompleteInput placeholder="Search..." autoFocus />
       <AutoCompleteList>
-        {sportsList.map((sport, oid) => (
+        {sportsList.map((sport) => (
           <AutoCompleteItem
-            key={`option-${oid}`}
+            key={uniqueID()}
             value={sport.sportName}
             textTransform="capitalize"
             align="center"

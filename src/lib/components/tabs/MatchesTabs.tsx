@@ -5,7 +5,8 @@ import ActiveTable from "../table/ActiveTable";
 import type { RootState } from "redux/store";
 
 const MatchesTabs = () => {
-  const matchData = useSelector((state: RootState) => state.betting).poolData;
+  const matchData = useSelector((state: RootState) => state.betting).poolData
+    .matches;
   return (
     <Box textAlign="center" w="full">
       <Tabs variant="unstyled">
@@ -15,7 +16,8 @@ const MatchesTabs = () => {
         </TabList>
         <TabPanels>
           <TabPanel>
-            <ActiveTable matchData={matchData} />
+            {/* eslint-disable-next-line @typescript-eslint/no-non-null-assertion */}
+            <ActiveTable matchData={matchData!} />
           </TabPanel>
           {/* <TabPanel>
             <ActiveTable matchData={matchData} />

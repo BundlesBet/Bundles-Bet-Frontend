@@ -9,8 +9,8 @@ import {
 } from "@chakra-ui/react";
 import { ConnectButton } from "@rainbow-me/rainbowkit";
 import { useRouter } from "next/router";
-import { useAccount } from "wagmi";
 import { GiHamburgerMenu } from "react-icons/gi";
+import { useAccount } from "wagmi";
 
 import HelperImage from "lib/components/samples/HelperImage";
 

@@ -32,21 +32,19 @@ export default function CustomLink({
   }, [router, href, prefetch]);
 
   return (
-    <Link
-      sx={{ textDecoration: "none" }}
-      {...props}
-      as={NextLink}
-      href={href}
-      onClick={(event) => {
-        event.preventDefault();
-        if (replace) {
-          router.replace(href, undefined, { shallow });
-        } else {
-          router.push(href, undefined, { shallow });
-        }
-      }}
-    >
-      {children}
+    <Link sx={{ textDecoration: "none" }} {...props} as={NextLink} href={href}>
+      <div
+        onClick={(event) => {
+          event.preventDefault();
+          if (replace) {
+            router.replace(href, undefined, { shallow });
+          } else {
+            router.push(href, undefined, { shallow });
+          }
+        }}
+      >
+        {children}
+      </div>
     </Link>
   );
 }

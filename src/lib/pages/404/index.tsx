@@ -8,8 +8,8 @@ import {
   useColorMode,
   Flex,
 } from "@chakra-ui/react";
-import { NextSeo } from "next-seo";
 import Link from "next/link";
+import { NextSeo } from "next-seo";
 
 import MotionBox from "lib/components/motion/Box";
 

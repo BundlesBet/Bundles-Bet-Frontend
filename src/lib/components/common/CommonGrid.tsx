@@ -1,20 +1,18 @@
-/* eslint-disable react/destructuring-assignment */
 import type { SimpleGridProps } from "@chakra-ui/react";
 import { SimpleGrid } from "@chakra-ui/react";
 import { Children, isValidElement, useMemo } from "react";
 
 export const SportsGrid = (props: SimpleGridProps) => {
+  const { children } = props;
   const columns = useMemo(() => {
-    const count = Children.toArray(props.children).filter(
-      isValidElement
-    ).length;
+    const count = Children.toArray(children).filter(isValidElement).length;
     return {
       base: Math.min(2, count),
       md: Math.min(3, count),
       lg: Math.min(4, count),
       xl: Math.min(5, count),
     };
-  }, [props.children]);
+  }, [children]);
 
   return (
     <SimpleGrid
