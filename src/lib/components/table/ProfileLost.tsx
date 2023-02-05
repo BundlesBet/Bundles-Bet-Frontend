@@ -14,6 +14,7 @@ import {
   Button,
   TableCaption,
   TableContainer,
+  Tag,
 } from "@chakra-ui/react";
 import Pagination from "@choc-ui/paginator";
 import React, { forwardRef } from "react";
@@ -21,16 +22,16 @@ import React, { forwardRef } from "react";
 // interface TableProps {
 //   //   poolData: any;
 // }
-const LeaderboardTable = () => {
+const ProfileShowAll = () => {
   //   const { poolData } = props;
 
-  const header = ["User", "Position", "Win Percentage", "Prize"];
+  const header = ["Pool Creation Date", "Pool Name", "Bet Amount", "Status"];
 
   const data = [
-    { name: "Sourabh", position: 1, winPercentage: 50, prize: "1000" },
-    { name: "Jay", position: 2, winPercentage: 30, prize: "700" },
-    { name: "Anshuman", position: 3, winPercentage: 20, prize: "500" },
-    { name: "Shubham", position: 4, winPercentage: 10, prize: "400" },
+    { date: "3/1/2023", name: "NFL 1", betAmount: 18, status: "Lost" },
+    { date: "1/2/2023", name: "NFL 2", betAmount: 54, status: "Lost" },
+    { date: "5/1/2023", name: "NFL 3", betAmount: 28, status: "Lost" },
+    { date: "24/1/2023", name: "NFL 4", betAmount: 80, status: "Lost" },
   ];
 
   //   const data = poolData;
@@ -104,21 +105,29 @@ const LeaderboardTable = () => {
             </Tr>
           </Thead>
           <Tbody>
-            {posts.map((pool: any, index: any) => {
+            {posts.map((item: any, index: any) => {
               return (
                 <Tr key={index}>
                   <Td color="#fff" fontSize="md" fontWeight="hairline">
-                    {pool.name}
+                    {item.date}
                   </Td>
                   <Td color="#fff" fontSize="md" fontWeight="hairline">
-                    {pool.position}
+                    {item.name}
                   </Td>
                   <Td color="#fff" fontSize="md" fontWeight="hairline">
-                    {pool.winPercentage}
+                    {item.betAmount}
                   </Td>
 
                   <Td color="#fff" fontSize="md" fontWeight="hairline">
-                    {pool.prize}
+                    <Tag
+                      size="lg"
+                      key="lg"
+                      variant="solid"
+                      bg={item.status === "Won" ? "#0EB634" : "#ff0000"}
+                      color={item.status === "Won" ? "#000" : "#fff"}
+                    >
+                      {item.status}
+                    </Tag>
                   </Td>
                 </Tr>
               );
@@ -130,4 +139,4 @@ const LeaderboardTable = () => {
   );
 };
 
-export default LeaderboardTable;
+export default ProfileShowAll;

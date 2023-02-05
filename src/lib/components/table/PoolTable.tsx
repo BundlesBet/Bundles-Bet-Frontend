@@ -80,9 +80,9 @@ const PoolTable = (props: TableProps) => {
                 left: "50%",
                 transform: "translateX(-50%)",
               }}
-              focusRing="#00ffc2"
+              focusRing="#0EB634"
               baseStyles={{
-                bg: "#00ffc2",
+                bg: "#0EB634",
                 color: "#000",
               }}
               activeStyles={{

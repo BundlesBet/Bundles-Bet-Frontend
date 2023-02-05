@@ -21,17 +21,12 @@ import React, { forwardRef } from "react";
 // interface TableProps {
 //   //   poolData: any;
 // }
-const LeaderboardTable = () => {
+const ProfilePoolTable = () => {
   //   const { poolData } = props;
 
-  const header = ["User", "Position", "Win Percentage", "Prize"];
+  const header = ["Home Team", "Away Team", "Selected Team"];
 
-  const data = [
-    { name: "Sourabh", position: 1, winPercentage: 50, prize: "1000" },
-    { name: "Jay", position: 2, winPercentage: 30, prize: "700" },
-    { name: "Anshuman", position: 3, winPercentage: 20, prize: "500" },
-    { name: "Shubham", position: 4, winPercentage: 10, prize: "400" },
-  ];
+  const data = [{ home: "CA", away: "AG", selected: "AG" }];
 
   //   const data = poolData;
   const [current, setCurrent] = React.useState(1);
@@ -104,21 +99,17 @@ const LeaderboardTable = () => {
             </Tr>
           </Thead>
           <Tbody>
-            {posts.map((pool: any, index: any) => {
+            {posts.map((item: any, index: any) => {
               return (
                 <Tr key={index}>
                   <Td color="#fff" fontSize="md" fontWeight="hairline">
-                    {pool.name}
+                    {item.home}
                   </Td>
                   <Td color="#fff" fontSize="md" fontWeight="hairline">
-                    {pool.position}
+                    {item.away}
                   </Td>
                   <Td color="#fff" fontSize="md" fontWeight="hairline">
-                    {pool.winPercentage}
-                  </Td>
-
-                  <Td color="#fff" fontSize="md" fontWeight="hairline">
-                    {pool.prize}
+                    {item.selected}
                   </Td>
                 </Tr>
               );
@@ -130,4 +121,4 @@ const LeaderboardTable = () => {
   );
 };
 
-export default LeaderboardTable;
+export default ProfilePoolTable;

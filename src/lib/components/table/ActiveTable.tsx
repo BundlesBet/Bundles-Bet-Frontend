@@ -124,7 +124,7 @@ const ActiveTable = (props: TableProps) => {
                     !isConnected || selectCount !== data.length ? true : false
                   }
                   size="lg"
-                  colorScheme="teal"
+                  bg="#0EB634"
                   color="#111"
                   onClick={onOpen}
                 >
@@ -145,9 +145,9 @@ const ActiveTable = (props: TableProps) => {
                   left: "50%",
                   transform: "translateX(-50%)",
                 }}
-                focusRing="#00ffc2"
+                focusRing="#0EB634"
                 baseStyles={{
-                  bg: "#00ffc2",
+                  bg: "#0EB634",
                   color: "#000",
                 }}
                 activeStyles={{
@@ -223,7 +223,7 @@ const ActiveTable = (props: TableProps) => {
                         onClick={() => handleSelectTeam(index, match.id, 0)}
                         border={
                           selectTeams[index]?.selection === 0
-                            ? "2px solid #00FFC2"
+                            ? "2px solid #0EB634"
                             : ""
                         }
                       >
@@ -234,7 +234,7 @@ const ActiveTable = (props: TableProps) => {
                       <Button
                         border={
                           selectTeams[index]?.selection === 1
-                            ? "2px solid #00FFC2"
+                            ? "2px solid #0EB634"
                             : ""
                         }
                         onClick={() => handleSelectTeam(index, match.id, 1)}

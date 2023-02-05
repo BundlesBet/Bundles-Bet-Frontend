@@ -37,6 +37,7 @@ interface ModalProps {
 export const ConfirmBetModal = (props: ModalProps) => {
   const { isOpen, close, handleConfirm } = props;
   const { onCopy, setValue } = useClipboard("");
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const { address, isConnected }: any = useAccount();
   const trimmedAccount = isConnected
     ? `${address?.slice(0, 5)}...${address?.slice(-5)}`
@@ -151,11 +152,11 @@ export const ConfirmBetModal = (props: ModalProps) => {
           <ButtonGroup spacing="6">
             <Button
               fontSize="md"
-              bg="#00ffc2"
+              bg="#0EB634"
               color="#111"
               _hover={{
                 color: "#111",
-                bg: "#00ffc2",
+                bg: "#0EB634",
               }}
               onClick={processTransaction}
             >
