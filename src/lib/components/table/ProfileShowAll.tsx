@@ -159,7 +159,7 @@ const ProfileShowAll = (props: TableProps) => {
                         <Popover>
                           <PopoverTrigger>
                             <Button>
-                              {item.status === "NOT_STARTED" ? "Cancel" : ""}
+                              {item.status === "ACTIVE" ? "Cancel" : ""}
                             </Button>
                           </PopoverTrigger>
                           <PopoverContent
