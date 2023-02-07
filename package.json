@@ -24,6 +24,7 @@
     "generate": "npx typechain --target=ethers-v5 './src/abis/*.json' --out-dir './src/types'"
   },
   "dependencies": {
+    "@date-io/date-fns": "^2.16.0",
     "@chakra-ui/react": "^2.4.6",
     "@choc-ui/chakra-autocomplete": "^5.1.4",
     "@choc-ui/paginator": "^3.4.0",
@@ -33,7 +34,10 @@
     "@reduxjs/toolkit": "^1.9.1",
     "@types/react-table": "^7.7.14",
     "axios": "^1.2.4",
+    "date-fns": "^2.29.3",
+    "date-fns-tz": "^2.0.0",
     "ethers": "^5.0.0",
+    "formik": "^2.2.9",
     "framer-motion": "^8.4.3",
     "next": "^13.1.1",
     "next-pwa": "^5.6.0",

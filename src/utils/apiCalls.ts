@@ -39,9 +39,9 @@ export const getSports = async () => {
   return apiCall(response, error);
 };
 
-export const getPoolOfSport = async (sportName: string) => {
+export const getPoolOfSport = async (sportName: string, status: string) => {
   const [response, error] = await api(
-    axios.get(`${bettingRoute}/getPools?sportName=${sportName}`)
+    axios.get(`${bettingRoute}/getPools/${status}?sportName=${sportName}`)
   );
   return apiCall(response, error);
 };
@@ -69,3 +69,21 @@ export const getLeaderboard = async (poolId: number) => {
 
   return apiCall(response, error);
 };
+
+export const cancelBet = async (body: object) => {
+  const [response, error] = await api(
+    axios.delete(`${bettingRoute}/cancelBet`, body)
+  );
+  return apiCall(response, error);
+};
+
+export const getUserBets = async (userId: number) => {
+  const [response, error] = await api(
+    axios.get(`${userRoute}/getUserBets/${userId}`)
+  );
+  return apiCall(response, error);
+};
+
+// export const getPoolBets = async (poolId: number) => {
+
+// }

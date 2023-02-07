@@ -74,6 +74,7 @@ const ActiveTable = (props: TableProps) => {
 
   useEffect(() => {
     if (!data || !data?.length) return;
+
     const newTeamArr = [];
 
     for (let i = 0; i < data.length; i += 1) {
@@ -186,7 +187,9 @@ const ActiveTable = (props: TableProps) => {
                   </Td>
                   <Td color="#fff" fontSize="md" fontWeight="hairline">
                     <Button
-                      onClick={() => handleSelectTeam(index, match.id, 0)}
+                      onClick={() =>
+                        handleSelectTeam(index, match.espnMatchId, 0)
+                      }
                       border={
                         selectTeams[index]?.selection === 0
                           ? "2px solid #00FFC2"
@@ -203,7 +206,9 @@ const ActiveTable = (props: TableProps) => {
                           ? "2px solid #00FFC2"
                           : ""
                       }
-                      onClick={() => handleSelectTeam(index, match.id, 1)}
+                      onClick={() =>
+                        handleSelectTeam(index, match.espnMatchId, 1)
+                      }
                     >
                       {match.teamB.abbreviation}
                     </Button>

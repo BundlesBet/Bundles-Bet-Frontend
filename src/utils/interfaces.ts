@@ -74,6 +74,12 @@ export type Pool = {
   matches?: Array<ESPNMatch>;
 };
 
+export type PoolWithMatches = {
+  id: number;
+  status: string;
+  pool: Pool;
+};
+
 export type ESPNMatch = {
   id: number;
   espnMatchId: number;

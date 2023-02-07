@@ -1,11 +1,34 @@
-import { Flex, Stack, VStack } from "@chakra-ui/react";
+import { Flex, Stack, VStack, Text } from "@chakra-ui/react";
 import { NextSeo } from "next-seo";
+import { useSelector } from "react-redux";
+import { useAccount } from "wagmi";
 
 import TotalBets from "lib/components/samples/TotalBets";
 import TotalTokenTransferred from "lib/components/samples/TotalToken";
 import ProfileTabs from "lib/components/tabs/ProfileTabs";
+import type { RootState } from "redux/store";
 
 const Dashboard = () => {
+  const { userData } = useSelector((state: RootState) => state.user);
+
+  const { isConnected } = useAccount();
+
+  if (!isConnected) {
+    return (
+      <Flex
+        direction="column"
+        alignItems="center"
+        justifyContent="center"
+        minHeight="70vh"
+        gap={4}
+        mb={8}
+        w="full"
+      >
+        <Text> Please connect your wallet </Text>;
+      </Flex>
+    );
+  }
+
   return (
     <Flex
       direction="column"
@@ -18,15 +41,15 @@ const Dashboard = () => {
     >
       <NextSeo title="Dashboard" />
       <Stack
-        direction={{ md: "row", sm: "column" }}
+        direction={{ md: "row", base: "column" }}
         justifyContent="space-between"
         alignItems="center"
         w="full"
         gap={2}
       >
         <VStack gap={8} w={{ md: "30%", sm: "full" }}>
-          <TotalBets />
-          <TotalTokenTransferred />
+          <TotalBets totalBets={userData.totalPoolsParticipated} />
+          <TotalTokenTransferred totalToken={userData.totalRewardsEarned} />
         </VStack>
 
         <ProfileTabs />

@@ -1,6 +1,10 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable @typescript-eslint/no-use-before-define */
 import {
   Button,
   FormControl,
+  FormErrorMessage,
+  FormHelperText,
   FormLabel,
   Heading,
   Input,
@@ -11,12 +15,15 @@ import {
   Stack,
   useColorModeValue,
 } from "@chakra-ui/react";
-// import { useDispatch } from "react-redux";
-// import { useAccount } from "wagmi";
+// eslint-disable-next-line import/no-extraneous-dependencies
+import { useFormik } from "formik";
+import { useRouter } from "next/router";
+import { useDispatch } from "react-redux";
+import { useAccount } from "wagmi";
 
-// import { signUpValidation } from "helpers/validation";
-// import { setUserData } from "redux/slices/user";
-// import { saveUserData } from "utils/apiCalls";
+import { signUpValidation } from "helpers/validation";
+import { setUserData } from "redux/slices/user";
+import { saveUserData } from "utils/apiCalls";
 
 interface ModalProps {
   isOpen: boolean;
@@ -25,6 +32,56 @@ interface ModalProps {
 
 export const SignUpModal = (props: ModalProps) => {
   const { isOpen, close } = props;
+  const router = useRouter();
+  const dispatch = useDispatch();
+  const { address } = useAccount();
+
+  const signUp = async () => {
+    // api call to save the info passed
+
+    const userData: any = {
+      balance: 0,
+      walletAddress: address,
+      name: formik.values.userName,
+      emailAddress: formik.values.email,
+    };
+
+    if (formik.values.email === "") {
+      delete userData.emailAddress;
+    }
+
+    // backend api call
+    // currently we are only saving in local storage but
+    // later on we will use api calls
+    // localStorage.setItem('userData', JSON.stringify(userData))
+    const response = await saveUserData(userData);
+    // eslint-disable-next-line no-console
+    console.log(response);
+    delete response.error;
+
+    // saving in redux state
+    dispatch(setUserData(response));
+
+    close();
+
+    if (router.pathname === "/") {
+      router.push("/explore");
+    }
+  };
+
+  const formik = useFormik({
+    initialValues: {
+      email: "",
+      userName: "",
+    },
+    onSubmit: async () => {
+      if (!formik.errors.userName || !formik.values.userName.length) {
+        signUp();
+      }
+    },
+    validationSchema: signUpValidation,
+  });
+
   return (
     <Modal
       isOpen={isOpen}
@@ -44,43 +101,48 @@ export const SignUpModal = (props: ModalProps) => {
             spacing={{ base: "6", md: "10" }}
           >
             <Stack spacing="3" textAlign="center">
-              <Heading size="2xl">Edit Pool</Heading>
+              <Heading size="2xl">User Onboarding</Heading>
             </Stack>
             <Stack
               as="form"
               spacing="6"
-              onSubmit={(e) => {
-                e.preventDefault();
-                // manage form submission
+              onSubmit={() => {
+                formik.handleSubmit();
               }}
             >
-              <FormControl id="poolName">
-                <FormLabel srOnly>Pool Name</FormLabel>
+              <FormControl id="userName">
+                <FormLabel srOnly>Enter User Name</FormLabel>
                 <Input
                   type="text"
-                  placeholder="Edit your Pool Name"
                   size="lg"
+                  placeholder="Input User Name"
                   fontSize="md"
+                  value={formik.values.userName}
+                  onChange={formik.handleChange}
                   focusBorderColor={useColorModeValue("blue.500", "blue.200")}
                 />
+                {formik.touched.userName && Boolean(formik.errors.userName) ? (
+                  <FormHelperText>Enter Your User Name</FormHelperText>
+                ) : (
+                  <FormErrorMessage>User Name is required.</FormErrorMessage>
+                )}
               </FormControl>
-              <FormControl id="startTime">
-                <FormLabel srOnly>Start Time</FormLabel>
+              <FormControl id="email">
+                <FormLabel srOnly>Enter Email</FormLabel>
                 <Input
-                  placeholder="Select Date and Time"
-                  size="md"
-                  type="datetime-local"
-                />
-              </FormControl>
-              <FormControl id="fee">
-                <FormLabel srOnly>Fee</FormLabel>
-                <Input
-                  type="text"
-                  placeholder="Edit Fee"
+                  type="email"
+                  placeholder="Input Email"
                   size="lg"
                   fontSize="md"
+                  value={formik.values.email}
+                  onChange={formik.handleChange}
                   focusBorderColor={useColorModeValue("blue.500", "blue.200")}
                 />
+                {formik.touched.email && Boolean(formik.errors.email) ? (
+                  <FormHelperText>Enter Your Email </FormHelperText>
+                ) : (
+                  <FormErrorMessage>Email is required.</FormErrorMessage>
+                )}
               </FormControl>
 
               <Button
@@ -96,7 +158,7 @@ export const SignUpModal = (props: ModalProps) => {
                 }}
                 size="lg"
               >
-                Edit Pool
+                Confirm
               </Button>
             </Stack>
           </Stack>

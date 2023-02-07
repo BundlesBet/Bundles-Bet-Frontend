@@ -1,4 +1,4 @@
-import { Box, Tab, TabList, TabPanel, TabPanels, Tabs } from "@chakra-ui/react";
+import { Box, TabList, TabPanel, TabPanels, Tabs } from "@chakra-ui/react";
 import { useSelector } from "react-redux";
 
 import ActiveTable from "../table/ActiveTable";
@@ -11,7 +11,7 @@ const MatchesTabs = () => {
     <Box textAlign="center" w="full">
       <Tabs variant="unstyled">
         <TabList>
-          <Tab _selected={{ color: "black", bg: "#0EB634" }}>Active</Tab>
+          {/* <Tab _selected={{ color: "black", bg: "#0EB634" }}>Active</Tab> */}
           {/* <Tab _selected={{ color: "black", bg: "#0EB634" }}>UnActive</Tab> */}
         </TabList>
         <TabPanels>
