@@ -9,6 +9,7 @@ import {
   Button,
   TableCaption,
   TableContainer,
+  VStack,
 } from "@chakra-ui/react";
 import Pagination from "@choc-ui/paginator";
 import { useRouter } from "next/router";
@@ -87,31 +88,33 @@ const LeaderboardTable = () => {
       <TableContainer w="full">
         <Table w="full" bg="#1C1C26">
           <TableCaption>
-            <Pagination
-              current={current}
-              onChange={(page: number | undefined) => setCurrent(page || 1)}
-              pageSize={pageSize}
-              total={leaderboardData?.predictionAccuracy.length}
-              itemRender={itemRender}
-              paginationProps={{
-                display: "flex",
-                pos: "absolute",
-                left: "50%",
-                transform: "translateX(-50%)",
-              }}
-              focusRing="#0EB634"
-              baseStyles={{
-                bg: "#0EB634",
-                color: "#000",
-              }}
-              activeStyles={{
-                bg: "#fff",
-                color: "#000",
-              }}
-              hoverStyles={{
-                bg: "green.300",
-              }}
-            />
+            <VStack gap={4}>
+              <Pagination
+                current={current}
+                onChange={(page: number | undefined) => setCurrent(page || 1)}
+                pageSize={pageSize}
+                total={leaderboardData?.predictionAccuracy.length}
+                itemRender={itemRender}
+                paginationProps={{
+                  display: "flex",
+                  pos: "absolute",
+                  left: "50%",
+                  transform: "translateX(-50%)",
+                }}
+                focusRing="#0EB634"
+                baseStyles={{
+                  bg: "#0EB634",
+                  color: "#000",
+                }}
+                activeStyles={{
+                  bg: "#fff",
+                  color: "#000",
+                }}
+                hoverStyles={{
+                  bg: "green.300",
+                }}
+              />
+            </VStack>
           </TableCaption>
           <Thead>
             <Tr>
