@@ -1,5 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-/* eslint-disable @typescript-eslint/no-use-before-define */
 import {
   Button,
   FormControl,
@@ -15,7 +13,6 @@ import {
   Stack,
   useColorModeValue,
 } from "@chakra-ui/react";
-// eslint-disable-next-line import/no-extraneous-dependencies
 import { useFormik } from "formik";
 import { useRouter } from "next/router";
 import { useDispatch } from "react-redux";
@@ -36,10 +33,29 @@ export const SignUpModal = (props: ModalProps) => {
   const dispatch = useDispatch();
   const { address } = useAccount();
 
-  const signUp = async () => {
+  const formik = useFormik({
+    initialValues: {
+      email: "",
+      userName: "",
+    },
+    onSubmit: async () => {
+      if (!formik.errors.userName || !formik.values.userName.length) {
+        // eslint-disable-next-line @typescript-eslint/no-use-before-define
+        signUp();
+      }
+    },
+    validationSchema: signUpValidation,
+  });
+
+  async function signUp() {
     // api call to save the info passed
 
-    const userData: any = {
+    const userData: {
+      balance: number;
+      walletAddress: `0x${string}` | undefined;
+      name: string;
+      emailAddress?: string;
+    } = {
       balance: 0,
       walletAddress: address,
       name: formik.values.userName,
@@ -57,30 +73,16 @@ export const SignUpModal = (props: ModalProps) => {
     const response = await saveUserData(userData);
     // eslint-disable-next-line no-console
     console.log(response);
-    delete response.error;
 
     // saving in redux state
-    dispatch(setUserData(response));
+    dispatch(setUserData(response.user));
 
     close();
 
     if (router.pathname === "/") {
       router.push("/explore");
     }
-  };
-
-  const formik = useFormik({
-    initialValues: {
-      email: "",
-      userName: "",
-    },
-    onSubmit: async () => {
-      if (!formik.errors.userName || !formik.values.userName.length) {
-        signUp();
-      }
-    },
-    validationSchema: signUpValidation,
-  });
+  }
 
   return (
     <Modal

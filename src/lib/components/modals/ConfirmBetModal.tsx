@@ -18,14 +18,22 @@ import {
   Text,
   StackDivider,
   ButtonGroup,
+  useToast,
 } from "@chakra-ui/react";
 import { useEffect } from "react";
 import { BiCopy } from "react-icons/bi";
 import { useSelector } from "react-redux";
-import { useAccount } from "wagmi";
+import {
+  useAccount,
+  useBalance,
+  useContractWrite,
+  usePrepareContractWrite,
+} from "wagmi";
 
+import { contractDetails } from "config";
 import type { RootState } from "redux/store";
 import { createBet } from "utils/apiCalls";
+import type { UserData } from "utils/interfaces";
 
 interface ModalProps {
   isOpen: boolean;
@@ -36,33 +44,74 @@ interface ModalProps {
 
 export const ConfirmBetModal = (props: ModalProps) => {
   const { isOpen, close, handleConfirm, teamsSelected } = props;
+
   const { onCopy, setValue } = useClipboard("");
   const { address, isConnected } = useAccount();
+  const { poolData } = useSelector((state: RootState) => state.betting);
+  const userData = useSelector((state: RootState) => state.user)
+    .userData as UserData;
+
   const trimmedAccount = isConnected
     ? `${address?.slice(0, 5)}...${address?.slice(-5)}`
     : "Account";
+  const matchIds = teamsSelected.map((teamSel) => teamSel.match);
+  const matchesSelections = teamsSelected.map((teamSel) => teamSel.selection);
+
+  const { config } = usePrepareContractWrite({
+    address: contractDetails.betting.address,
+    abi: contractDetails.betting.abi,
+    chainId: contractDetails.betting.chainId,
+    functionName: "placeBets(uint256,string[],uint256[])",
+    args: [poolData.id, matchIds, matchesSelections],
+    enabled: Boolean(poolData.id && matchIds && matchesSelections),
+  });
+
+  const { writeAsync } = useContractWrite(config);
+  const { data } = useBalance({
+    address,
+  });
+  const toast = useToast();
+
   useEffect(() => {
     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     setValue(address!);
   }, [address, setValue]);
 
-  const { userData } = useSelector((state: RootState) => state.user);
-
-  const { poolData } = useSelector((state: RootState) => state.betting);
-
   const processTransaction = async () => {
     try {
-      const body = {
-        userId: userData.id,
-        poolId: poolData.id,
-        teamSelections: teamsSelected,
-        betAmount: poolData.fee,
-      };
+      // TODO - check for allowance, not able to do as contract has no way to check it.
 
-      await createBet(body);
+      if (
+        data?.formatted &&
+        parseFloat(data?.formatted) <
+          parseFloat(poolData.protocolFee.toString())
+      ) {
+        toast({
+          position: "top-right",
+          title: "Matic Balance is less",
+          description: "Matic balance is less than the protocol fee.",
+          status: "error",
+          duration: 4000,
+          isClosable: true,
+        });
+        close();
+        return;
+      }
 
-      close();
-      handleConfirm();
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      (await writeAsync?.())?.wait(3).then(async (value) => {
+        const body = {
+          userId: (userData as UserData).id,
+          poolId: poolData.id,
+          teamSelections: teamsSelected,
+          betAmount: poolData.fee,
+        };
+
+        await createBet(body);
+
+        close();
+        handleConfirm();
+      });
     } catch (error) {
       // eslint-disable-next-line no-console
       console.log(error);
@@ -89,21 +138,13 @@ export const ConfirmBetModal = (props: ModalProps) => {
           >
             <Stack spacing="3" textAlign="center">
               <Heading size="2xl">Checkout</Heading>
-
-              {/* <Text fontSize="lg">
-                    <Box as="span" whiteSpace="nowrap" fontWeight="bold">
-                      Matches
-                    </Box>{" "}
-                    + exclusive access to new products
-                  </Text> */}
-              {/* <Box></Box> */}
             </Stack>
+
             <Stack
               as="form"
               spacing="6"
               onSubmit={(e) => {
                 e.preventDefault();
-                // manage form submission
               }}
             >
               <FormControl id="address">
@@ -143,18 +184,11 @@ export const ConfirmBetModal = (props: ModalProps) => {
                   <Text color="#7D7D8D"> Protocol Price </Text>
                   <Text>{poolData.protocolFee} MATIC</Text>
                 </HStack>
-                {/* <HStack justifyContent="space-between" alignItems="center">
-                  <Text color="#7D7D8D"> Total Price </Text>
-                  <Text>
-                    {parseInt(poolData.fee.toString()) +
-                      parseInt(poolData.protocolFee.toString())}{" "}
-                    $BUND
-                  </Text>
-                </HStack> */}
               </Stack>
             </Stack>
           </Stack>
         </ModalBody>
+
         <ModalFooter>
           <ButtonGroup spacing="6">
             <Button
@@ -169,6 +203,7 @@ export const ConfirmBetModal = (props: ModalProps) => {
             >
               Accept
             </Button>
+
             <Button onClick={() => close()}>Decline</Button>
           </ButtonGroup>
         </ModalFooter>

@@ -1,11 +1,11 @@
 import { api } from "utils";
 
 import axios from "./axios";
-import type { UserData } from "./interfaces";
 
 const userRoute = "/users";
 const bettingRoute = "/betting";
 const leaderboardRoute = "/leaderboard";
+
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const apiCall = async (response: any, error: any) => {
   try {
@@ -20,7 +20,7 @@ const apiCall = async (response: any, error: any) => {
   }
 };
 
-export const saveUserData = async (body: UserData) => {
+export const saveUserData = async (body: object) => {
   const [response, error] = await api(
     axios.post(`${userRoute}/createUser`, body)
   );
@@ -84,6 +84,12 @@ export const getUserBets = async (userId: number) => {
   return apiCall(response, error);
 };
 
-// export const getPoolBets = async (poolId: number) => {
-
-// }
+export const updateUserRewards = async (body: {
+  userId: number;
+  reward: number;
+}) => {
+  const [response, error] = await api(
+    axios.post(`${userRoute}/updateUserRewards`, body)
+  );
+  return apiCall(response, error);
+};

@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { useDispatch } from "react-redux";
 import { useAccount } from "wagmi";
 
@@ -7,15 +6,14 @@ import { getUserDataByWalletAddress } from "utils/apiCalls";
 
 export default function useWagmiLogin() {
   const dispatch = useDispatch();
-  const { address }: any = useAccount();
+  const { address } = useAccount();
 
   const login = async () => {
-    const userData = await getUserDataByWalletAddress(address);
-
-    delete userData.error;
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    const userData = await getUserDataByWalletAddress(address!);
 
     if (userData.user != null) {
-      dispatch(setUserData(userData.user as any));
+      dispatch(setUserData(userData.user));
       return true;
     }
     return false;

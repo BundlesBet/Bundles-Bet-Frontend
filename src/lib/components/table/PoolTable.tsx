@@ -62,7 +62,7 @@ const PoolTable = (props: TableProps) => {
   };
 
   if (!poolData || !poolData?.length) {
-    return <h1>No pools to show</h1>;
+    return <h1 style={{ marginTop: "20px" }}>No pools to show</h1>;
   }
 
   return (

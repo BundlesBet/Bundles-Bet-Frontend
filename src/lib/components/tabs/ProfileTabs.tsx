@@ -17,10 +17,11 @@ import ProfileShowAll from "../table/ProfileShowAll";
 import ProfileWon from "../table/ProfileWon";
 import type { RootState } from "redux/store";
 import { getUserBets } from "utils/apiCalls";
-import type { PoolWithMatches } from "utils/interfaces";
+import type { PoolWithMatches, UserData } from "utils/interfaces";
 
 const ProfileTabs = () => {
-  const { userData } = useSelector((state: RootState) => state.user);
+  const userData = useSelector((state: RootState) => state.user)
+    .userData as UserData;
   // const toast = useToast();
   const [userBetsData, setUserBetsData] = useState<PoolWithMatches[]>([]);
 

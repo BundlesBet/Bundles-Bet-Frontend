@@ -7,9 +7,11 @@ import TotalBets from "lib/components/samples/TotalBets";
 import TotalTokenTransferred from "lib/components/samples/TotalToken";
 import ProfileTabs from "lib/components/tabs/ProfileTabs";
 import type { RootState } from "redux/store";
+import type { UserData } from "utils/interfaces";
 
 const Dashboard = () => {
-  const { userData } = useSelector((state: RootState) => state.user);
+  const userData = useSelector((state: RootState) => state.user)
+    .userData as UserData;
 
   const { isConnected } = useAccount();
 

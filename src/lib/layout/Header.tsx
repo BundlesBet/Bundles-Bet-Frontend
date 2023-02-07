@@ -1,32 +1,35 @@
 import {
   Flex,
   Heading,
-  IconButton,
-  Menu,
-  MenuButton,
-  MenuItem,
-  MenuList,
+  // IconButton,
+  // Menu,
+  // MenuButton,
+  // MenuItem,
+  // MenuList,
   useDisclosure,
 } from "@chakra-ui/react";
 import { ConnectButton } from "@rainbow-me/rainbowkit";
 import { useRouter } from "next/router";
-import { useEffect } from "react";
-import { GiHamburgerMenu } from "react-icons/gi";
-import { useSelector } from "react-redux";
+import { useEffect, useRef } from "react";
+// import { GiHamburgerMenu } from "react-icons/gi";
+import { useDispatch, useSelector } from "react-redux";
 import { useAccount } from "wagmi";
 
 import useWagmiLogin from "hooks/useWagmiLogin";
 import { SignUpModal } from "lib/components/modals/SignUpModal";
 import HelperImage from "lib/components/samples/HelperImage";
+import { setUserData } from "redux/slices/user";
 import type { RootState } from "redux/store";
 
 const Header = () => {
-  const { isConnected, address, isConnecting } = useAccount();
-  const { login } = useWagmiLogin();
   const router = useRouter();
+  const dispatch = useDispatch();
+  const { login } = useWagmiLogin();
+  const { isOpen, onOpen, onClose } = useDisclosure();
+  const { isConnected, address, isConnecting } = useAccount();
   const { userData } = useSelector((state: RootState) => state.user);
 
-  const { isOpen, onOpen, onClose } = useDisclosure();
+  const currentAddress = useRef(address);
 
   const signUpChecker = async () => {
     const signUpCheck = await login();
@@ -39,12 +42,26 @@ const Header = () => {
   };
 
   useEffect(() => {
-    if (!isConnected || !address || isConnecting) return;
-    if (isConnected && address) {
+    if (currentAddress.current !== address) {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      dispatch(setUserData({} as any));
+      currentAddress.current = address;
+    }
+
+    if (
+      !isConnected ||
+      !address ||
+      isConnecting ||
+      (userData && Object.keys(userData).length)
+    ) {
+      return;
+    }
+
+    if (isConnected && address && userData && !Object.keys(userData).length) {
       signUpChecker();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [address]);
+  }, [address, isConnected, userData]);
 
   return (
     <Flex as="header" width="full" align="center">
@@ -69,7 +86,7 @@ const Header = () => {
         {isConnected ? (
           <>
             <ConnectButton showBalance chainStatus="none" />
-            <Menu>
+            {/* <Menu>
               <MenuButton
                 as={IconButton}
                 aria-label="Options"
@@ -82,7 +99,7 @@ const Header = () => {
                     router.push("/dashboard");
                   }}
                 >
-                  User Name : {userData.name}
+                  {userData.name.length > 0 && `User Name: ${userData.name}`}
                 </MenuItem>
                 <MenuItem
                   onClick={() => {
@@ -92,7 +109,7 @@ const Header = () => {
                   Profile
                 </MenuItem>
               </MenuList>
-            </Menu>
+            </Menu> */}
           </>
         ) : (
           <ConnectButton />
