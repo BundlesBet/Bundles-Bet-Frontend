@@ -52,7 +52,7 @@ const wagmiClient = createClient({
 });
 
 const theme: ThemeOptions = {
-  accentColor: "#00ffc2",
+  accentColor: "#0EB634",
   accentColorForeground: "black",
   borderRadius: "small",
   fontStack: "system",

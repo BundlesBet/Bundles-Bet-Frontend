@@ -1,11 +1,11 @@
 import { api } from "utils";
 
 import axios from "./axios";
-import type { UserData } from "./interfaces";
 
 const userRoute = "/users";
 const bettingRoute = "/betting";
 const leaderboardRoute = "/leaderboard";
+
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const apiCall = async (response: any, error: any) => {
   try {
@@ -20,7 +20,7 @@ const apiCall = async (response: any, error: any) => {
   }
 };
 
-export const saveUserData = async (body: UserData) => {
+export const saveUserData = async (body: object) => {
   const [response, error] = await api(
     axios.post(`${userRoute}/createUser`, body)
   );
@@ -39,9 +39,9 @@ export const getSports = async () => {
   return apiCall(response, error);
 };
 
-export const getPoolOfSport = async (sportName: string) => {
+export const getPoolOfSport = async (sportName: string, status: string) => {
   const [response, error] = await api(
-    axios.get(`${bettingRoute}/getPools?sportName=${sportName}`)
+    axios.get(`${bettingRoute}/getPools/${status}?sportName=${sportName}`)
   );
   return apiCall(response, error);
 };
@@ -67,5 +67,29 @@ export const getLeaderboard = async (poolId: number) => {
     axios.get(`${leaderboardRoute}/getPoolLeaderboard/${poolId}`)
   );
 
+  return apiCall(response, error);
+};
+
+export const cancelBet = async (body: object) => {
+  const [response, error] = await api(
+    axios.post(`${bettingRoute}/cancelBet`, body)
+  );
+  return apiCall(response, error);
+};
+
+export const getUserBets = async (userId: number) => {
+  const [response, error] = await api(
+    axios.get(`${userRoute}/getUserBets/${userId}`)
+  );
+  return apiCall(response, error);
+};
+
+export const updateUserRewards = async (body: {
+  userId: number;
+  reward: number;
+}) => {
+  const [response, error] = await api(
+    axios.post(`${userRoute}/updateUserRewards`, body)
+  );
   return apiCall(response, error);
 };

@@ -1,13 +1,11 @@
 import { Box, Heading, HStack, Text, VStack, Icon } from "@chakra-ui/react";
-import { AiFillTrophy } from "react-icons/ai";
+import { FaCoins } from "react-icons/fa";
 
-interface TotalBetsProps {
-  totalBets: number;
+interface TotalTokenTransferredProps {
+  totalToken: number;
 }
-
-const TotalBets = (props: TotalBetsProps) => {
-  const { totalBets } = props;
-
+const TotalTokenTransferred = (props: TotalTokenTransferredProps) => {
+  const { totalToken } = props;
   return (
     <Box
       px={{ base: "4", md: "6" }}
@@ -18,13 +16,13 @@ const TotalBets = (props: TotalBetsProps) => {
       w="full"
     >
       <HStack justifyContent="space-between">
-        <Icon boxSize={70} as={AiFillTrophy} color="white" />
+        <Icon boxSize={70} as={FaCoins} color="white" />
         <VStack justifyContent="space-between" alignItems="flex-end">
           <Text fontSize="sm" color="muted" textAlign="end">
-            Total Bets Participation
+            Total Token Transferred
           </Text>
           <Heading size={{ base: "2xl", md: "xl" }} textAlign="end">
-            {totalBets}
+            {totalToken}
           </Heading>
         </VStack>
       </HStack>
@@ -32,4 +30,4 @@ const TotalBets = (props: TotalBetsProps) => {
   );
 };
 
-export default TotalBets;
+export default TotalTokenTransferred;

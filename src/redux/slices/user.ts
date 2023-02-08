@@ -6,22 +6,13 @@ import type { UserData } from "utils/interfaces";
 export const UserSlice = createSlice({
   name: "user",
   initialState: {
-    userData: {
-      id: 0,
-      walletAddress: "",
-      emailAddress: "",
-      name: "",
-      profilePic: null,
-      balance: 0,
-      totalRewardsEarned: 0,
-      totalPoolsParticipated: 0,
-    } as UserData, // user data
+    userData: {} as UserData | object, // user data
     // ? check - why sportSelected is an array
     sportSelected: {} as SportsListType, // sport selected
   },
   reducers: {
     setUserData: (
-      state: { userData: UserData },
+      state: { userData: UserData | object },
       action: { payload: UserData }
     ) => {
       state.userData = action.payload;

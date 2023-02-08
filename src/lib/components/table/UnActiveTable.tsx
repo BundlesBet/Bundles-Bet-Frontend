@@ -9,32 +9,40 @@ import {
   Button,
   TableCaption,
   TableContainer,
+  Stack,
+  useDisclosure,
+  Tooltip,
 } from "@chakra-ui/react";
 import Pagination from "@choc-ui/paginator";
-import React, { useEffect, useState, forwardRef } from "react";
+import { useEffect, useState, forwardRef } from "react";
+import { useAccount } from "wagmi";
 
+import { BetPlaced } from "../modals/BetPlaced";
+import { ConfirmBetModal } from "../modals/ConfirmBetModal";
+import CustomLoader from "../samples/CustomLoader";
 import { uniqueID } from "utils";
-import type { Pool } from "utils/interfaces";
+import type { ESPNMatch } from "utils/interfaces";
 
 interface TableProps {
-  matchData: Pool;
+  matchData: ESPNMatch[];
 }
 const UnActiveTable = (props: TableProps) => {
-  const { matchData } = props;
+  const { matchData: data } = props;
+  const { isConnected } = useAccount();
 
-  const header = ["Match Name", "Home Team", "Away Team", "Selected Team"];
+  const [current, setCurrent] = useState(1);
+  const [loader, setLoader] = useState(true);
+  const [selectCount, setSelectCount] = useState(0);
+  const [transactionSuccess, setTransactionSuccess] = useState(false);
   const [selectTeams, setSelectTeams] = useState<
     Array<{ match: number; selection: number }>
   >([]);
-  const [selectCount, setSelectCount] = useState(0);
-  // const [transactionSuccess, setTransactionSuccess] = useState(false);
-  const [, setLoader] = useState(true);
-  const data = matchData.matches;
-  const [current, setCurrent] = React.useState(1);
-  const pageSize = 5;
+
+  const pageSize = 20;
   const offset = (current - 1) * pageSize;
-  const posts =
-    data?.length === 0 ? [] : data?.slice(offset, offset + pageSize);
+  const posts = data.length > 0 ? data.slice(offset, offset + pageSize) : [];
+
+  const header = ["Match Name", "Home Team", "Away Team", "Selected Team"];
 
   // eslint-disable-next-line react/no-unstable-nested-components, @typescript-eslint/no-explicit-any
   const Prev = forwardRef((prevprops, ref: any) => {
@@ -77,6 +85,10 @@ const UnActiveTable = (props: TableProps) => {
     setLoader(false);
   }, [data]);
 
+  const handleConfirmTransaction = () => {
+    setTransactionSuccess(true);
+  };
+
   const handleSelectTeam = (rowId: number, id: number, selection: number) => {
     if (selectTeams[rowId].selection === -2) {
       setSelectCount(selectCount + 1);
@@ -86,6 +98,17 @@ const UnActiveTable = (props: TableProps) => {
     updateState[rowId] = { match: id, selection };
 
     setSelectTeams([...updateState]);
+  };
+  const { isOpen, onOpen, onClose } = useDisclosure();
+
+  const tooltipLabel = () => {
+    if (!isConnected) {
+      return "Connect Wallet";
+    }
+    if (selectCount !== data.length) {
+      return "Please Select Teams";
+    }
+    return "";
   };
 
   const selectedTeamText = (index: number, teamA: string, teamB: string) => {
@@ -98,36 +121,54 @@ const UnActiveTable = (props: TableProps) => {
     return teamB;
   };
 
+  if (loader) return <CustomLoader />;
+
   return (
     <Flex w="full" alignItems="center" justifyContent="center">
       <TableContainer w="full">
         <Table w="full" bg="#1C1C26">
           <TableCaption>
-            <Pagination
-              current={current}
-              onChange={(page: number | undefined) => setCurrent(page || 1)}
-              pageSize={pageSize}
-              total={data?.length}
-              itemRender={itemRender}
-              paginationProps={{
-                display: "flex",
-                pos: "absolute",
-                left: "50%",
-                transform: "translateX(-50%)",
-              }}
-              focusRing="#00ffc2"
-              baseStyles={{
-                bg: "#00ffc2",
-                color: "#000",
-              }}
-              activeStyles={{
-                bg: "#fff",
-                color: "#000",
-              }}
-              hoverStyles={{
-                bg: "green.300",
-              }}
-            />
+            <Stack direction="column" alignItems=" center" spacing="20">
+              <Tooltip hasArrow label={tooltipLabel()}>
+                <Button
+                  isDisabled={
+                    // eslint-disable-next-line no-unneeded-ternary
+                    !isConnected || selectCount !== data.length ? true : false
+                  }
+                  size="lg"
+                  bg="#0EB634"
+                  color="#111"
+                  onClick={onOpen}
+                >
+                  Bet Now
+                </Button>
+              </Tooltip>
+              <Pagination
+                current={current}
+                onChange={(page: number | undefined) => setCurrent(page || 1)}
+                pageSize={pageSize}
+                total={data.length}
+                itemRender={itemRender}
+                paginationProps={{
+                  display: "flex",
+                  pos: "absolute",
+                  left: "50%",
+                  transform: "translateX(-50%)",
+                }}
+                focusRing="#0EB634"
+                baseStyles={{
+                  bg: "#0EB634",
+                  color: "#000",
+                }}
+                activeStyles={{
+                  bg: "#fff",
+                  color: "#000",
+                }}
+                hoverStyles={{
+                  bg: "green.300",
+                }}
+              />
+            </Stack>
           </TableCaption>
           <Thead>
             <Tr>
@@ -137,7 +178,7 @@ const UnActiveTable = (props: TableProps) => {
             </Tr>
           </Thead>
           <Tbody>
-            {posts?.map((match, index: number) => {
+            {posts.map((match, index: number) => {
               return (
                 <Tr key={uniqueID()}>
                   <Td color="#fff" fontSize="md" fontWeight="hairline">
@@ -146,12 +187,22 @@ const UnActiveTable = (props: TableProps) => {
                   <Td color="#fff" fontSize="md" fontWeight="hairline">
                     <Button
                       onClick={() => handleSelectTeam(index, match.id, 0)}
+                      border={
+                        selectTeams[index]?.selection === 0
+                          ? "2px solid #00FFC2"
+                          : ""
+                      }
                     >
                       {match.teamA.abbreviation}
                     </Button>
                   </Td>
                   <Td color="#fff" fontSize="md" fontWeight="hairline">
                     <Button
+                      border={
+                        selectTeams[index]?.selection === 1
+                          ? "2px solid #00FFC2"
+                          : ""
+                      }
                       onClick={() => handleSelectTeam(index, match.id, 1)}
                     >
                       {match.teamB.abbreviation}
@@ -171,6 +222,16 @@ const UnActiveTable = (props: TableProps) => {
           </Tbody>
         </Table>
       </TableContainer>
+      <ConfirmBetModal
+        teamsSelected={selectTeams}
+        isOpen={isOpen}
+        close={onClose}
+        handleConfirm={handleConfirmTransaction}
+      />
+      <BetPlaced
+        isOpen={transactionSuccess}
+        close={() => setTransactionSuccess(false)}
+      />
     </Flex>
   );
 };

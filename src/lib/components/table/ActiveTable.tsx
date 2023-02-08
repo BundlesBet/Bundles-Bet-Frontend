@@ -14,29 +14,41 @@ import {
   Tooltip,
 } from "@chakra-ui/react";
 import Pagination from "@choc-ui/paginator";
+import { useRouter } from "next/router";
 import { useEffect, useState, forwardRef } from "react";
+import { useSelector } from "react-redux";
 import { useAccount } from "wagmi";
 
 import { BetPlaced } from "../modals/BetPlaced";
 import { ConfirmBetModal } from "../modals/ConfirmBetModal";
 import CustomLoader from "../samples/CustomLoader";
+import type { RootState } from "redux/store";
 import { uniqueID } from "utils";
-import type { ESPNMatch } from "utils/interfaces";
+import { getUserBets } from "utils/apiCalls";
+import type { Bet, ESPNMatch, UserData } from "utils/interfaces";
 
 interface TableProps {
   matchData: ESPNMatch[];
 }
 const ActiveTable = (props: TableProps) => {
   const { matchData: data } = props;
+
+  const router = useRouter();
   const { isConnected } = useAccount();
+
+  const poolId = parseInt(router.query?.id as string);
 
   const [current, setCurrent] = useState(1);
   const [loader, setLoader] = useState(true);
   const [selectCount, setSelectCount] = useState(0);
+  const [allowedToBet, setAllowedToBet] = useState(true);
   const [transactionSuccess, setTransactionSuccess] = useState(false);
   const [selectTeams, setSelectTeams] = useState<
     Array<{ match: number; selection: number }>
   >([]);
+
+  const userData = useSelector((state: RootState) => state.user)
+    .userData as UserData;
 
   const pageSize = 20;
   const offset = (current - 1) * pageSize;
@@ -72,8 +84,26 @@ const ActiveTable = (props: TableProps) => {
     }
   };
 
+  const getUserData = async () => {
+    const userBetsRes = await getUserBets(userData.id);
+
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const bettingData = (userBetsRes?.userBets?.bets as [])?.find(
+      (bet: Bet) => {
+        return bet.poolId === poolId;
+      }
+    );
+
+    if (bettingData && Object.keys(bettingData).length) {
+      setAllowedToBet(false);
+    }
+
+    setLoader(false);
+  };
+
   useEffect(() => {
     if (!data || !data?.length) return;
+
     const newTeamArr = [];
 
     for (let i = 0; i < data.length; i += 1) {
@@ -82,7 +112,8 @@ const ActiveTable = (props: TableProps) => {
 
     setSelectTeams(newTeamArr);
 
-    setLoader(false);
+    getUserData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [data]);
 
   const handleConfirmTransaction = () => {
@@ -102,6 +133,9 @@ const ActiveTable = (props: TableProps) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   const tooltipLabel = () => {
+    if (!allowedToBet) {
+      return "Bet already placed";
+    }
     if (!isConnected) {
       return "Connect Wallet";
     }
@@ -133,10 +167,12 @@ const ActiveTable = (props: TableProps) => {
                 <Button
                   isDisabled={
                     // eslint-disable-next-line no-unneeded-ternary
-                    !isConnected || selectCount !== data.length ? true : false
+                    !isConnected || selectCount !== data.length || !allowedToBet
+                      ? true
+                      : false
                   }
                   size="lg"
-                  colorScheme="teal"
+                  bg="#0EB634"
                   color="#111"
                   onClick={onOpen}
                 >
@@ -155,9 +191,9 @@ const ActiveTable = (props: TableProps) => {
                   left: "50%",
                   transform: "translateX(-50%)",
                 }}
-                focusRing="#00ffc2"
+                focusRing="#0EB634"
                 baseStyles={{
-                  bg: "#00ffc2",
+                  bg: "#0EB634",
                   color: "#000",
                 }}
                 activeStyles={{
@@ -186,7 +222,9 @@ const ActiveTable = (props: TableProps) => {
                   </Td>
                   <Td color="#fff" fontSize="md" fontWeight="hairline">
                     <Button
-                      onClick={() => handleSelectTeam(index, match.id, 0)}
+                      onClick={() =>
+                        handleSelectTeam(index, match.espnMatchId, 0)
+                      }
                       border={
                         selectTeams[index]?.selection === 0
                           ? "2px solid #00FFC2"
@@ -203,7 +241,9 @@ const ActiveTable = (props: TableProps) => {
                           ? "2px solid #00FFC2"
                           : ""
                       }
-                      onClick={() => handleSelectTeam(index, match.id, 1)}
+                      onClick={() =>
+                        handleSelectTeam(index, match.espnMatchId, 1)
+                      }
                     >
                       {match.teamB.abbreviation}
                     </Button>
