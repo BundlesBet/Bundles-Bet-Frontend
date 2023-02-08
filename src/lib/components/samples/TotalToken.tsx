@@ -17,7 +17,7 @@ const TotalTokenTransferred = (props: TotalTokenTransferredProps) => {
     >
       <HStack justifyContent="space-between">
         <Icon boxSize={70} as={FaCoins} color="white" />
-        <VStack justifyContent="space-between" alignItems="center">
+        <VStack justifyContent="space-between" alignItems="flex-end">
           <Text fontSize="sm" color="muted" textAlign="end">
             Total Token Transferred
           </Text>

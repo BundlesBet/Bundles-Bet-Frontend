@@ -5,27 +5,18 @@ import {
   ModalContent,
   ModalOverlay,
   Stack,
-  Icon,
-  Text,
 } from "@chakra-ui/react";
-import { AiFillCheckCircle } from "react-icons/ai";
-import { useSelector } from "react-redux";
 
-import useRedirectAfterSomeSeconds from "hooks/useRedirectAfterSeconds";
-import type { RootState } from "redux/store";
+import ViewSport from "../samples/ViewSport";
 
 interface ModalProps {
   isOpen: boolean;
   close: () => void;
 }
 
-export const BetPlaced = (props: ModalProps) => {
+export const SelectSportModal = (props: ModalProps) => {
   const { isOpen, close } = props;
-  const { poolData } = useSelector((state: RootState) => state.betting);
-  const { secondsRemaining } = useRedirectAfterSomeSeconds(
-    `/sportSelection`,
-    5
-  );
+
   return (
     <Modal
       isOpen={isOpen}
@@ -45,19 +36,13 @@ export const BetPlaced = (props: ModalProps) => {
             spacing={{ base: "6", md: "10" }}
           >
             <Stack
-              gap="8"
+              gap="10"
               textAlign="center"
               alignItems="center"
               justifyContent="center"
             >
-              <Icon as={AiFillCheckCircle} color="green.500" boxSize="6rem" />
-              <Heading size="2xl">Bet Placed</Heading>
-              <Text fontSize="lg"> {poolData.fee} $BUND </Text>
-              <Text as="i">
-                {" "}
-                Redirecting to sport selection page in {secondsRemaining}{" "}
-                {secondsRemaining > 1 ? "seconds" : "second"}
-              </Text>
+              <Heading size="2xl">Select Sport</Heading>
+              <ViewSport />
             </Stack>
           </Stack>
         </ModalBody>

@@ -1,17 +1,17 @@
 import {
   Flex,
   Heading,
-  // IconButton,
-  // Menu,
-  // MenuButton,
-  // MenuItem,
-  // MenuList,
+  IconButton,
+  Menu,
+  MenuButton,
+  MenuItem,
+  MenuList,
   useDisclosure,
 } from "@chakra-ui/react";
 import { ConnectButton } from "@rainbow-me/rainbowkit";
 import { useRouter } from "next/router";
 import { useEffect, useRef } from "react";
-// import { GiHamburgerMenu } from "react-icons/gi";
+import { GiHamburgerMenu } from "react-icons/gi";
 import { useDispatch, useSelector } from "react-redux";
 import { useAccount } from "wagmi";
 
@@ -86,7 +86,7 @@ const Header = () => {
         {isConnected ? (
           <>
             <ConnectButton showBalance chainStatus="none" />
-            {/* <Menu>
+            <Menu>
               <MenuButton
                 as={IconButton}
                 aria-label="Options"
@@ -99,7 +99,7 @@ const Header = () => {
                     router.push("/dashboard");
                   }}
                 >
-                  {userData.name.length > 0 && `User Name: ${userData.name}`}
+                  {/* {userData.name.length > 0 && `User Name: ${userData.name}`} */}
                 </MenuItem>
                 <MenuItem
                   onClick={() => {
@@ -109,7 +109,7 @@ const Header = () => {
                   Profile
                 </MenuItem>
               </MenuList>
-            </Menu> */}
+            </Menu>
           </>
         ) : (
           <ConnectButton />

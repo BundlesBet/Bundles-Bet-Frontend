@@ -45,7 +45,7 @@ const Dashboard = () => {
       <Stack
         direction={{ md: "row", base: "column" }}
         justifyContent="space-between"
-        alignItems="center"
+        alignItems="flex-start"
         w="full"
         gap={2}
       >

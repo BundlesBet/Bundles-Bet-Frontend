@@ -1,7 +1,16 @@
-import { Box, Tab, TabList, TabPanel, TabPanels, Tabs } from "@chakra-ui/react";
+import {
+  Box,
+  Tab,
+  TabList,
+  TabPanel,
+  TabPanels,
+  Tabs,
+  useDisclosure,
+} from "@chakra-ui/react";
 import { useState, useRef, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
+import { SelectSportModal } from "../modals/SelectSportModal";
 import CustomLoader from "../samples/CustomLoader";
 import PoolTable from "../table/PoolTable";
 import { setSportSelected } from "redux/slices/user";
@@ -15,6 +24,7 @@ const PoolTabs = () => {
   const [tabIndex, setTabIndex] = useState(0);
   const [poolData, setPoolData] = useState<Pool[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
+  const { isOpen, onOpen, onClose } = useDisclosure();
 
   const dispatch = useDispatch();
   const sportName = useSelector(
@@ -44,6 +54,7 @@ const PoolTabs = () => {
       const fetchPoolData = await getPoolOfSport(sportName, StatusValue());
       setPoolData(fetchPoolData.pools);
       currentSportsName.current = sportName;
+      onClose();
       setTimeout(() => setLoading(false), 2000);
       return;
     }
@@ -57,9 +68,11 @@ const PoolTabs = () => {
       );
       setPoolData(fetchPoolData.pools);
       currentSportsName.current = sportData.value;
+      onClose();
+      setTimeout(() => setLoading(false), 2000);
+      return;
     }
-
-    setTimeout(() => setLoading(false), 2000);
+    onOpen();
   };
 
   useEffect(() => {
@@ -100,6 +113,7 @@ const PoolTabs = () => {
           </TabPanel>
         </TabPanels>
       </Tabs>
+      <SelectSportModal isOpen={isOpen} close={onClose} />
     </Box>
   );
 };

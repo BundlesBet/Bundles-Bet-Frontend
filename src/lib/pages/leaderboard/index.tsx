@@ -8,7 +8,7 @@ import ClaimButton from "lib/components/samples/ClaimButon";
 import CustomLoader from "lib/components/samples/CustomLoader";
 import LeaderboardTable from "lib/components/table/LeaderBoardTable";
 import type { RootState } from "redux/store";
-import { getLeaderboard } from "utils/apiCalls";
+import { getLeaderboard, getMatchesOfPool } from "utils/apiCalls";
 import type { LeaderBoard, UserData } from "utils/interfaces";
 
 const Leaderboard = () => {
@@ -17,6 +17,7 @@ const Leaderboard = () => {
   const { userData } = useSelector((state: RootState) => state.user);
 
   const [loading, setLoading] = useState(true);
+  const [showClaimButton, setShowClaimButton] = useState<boolean>(false);
   const [leaderboardData, setLeaderboardData] = useState<LeaderBoard | null>(
     null
   );
@@ -24,6 +25,8 @@ const Leaderboard = () => {
   const getLeaderboardData = async () => {
     const leaderboardDataRes = await getLeaderboard(poolId);
     setLeaderboardData(leaderboardDataRes.poolLeaderboard);
+    const poolData = await getMatchesOfPool(poolId);
+    setShowClaimButton(poolData.fetchedMatches.poolEnded);
     setTimeout(() => setLoading(false), 2000);
   };
 
@@ -68,6 +71,7 @@ const Leaderboard = () => {
       ) && (
         <ClaimButton
           userId={(userData as UserData).id}
+          showClaimButton={showClaimButton}
           reward={
             leaderboardData?.rewards.find(
               (reward) => reward.user.id === (userData as UserData).id

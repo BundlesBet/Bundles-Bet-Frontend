@@ -9,9 +9,15 @@ interface Props {
   containsReward: boolean;
   reward: number;
   userId: number;
+  showClaimButton: boolean;
 }
 
-const ClaimButton = ({ containsReward, reward, userId }: Props) => {
+const ClaimButton = ({
+  containsReward,
+  reward,
+  userId,
+  showClaimButton,
+}: Props) => {
   const router = useRouter();
   const poolId = router.query.id;
 
@@ -40,7 +46,7 @@ const ClaimButton = ({ containsReward, reward, userId }: Props) => {
             backendClaimCall();
           });
         }}
-        isDisabled={!containsReward}
+        isDisabled={!containsReward || !showClaimButton}
       >
         {" "}
         Claim
