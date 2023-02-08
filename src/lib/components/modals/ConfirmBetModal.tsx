@@ -73,16 +73,6 @@ export const ConfirmBetModal = (props: ModalProps) => {
     enabled: Boolean(poolData.id && matchIds && matchesSelections),
   });
 
-  // const { data: allowanceData } = useContractRead({
-  //   address: contractDetails.bundToken.address,
-  //   abi: contractDetails.bundToken.abi,
-  //   chainId: contractDetails.bundToken.chainId,
-  //   functionName: "allowance",
-  //   args: [address, contractDetails.betting.address],
-  //   enabled: Boolean(address && contractDetails.betting.address),
-  //   watch: true,
-  // });
-
   const { writeAsync } = useContractWrite(config);
 
   const toast = useToast();
