@@ -22,9 +22,11 @@ interface ModalProps {
 export const BetPlaced = (props: ModalProps) => {
   const { isOpen, close } = props;
   const { poolData } = useSelector((state: RootState) => state.betting);
+
   const { secondsRemaining } = useRedirectAfterSomeSeconds(
     `/sportSelection`,
-    5
+    5,
+    isOpen
   );
   return (
     <Modal

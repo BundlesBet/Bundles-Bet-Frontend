@@ -26,7 +26,7 @@ const Dashboard = () => {
         mb={8}
         w="full"
       >
-        <Text> Please connect your wallet </Text>;
+        <Text> Please connect your wallet </Text>
       </Flex>
     );
   }
