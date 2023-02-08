@@ -8,7 +8,7 @@ import {
   Flex,
   Heading,
 } from "@chakra-ui/react";
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useRef } from "react";
 import { useSelector } from "react-redux";
 
 import ProfileLost from "../table/ProfileLost";
@@ -16,26 +16,44 @@ import ProfileShowAll from "../table/ProfileShowAll";
 import ProfileWon from "../table/ProfileWon";
 import type { RootState } from "redux/store";
 import { getUserBets } from "utils/apiCalls";
-import type { PoolWithMatches, UserData } from "utils/interfaces";
+import type { PoolWithBets, UserData } from "utils/interfaces";
 
 const ProfileTabs = () => {
   const userData = useSelector((state: RootState) => state.user)
     .userData as UserData;
-  // const toast = useToast();
-  const [userBetsData, setUserBetsData] = useState<PoolWithMatches[]>([]);
+
+  const user = useRef(userData);
+  const [loading, setLoading] = useState(true);
+  const [userBetsData, setUserBetsData] = useState<PoolWithBets[]>([]);
 
   const getUserPoolData = useCallback(async () => {
-    if (userData.id === 0) return;
+    if (!user.current || !Object.keys(user.current).length) return;
 
-    const res = await getUserBets(userData.id);
+    const res = await getUserBets(user.current.id);
 
-    setUserBetsData(res.userBets.bets);
-  }, [userData.id]);
+    setUserBetsData(res?.userBets?.bets);
+
+    setLoading(false);
+  }, [user]);
 
   useEffect(() => {
-    getUserPoolData();
+    user.current = userData;
+    setTimeout(() => getUserPoolData(), 2000);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [userData]);
+
+  if (loading) {
+    return (
+      <Flex
+        direction="column"
+        alignItems="center"
+        justifyContent="center"
+        w="full"
+      >
+        <Heading size="lg"> Loading Bets </Heading>
+      </Flex>
+    );
+  }
 
   if (userBetsData?.length === 0)
     return (
@@ -51,6 +69,7 @@ const ProfileTabs = () => {
         <Heading size="2xl"> No Bets Found </Heading>
       </Flex>
     );
+
   return (
     <Box textAlign="center" w="full">
       <Tabs variant="enclosed">

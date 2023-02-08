@@ -72,7 +72,7 @@ export const getLeaderboard = async (poolId: number) => {
 
 export const cancelBet = async (body: object) => {
   const [response, error] = await api(
-    axios.delete(`${bettingRoute}/cancelBet`, body)
+    axios.post(`${bettingRoute}/cancelBet`, body)
   );
   return apiCall(response, error);
 };

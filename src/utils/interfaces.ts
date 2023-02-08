@@ -74,9 +74,21 @@ export type Pool = {
   matches?: Array<ESPNMatch>;
 };
 
-export type PoolWithMatches = {
+export type PoolWithBets = {
   id: number;
-  status: string;
+  poolId: number;
+  userId: number;
+  teamSelections: {
+    match: number;
+    selection: number;
+  };
+  betAmount: number;
+  predictionAccuracy: number;
+  outcomesForMatches: {
+    match: number;
+    selection: number;
+  };
+  status: BetStatus;
   pool: Pool;
 };
 

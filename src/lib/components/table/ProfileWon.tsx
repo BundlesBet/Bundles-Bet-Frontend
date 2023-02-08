@@ -37,7 +37,8 @@ const ProfileWon = (props: TableProps) => {
   const [current, setCurrent] = React.useState(1);
   const pageSize = 5;
   const offset = (current - 1) * pageSize;
-  const posts = data.length > 0 ? data.slice(offset, offset + pageSize) : [];
+  const posts =
+    data && data.length > 0 ? data.slice(offset, offset + pageSize) : [];
 
   const Prev = forwardRef((props, ref: any) => {
     return (
@@ -74,7 +75,7 @@ const ProfileWon = (props: TableProps) => {
                 setCurrent(page);
               }}
               pageSize={pageSize}
-              total={data.length}
+              total={data && data.length}
               itemRender={itemRender}
               paginationProps={{
                 display: "flex",

@@ -2,5 +2,7 @@
 /* tslint:disable */
 /* eslint-disable */
 export type { BettingPools } from "./BettingPools";
+export type { BundToken } from "./BundToken";
 export * as factories from "./factories";
 export { BettingPools__factory } from "./factories/BettingPools__factory";
+export { BundToken__factory } from "./factories/BundToken__factory";

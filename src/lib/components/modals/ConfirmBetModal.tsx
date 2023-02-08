@@ -20,6 +20,7 @@ import {
   ButtonGroup,
   useToast,
 } from "@chakra-ui/react";
+import BN from "bn.js";
 import { useEffect } from "react";
 import { BiCopy } from "react-icons/bi";
 import { useSelector } from "react-redux";
@@ -29,9 +30,15 @@ import {
   useContractWrite,
   usePrepareContractWrite,
 } from "wagmi";
+import {
+  prepareWriteContract,
+  readContract,
+  writeContract,
+} from "wagmi/actions";
 
 import { contractDetails } from "config";
 import type { RootState } from "redux/store";
+import { approvalAmt } from "utils";
 import { createBet } from "utils/apiCalls";
 import type { UserData } from "utils/interfaces";
 
@@ -66,11 +73,22 @@ export const ConfirmBetModal = (props: ModalProps) => {
     enabled: Boolean(poolData.id && matchIds && matchesSelections),
   });
 
+  // const { data: allowanceData } = useContractRead({
+  //   address: contractDetails.bundToken.address,
+  //   abi: contractDetails.bundToken.abi,
+  //   chainId: contractDetails.bundToken.chainId,
+  //   functionName: "allowance",
+  //   args: [address, contractDetails.betting.address],
+  //   enabled: Boolean(address && contractDetails.betting.address),
+  //   watch: true,
+  // });
+
   const { writeAsync } = useContractWrite(config);
+
+  const toast = useToast();
   const { data } = useBalance({
     address,
   });
-  const toast = useToast();
 
   useEffect(() => {
     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
@@ -79,7 +97,36 @@ export const ConfirmBetModal = (props: ModalProps) => {
 
   const processTransaction = async () => {
     try {
-      // TODO - check for allowance, not able to do as contract has no way to check it.
+      const allowance = await readContract({
+        address: contractDetails.bundToken.address,
+        abi: contractDetails.bundToken.abi,
+        chainId: contractDetails.bundToken.chainId,
+        functionName: "allowance",
+        args: [address, contractDetails.betting.address],
+      });
+
+      if (new BN(poolData.fee).gt(new BN(allowance as number))) {
+        const approveConfig = await prepareWriteContract({
+          address: contractDetails.bundToken.address,
+          abi: contractDetails.bundToken.abi,
+          functionName: "approve",
+          args: [contractDetails.betting.address, approvalAmt],
+        });
+        const approveData = await (await writeContract(approveConfig)).wait(1);
+
+        if (!approveData) {
+          toast({
+            position: "top-right",
+            title: "Token Approval Problem",
+            description: "Approval for token was not provided.",
+            status: "error",
+            duration: 4000,
+            isClosable: true,
+          });
+
+          return;
+        }
+      }
 
       if (
         data?.formatted &&
@@ -114,7 +161,7 @@ export const ConfirmBetModal = (props: ModalProps) => {
       });
     } catch (error) {
       // eslint-disable-next-line no-console
-      console.log(error);
+      console.error(error);
     }
   };
 

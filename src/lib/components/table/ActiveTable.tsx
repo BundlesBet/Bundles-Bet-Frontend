@@ -25,7 +25,7 @@ import CustomLoader from "../samples/CustomLoader";
 import type { RootState } from "redux/store";
 import { uniqueID } from "utils";
 import { getUserBets } from "utils/apiCalls";
-import type { ESPNMatch, UserData } from "utils/interfaces";
+import type { Bet, ESPNMatch, UserData } from "utils/interfaces";
 
 interface TableProps {
   matchData: ESPNMatch[];
@@ -88,9 +88,11 @@ const ActiveTable = (props: TableProps) => {
     const userBetsRes = await getUserBets(userData.id);
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const bettingData = (userBetsRes.userBets.bets as []).find((bet: any) => {
-      return bet.poolId === poolId;
-    });
+    const bettingData = (userBetsRes?.userBets?.bets as [])?.find(
+      (bet: Bet) => {
+        return bet.poolId === poolId;
+      }
+    );
 
     if (bettingData && Object.keys(bettingData).length) {
       setAllowedToBet(false);
