@@ -1,8 +1,3 @@
-/* eslint-disable @typescript-eslint/no-shadow */
-/* eslint-disable @typescript-eslint/no-explicit-any */
-/* eslint-disable consistent-return */
-/* eslint-disable react/no-unstable-nested-components */
-/* eslint-disable react/no-array-index-key */
 import {
   Table,
   Thead,
@@ -15,39 +10,42 @@ import {
   TableCaption,
   TableContainer,
   Tag,
+  Text,
+  Heading,
 } from "@chakra-ui/react";
 import Pagination from "@choc-ui/paginator";
+import { formatInTimeZone } from "date-fns-tz";
 import React, { forwardRef } from "react";
 
-// interface TableProps {
-//   //   poolData: any;
-// }
-const ProfileShowAll = () => {
-  //   const { poolData } = props;
+import CustomLink from "../common/CustomLink";
+import { uniqueID } from "utils";
+import type { PoolWithBets } from "utils/interfaces";
+
+interface TableProps {
+  poolData: PoolWithBets[];
+}
+const ProfileShowAll = (props: TableProps) => {
+  const { poolData } = props;
 
   const header = ["Pool Creation Date", "Pool Name", "Bet Amount", "Status"];
 
-  const data = [
-    { date: "3/1/2023", name: "NFL 1", betAmount: 18, status: "Lost" },
-    { date: "1/2/2023", name: "NFL 2", betAmount: 54, status: "Lost" },
-    { date: "5/1/2023", name: "NFL 3", betAmount: 28, status: "Lost" },
-    { date: "24/1/2023", name: "NFL 4", betAmount: 80, status: "Lost" },
-  ];
+  const data = poolData;
 
-  //   const data = poolData;
   const [current, setCurrent] = React.useState(1);
   const pageSize = 5;
   const offset = (current - 1) * pageSize;
   const posts = data.length > 0 ? data.slice(offset, offset + pageSize) : [];
 
-  const Prev = forwardRef((props, ref: any) => {
+  // eslint-disable-next-line react/no-unstable-nested-components, @typescript-eslint/no-explicit-any
+  const Prev = forwardRef((forwardprops, ref: any) => {
     return (
       <Button ref={ref} {...props}>
         Prev
       </Button>
     );
   });
-  const Next = forwardRef((props, ref: any) => {
+  // eslint-disable-next-line react/no-unstable-nested-components, @typescript-eslint/no-explicit-any
+  const Next = forwardRef((forwardprops, ref: any) => {
     return (
       <Button ref={ref} {...props}>
         Next
@@ -55,6 +53,7 @@ const ProfileShowAll = () => {
     );
   });
 
+  // eslint-disable-next-line consistent-return, @typescript-eslint/no-explicit-any
   const itemRender: any = (_: any, type: string) => {
     if (type === "prev") {
       return Prev;
@@ -64,6 +63,22 @@ const ProfileShowAll = () => {
     }
   };
 
+  if (poolData.length === 0) {
+    return (
+      <Flex
+        direction="column"
+        alignItems="center"
+        justifyContent="center"
+        gap={4}
+        mb={8}
+        mt={8}
+        w="full"
+      >
+        <Heading size="xl"> No Bets Found </Heading>
+      </Flex>
+    );
+  }
+
   return (
     <Flex w="full" alignItems="center" justifyContent="center">
       <TableContainer w="full">
@@ -71,8 +86,8 @@ const ProfileShowAll = () => {
           <TableCaption>
             <Pagination
               current={current}
-              onChange={(page: any) => {
-                setCurrent(page);
+              onChange={(page: number | undefined) => {
+                setCurrent(page || 1);
               }}
               pageSize={pageSize}
               total={data.length}
@@ -105,33 +120,40 @@ const ProfileShowAll = () => {
             </Tr>
           </Thead>
           <Tbody>
-            {posts.map((item: any, index: any) => {
-              return (
-                <Tr key={index}>
-                  <Td color="#fff" fontSize="md" fontWeight="hairline">
-                    {item.date}
-                  </Td>
-                  <Td color="#fff" fontSize="md" fontWeight="hairline">
-                    {item.name}
-                  </Td>
-                  <Td color="#fff" fontSize="md" fontWeight="hairline">
-                    {item.betAmount}
-                  </Td>
+            {posts &&
+              posts.map((item) => {
+                return (
+                  <Tr key={uniqueID()}>
+                    <Td color="#fff" fontSize="md" fontWeight="hairline">
+                      {formatInTimeZone(
+                        item.pool.startTime,
+                        Intl.DateTimeFormat().resolvedOptions().timeZone,
+                        "HH:mm aa, do MMM yyyy"
+                      )}
+                    </Td>
+                    <Td color="#fff" fontSize="md" fontWeight="hairline">
+                      <CustomLink href={`/dashboard/poolview/${item.id}`}>
+                        <Text cursor="pointer">{item.pool.poolName}</Text>
+                      </CustomLink>
+                    </Td>
+                    <Td color="#fff" fontSize="md" fontWeight="hairline">
+                      {item.pool.totalPoolAmount}
+                    </Td>
 
-                  <Td color="#fff" fontSize="md" fontWeight="hairline">
-                    <Tag
-                      size="lg"
-                      key="lg"
-                      variant="solid"
-                      bg={item.status === "Won" ? "#0EB634" : "#ff0000"}
-                      color={item.status === "Won" ? "#000" : "#fff"}
-                    >
-                      {item.status}
-                    </Tag>
-                  </Td>
-                </Tr>
-              );
-            })}
+                    <Td color="#fff" fontSize="md" fontWeight="hairline">
+                      <Tag
+                        size="lg"
+                        key="lg"
+                        variant="solid"
+                        bg={item.status === "LOST" ? "#ff0000" : "#0EB634"}
+                        color={item.status === "LOST" ? "#fff" : "#ffffff"}
+                      >
+                        {item.status}
+                      </Tag>
+                    </Td>
+                  </Tr>
+                );
+              })}
           </Tbody>
         </Table>
       </TableContainer>

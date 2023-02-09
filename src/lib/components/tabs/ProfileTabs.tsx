@@ -25,6 +25,8 @@ const ProfileTabs = () => {
   const user = useRef(userData);
   const [loading, setLoading] = useState(true);
   const [userBetsData, setUserBetsData] = useState<PoolWithBets[]>([]);
+  const [wonBets, setWonBets] = useState<PoolWithBets[]>([]);
+  const [lostBets, setLostBets] = useState<PoolWithBets[]>([]);
 
   const getUserPoolData = useCallback(async () => {
     if (!user.current || !Object.keys(user.current).length) return;
@@ -32,6 +34,20 @@ const ProfileTabs = () => {
     const res = await getUserBets(user.current.id);
 
     setUserBetsData(res?.userBets?.bets);
+    if (res?.userBets?.bets.length > 0) {
+      const wonArray: PoolWithBets[] = [];
+      const lostArray: PoolWithBets[] = [];
+
+      res?.userBets?.bets.forEach((bet: PoolWithBets) => {
+        if (bet.status === "WON") {
+          wonArray.push(bet);
+        } else if (bet.status === "LOST") {
+          lostArray.push(bet);
+        }
+      });
+      setWonBets(wonArray);
+      setLostBets(lostArray);
+    }
 
     setLoading(false);
   }, [user]);
@@ -83,10 +99,10 @@ const ProfileTabs = () => {
             <ProfileShowAll poolData={userBetsData} />
           </TabPanel>
           <TabPanel p="0">
-            <ProfileWon poolData={userBetsData} />
+            <ProfileWon poolData={wonBets} />
           </TabPanel>
           <TabPanel p="0">
-            <ProfileLost />
+            <ProfileLost poolData={lostBets} />
           </TabPanel>
         </TabPanels>
       </Tabs>

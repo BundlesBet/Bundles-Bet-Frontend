@@ -16,23 +16,57 @@ import {
   TableContainer,
 } from "@chakra-ui/react";
 import Pagination from "@choc-ui/paginator";
-import React, { forwardRef } from "react";
+import { useRouter } from "next/router";
+import { forwardRef, useEffect, useState } from "react";
+// import { useSelector } from "react-redux";
 
-// interface TableProps {
-//   //   poolData: any;
-// }
+// import type { RootState } from "redux/store";
+// import { getMatchesOfPool, getUserBets } from "utils/apiCalls";
+import type { ESPNMatch } from "utils/interfaces";
+
 const ProfilePoolTable = () => {
-  //   const { poolData } = props;
-
   const header = ["Home Team", "Away Team", "Selected Team"];
 
-  const data = [{ home: "CA", away: "AG", selected: "AG" }];
+  // const [matchData, setMatchData] = useState<ESPNMatch[]>([]);
 
-  //   const data = poolData;
-  const [current, setCurrent] = React.useState(1);
+  const data: ESPNMatch[] = [];
+  const [current, setCurrent] = useState(1);
   const pageSize = 5;
   const offset = (current - 1) * pageSize;
   const posts = data.length > 0 ? data.slice(offset, offset + pageSize) : [];
+  const router = useRouter();
+  // const [loader, setLoader] = React.useState(true);
+
+  // const userData = useSelector((state: RootState) => state.user)
+  //   .userData as UserData;
+
+  const poolId = parseInt(router.query?.id as string);
+
+  const getUserData = async () => {
+    // const userBetsRes = await getUserBets(userData.id);
+    // const getMatchData = await getMatchesOfPool(poolId);
+    // console.log(userBetsRes.userBets.bets)
+    // userBetsRes.userBets.bets.forEach((match: ESPNMatch) => {
+    //   const bet = userBetsRes?.userBets?.bets.teamSelections.find(
+    //     (bet: Bet) => {
+    //       console.log(bet.teamSelections.match, match.espnMatchId);
+    //       return bet.teamSelections.match === match.espnMatchId;
+    //     }
+    //   );
+    //   console.log(bet);
+    //   if (bet) {
+    //     data.push({
+    //       homeTeam: match.teamA.abbreviation,
+    //       awayTeam: match.teamB.abbreviation,
+    //       selectedTeam:
+    //         bet.teamSelections.selection === 0
+    //           ? match.teamA.abbreviation
+    //           : match.teamB.abbreviation,
+    //     });
+    //   }
+    // setMatchData(data);
+    // setLoader(false);
+  };
 
   const Prev = forwardRef((props, ref: any) => {
     return (
@@ -57,6 +91,13 @@ const ProfilePoolTable = () => {
       return Next;
     }
   };
+
+  useEffect(() => {
+    // if (!data || !data?.length) return;
+
+    getUserData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [poolId]);
 
   return (
     <Flex w="full" alignItems="center" justifyContent="center">

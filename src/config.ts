@@ -16,7 +16,7 @@ export const contractDetails = {
     chainId: allowedChain[0].id,
   },
   bundToken: {
-    address: "0x47dae46d31f31f84336Ac120b15eFdA261D484FB",
+    address: "0xa121E5317FE55097E468282BF833100D9b905785",
     abi: BundTokenABI,
     name: "BUND",
     chainId: allowedChain[0].id,
