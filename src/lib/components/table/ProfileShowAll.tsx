@@ -20,19 +20,21 @@ import {
   PopoverTrigger,
   ButtonGroup,
   PopoverFooter,
-  useDisclosure,
   useToast,
 } from "@chakra-ui/react";
 import Pagination from "@choc-ui/paginator";
 import { formatInTimeZone } from "date-fns-tz";
 import { forwardRef, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { useContractWrite, usePrepareContractWrite } from "wagmi";
 
 import CustomLink from "../common/CustomLink";
 import { contractDetails } from "config";
+import { setUserData } from "redux/slices/user";
+import type { RootState } from "redux/store";
 import { uniqueID } from "utils";
 import { cancelBet } from "utils/apiCalls";
-import type { PoolWithBets } from "utils/interfaces";
+import type { PoolWithBets, UserData } from "utils/interfaces";
 
 interface TableProps {
   allBetsData: PoolWithBets[];
@@ -44,16 +46,24 @@ const ProfileShowAll = (props: TableProps) => {
   const [poolId, setPoolId] = useState(0);
   const [userId, setUserId] = useState(0);
   const [current, setCurrent] = useState(1);
-
+  const [betData, setBetData] = useState<PoolWithBets[]>(allBetsData);
   const toast = useToast();
-  const { isOpen, onToggle, onClose } = useDisclosure();
+  const [loader, setLoader] = useState(false);
+
+  const dispatch = useDispatch();
+  const userData = useSelector((state: RootState) => state.user)
+    .userData as UserData;
+
+  const [cancelRowId, setCancelRowId] = useState(0);
+
+  const toggle = (rowId: number) => {
+    setCancelRowId(rowId);
+  };
 
   const pageSize = 5;
   const offset = (current - 1) * pageSize;
   const posts =
-    allBetsData?.length === 0
-      ? []
-      : allBetsData.slice(offset, offset + pageSize);
+    betData?.length === 0 ? [] : betData.slice(offset, offset + pageSize);
   const header = ["Pool Creation Date", "Pool Name", "Bet Amount", "Status"];
 
   // eslint-disable-next-line react/no-unstable-nested-components, @typescript-eslint/no-explicit-any
@@ -88,7 +98,7 @@ const ProfileShowAll = (props: TableProps) => {
       return (
         <Button
           onClick={() => {
-            onToggle();
+            toggle(item.id);
             setBetId(item.id);
             setPoolId(item.poolId);
             setUserId(item.userId);
@@ -117,9 +127,8 @@ const ProfileShowAll = (props: TableProps) => {
   const { writeAsync } = useContractWrite(config);
 
   const cancelUserBet = async () => {
+    setLoader(true);
     try {
-      onToggle();
-
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
       (await writeAsync?.())?.wait(3).then(async (value) => {
         const body = {
@@ -138,10 +147,32 @@ const ProfileShowAll = (props: TableProps) => {
           duration: 4000,
           isClosable: true,
         });
+
+        const refreshArr: PoolWithBets[] = [];
+        for (let i = 0; i < betData.length; i += 1) {
+          if (betData[i].id === cancelRowId) {
+            betData[i].status = "CANCELLED";
+
+            refreshArr.push(betData[i]);
+          } else {
+            refreshArr.push(betData[i]);
+          }
+        }
+        setBetData(refreshArr);
+        setCancelRowId(0);
+
+        dispatch(
+          setUserData({
+            ...userData,
+            totalPoolsParticipated: userData.totalPoolsParticipated - 1,
+          })
+        );
+        setLoader(false);
       });
     } catch (error) {
       // eslint-disable-next-line no-console
       console.error(error);
+      setLoader(false);
     }
   };
 
@@ -156,7 +187,7 @@ const ProfileShowAll = (props: TableProps) => {
                 setCurrent(page || 1);
               }}
               pageSize={pageSize}
-              total={allBetsData && allBetsData.length}
+              total={betData && betData.length}
               itemRender={itemRender}
               paginationProps={{
                 display: "flex",
@@ -194,7 +225,7 @@ const ProfileShowAll = (props: TableProps) => {
                       {formatInTimeZone(
                         item.pool.startTime,
                         Intl.DateTimeFormat().resolvedOptions().timeZone,
-                        "HH:mm aa, do MMM yyyy"
+                        "HH:mm aa, do MMM yy"
                       )}
                     </Td>
                     <Td color="#fff" fontSize="md" fontWeight="hairline">
@@ -233,8 +264,8 @@ const ProfileShowAll = (props: TableProps) => {
                         ) : (
                           <Popover
                             returnFocusOnClose={false}
-                            isOpen={isOpen}
-                            onClose={onClose}
+                            isOpen={item.id === cancelRowId}
+                            onClose={() => setCancelRowId(0)}
                             closeOnBlur={false}
                           >
                             <PopoverTrigger>
@@ -259,13 +290,18 @@ const ProfileShowAll = (props: TableProps) => {
                                 justifyContent="flex-end"
                               >
                                 <ButtonGroup size="sm">
-                                  <Button variant="outline" onClick={onToggle}>
+                                  <Button
+                                    variant="outline"
+                                    onClick={() => setCancelRowId(0)}
+                                    isLoading={loader}
+                                  >
                                     Cancel
                                   </Button>
                                   <Button
                                     bg="#0EB634"
                                     color="#111"
                                     onClick={cancelUserBet}
+                                    isLoading={loader}
                                   >
                                     Apply
                                   </Button>
