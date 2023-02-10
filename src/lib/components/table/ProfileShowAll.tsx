@@ -229,7 +229,9 @@ const ProfileShowAll = (props: TableProps) => {
                       )}
                     </Td>
                     <Td color="#fff" fontSize="md" fontWeight="hairline">
-                      <CustomLink href={`/dashboard/poolview/${item.id}`}>
+                      <CustomLink
+                        href={`/dashboard/poolview/${item.id}/${item.poolId}`}
+                      >
                         <Text cursor="pointer">{item.pool.poolName}</Text>
                       </CustomLink>
                     </Td>
