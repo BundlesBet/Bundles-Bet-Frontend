@@ -95,7 +95,7 @@ export const ConfirmBetModal = (props: ModalProps) => {
         args: [address, contractDetails.betting.address],
       });
 
-      if (new BN(poolData.fee).gt(new BN(allowance as number))) {
+      if (new BN(poolData.fee).gt(allowance as BN)) {
         const approveConfig = await prepareWriteContract({
           address: contractDetails.bundToken.address,
           abi: contractDetails.bundToken.abi,

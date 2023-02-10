@@ -98,7 +98,7 @@ const PoolTabs = () => {
       >
         <TabList>
           <Tab _selected={{ color: "black", bg: "#0EB634" }}>Active</Tab>
-          <Tab _selected={{ color: "black", bg: "#0EB634" }}>UnActive</Tab>
+          <Tab _selected={{ color: "black", bg: "#0EB634" }}>InActive</Tab>
           <Tab _selected={{ color: "black", bg: "#0EB634" }}>Upcoming</Tab>
         </TabList>
         <TabPanels>

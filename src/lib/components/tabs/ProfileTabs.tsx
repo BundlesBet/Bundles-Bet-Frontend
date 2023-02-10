@@ -10,6 +10,7 @@ import {
 } from "@chakra-ui/react";
 import { useState, useEffect, useCallback, useRef } from "react";
 import { useSelector } from "react-redux";
+import { useAccount } from "wagmi";
 
 import ProfileLost from "../table/ProfileLost";
 import ProfileShowAll from "../table/ProfileShowAll";
@@ -22,11 +23,13 @@ const ProfileTabs = () => {
   const userData = useSelector((state: RootState) => state.user)
     .userData as UserData;
 
+  const { address } = useAccount();
+
   const user = useRef(userData);
   const [loading, setLoading] = useState(true);
-  const [userBetsData, setUserBetsData] = useState<PoolWithBets[]>([]);
   const [wonBets, setWonBets] = useState<PoolWithBets[]>([]);
   const [lostBets, setLostBets] = useState<PoolWithBets[]>([]);
+  const [userBetsData, setUserBetsData] = useState<PoolWithBets[]>([]);
 
   const getUserPoolData = useCallback(async () => {
     if (!user.current || !Object.keys(user.current).length) return;
@@ -45,6 +48,7 @@ const ProfileTabs = () => {
           lostArray.push(bet);
         }
       });
+
       setWonBets(wonArray);
       setLostBets(lostArray);
     }
@@ -57,6 +61,13 @@ const ProfileTabs = () => {
     setTimeout(() => getUserPoolData(), 2000);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [userData]);
+
+  useEffect(() => {
+    setLoading(true);
+    user.current = userData;
+    setTimeout(() => getUserPoolData(), 2000);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [address]);
 
   if (loading) {
     return (
@@ -77,12 +88,9 @@ const ProfileTabs = () => {
         direction="column"
         alignItems="center"
         justifyContent="center"
-        minHeight="80vh"
-        gap={4}
-        mb={8}
         w="full"
       >
-        <Heading size="2xl"> No Bets Found </Heading>
+        <Heading size="lg"> No Bets Found </Heading>
       </Flex>
     );
 
@@ -96,13 +104,13 @@ const ProfileTabs = () => {
         </TabList>
         <TabPanels>
           <TabPanel p="0">
-            <ProfileShowAll poolData={userBetsData} />
+            <ProfileShowAll allBetsData={userBetsData} />
           </TabPanel>
           <TabPanel p="0">
-            <ProfileWon poolData={wonBets} />
+            <ProfileWon wonBetsData={wonBets} />
           </TabPanel>
           <TabPanel p="0">
-            <ProfileLost poolData={lostBets} />
+            <ProfileLost lostBetsData={lostBets} />
           </TabPanel>
         </TabPanels>
       </Tabs>

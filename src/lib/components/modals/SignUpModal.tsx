@@ -108,7 +108,8 @@ export const SignUpModal = (props: ModalProps) => {
             <Stack
               as="form"
               spacing="6"
-              onSubmit={() => {
+              onSubmit={(e) => {
+                e.preventDefault();
                 formik.handleSubmit();
               }}
             >

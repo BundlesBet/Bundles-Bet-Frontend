@@ -1,5 +1,6 @@
 import { Flex, Stack, VStack, Text } from "@chakra-ui/react";
 import { NextSeo } from "next-seo";
+import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { useAccount } from "wagmi";
 
@@ -13,7 +14,36 @@ const Dashboard = () => {
   const userData = useSelector((state: RootState) => state.user)
     .userData as UserData;
 
-  const { isConnected } = useAccount();
+  const { address, isConnected } = useAccount();
+
+  const [loading, setLoading] = useState(true);
+  const [registered, setRegistered] = useState(false);
+
+  useEffect(() => {
+    if (Object.keys(userData).length > 0) {
+      setRegistered(true);
+    } else {
+      setRegistered(false);
+    }
+    setLoading(false);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [address, userData]);
+
+  if (loading) {
+    return (
+      <Flex
+        direction="column"
+        alignItems="center"
+        justifyContent="center"
+        minHeight="70vh"
+        gap={4}
+        mb={8}
+        w="full"
+      >
+        <Text> Loading Data </Text>
+      </Flex>
+    );
+  }
 
   if (!isConnected) {
     return (
@@ -27,6 +57,22 @@ const Dashboard = () => {
         w="full"
       >
         <Text> Please connect your wallet </Text>
+      </Flex>
+    );
+  }
+
+  if (registered === false) {
+    return (
+      <Flex
+        direction="column"
+        alignItems="center"
+        justifyContent="center"
+        minHeight="70vh"
+        gap={4}
+        mb={8}
+        w="full"
+      >
+        <Text> Please register before continuing </Text>
       </Flex>
     );
   }

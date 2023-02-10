@@ -22,14 +22,14 @@ import { uniqueID } from "utils";
 import type { PoolWithBets } from "utils/interfaces";
 
 interface TableProps {
-  poolData: PoolWithBets[];
+  lostBetsData: PoolWithBets[];
 }
 const ProfileShowAll = (props: TableProps) => {
-  const { poolData } = props;
+  const { lostBetsData } = props;
 
   const header = ["Pool Creation Date", "Pool Name", "Bet Amount", "Status"];
 
-  const data = poolData;
+  const data = lostBetsData;
 
   const [current, setCurrent] = React.useState(1);
   const pageSize = 5;
@@ -63,7 +63,7 @@ const ProfileShowAll = (props: TableProps) => {
     }
   };
 
-  if (poolData.length === 0) {
+  if (lostBetsData.length === 0) {
     return (
       <Flex
         direction="column"

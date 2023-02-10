@@ -35,10 +35,10 @@ import { cancelBet } from "utils/apiCalls";
 import type { PoolWithBets } from "utils/interfaces";
 
 interface TableProps {
-  poolData: PoolWithBets[];
+  allBetsData: PoolWithBets[];
 }
 const ProfileShowAll = (props: TableProps) => {
-  const { poolData } = props;
+  const { allBetsData } = props;
 
   const [betId, setBetId] = useState(0);
   const [poolId, setPoolId] = useState(0);
@@ -51,7 +51,9 @@ const ProfileShowAll = (props: TableProps) => {
   const pageSize = 5;
   const offset = (current - 1) * pageSize;
   const posts =
-    poolData?.length === 0 ? [] : poolData.slice(offset, offset + pageSize);
+    allBetsData?.length === 0
+      ? []
+      : allBetsData.slice(offset, offset + pageSize);
   const header = ["Pool Creation Date", "Pool Name", "Bet Amount", "Status"];
 
   // eslint-disable-next-line react/no-unstable-nested-components, @typescript-eslint/no-explicit-any
@@ -154,7 +156,7 @@ const ProfileShowAll = (props: TableProps) => {
                 setCurrent(page || 1);
               }}
               pageSize={pageSize}
-              total={poolData && poolData.length}
+              total={allBetsData && allBetsData.length}
               itemRender={itemRender}
               paginationProps={{
                 display: "flex",
