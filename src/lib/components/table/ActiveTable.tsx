@@ -90,7 +90,7 @@ const ActiveTable = (props: TableProps) => {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const bettingData = (userBetsRes?.userBets?.bets as [])?.find(
       (bet: Bet) => {
-        return bet.poolId === poolId;
+        return bet.poolId === poolId && bet.status !== "CANCELLED";
       }
     );
 

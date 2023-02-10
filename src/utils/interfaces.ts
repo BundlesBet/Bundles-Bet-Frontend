@@ -142,3 +142,23 @@ export type LeaderBoard = {
     accuracy: number;
   }>;
 };
+
+export type BetMatches = {
+  id: number;
+  poolId: number;
+  userId: number;
+  teamSelections: Array<{ match: number; selection: number }>;
+  betAmount: number;
+  predictionAccuracy: number;
+  outcomesForMatches: Array<{ match: number; selection: number }>;
+  status: string;
+  matches: Array<ESPNMatch>;
+  poolName: string;
+};
+
+export type BetMatchesTable = {
+  teamAName: string;
+  teamBName: string;
+  selection: string;
+  outcome: string;
+};

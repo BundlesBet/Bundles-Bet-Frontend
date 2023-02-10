@@ -1,8 +1,3 @@
-/* eslint-disable @typescript-eslint/no-shadow */
-/* eslint-disable @typescript-eslint/no-explicit-any */
-/* eslint-disable consistent-return */
-/* eslint-disable react/no-unstable-nested-components */
-/* eslint-disable react/no-array-index-key */
 import {
   Table,
   Thead,
@@ -16,24 +11,26 @@ import {
   TableContainer,
 } from "@chakra-ui/react";
 import Pagination from "@choc-ui/paginator";
-import React, { forwardRef } from "react";
+import { forwardRef, useState } from "react";
 
-// interface TableProps {
-//   //   poolData: any;
-// }
-const ProfilePoolTable = () => {
-  //   const { poolData } = props;
+import { uniqueID } from "utils";
+import type { BetMatchesTable } from "utils/interfaces";
 
-  const header = ["Home Team", "Away Team", "Selected Team"];
+interface Props {
+  betMatches: BetMatchesTable[];
+}
 
-  const data = [{ home: "CA", away: "AG", selected: "AG" }];
+const ProfilePoolTable = ({ betMatches }: Props) => {
+  const header = ["Home Team", "Away Team", "Selected Team", "Match Outcome"];
 
-  //   const data = poolData;
-  const [current, setCurrent] = React.useState(1);
+  const [current, setCurrent] = useState(1);
+
   const pageSize = 5;
   const offset = (current - 1) * pageSize;
-  const posts = data.length > 0 ? data.slice(offset, offset + pageSize) : [];
+  const posts =
+    betMatches.length === 0 ? [] : betMatches.slice(offset, offset + pageSize);
 
+  // eslint-disable-next-line react/no-unstable-nested-components, @typescript-eslint/no-explicit-any
   const Prev = forwardRef((props, ref: any) => {
     return (
       <Button ref={ref} {...props}>
@@ -41,6 +38,8 @@ const ProfilePoolTable = () => {
       </Button>
     );
   });
+
+  // eslint-disable-next-line react/no-unstable-nested-components, @typescript-eslint/no-explicit-any
   const Next = forwardRef((props, ref: any) => {
     return (
       <Button ref={ref} {...props}>
@@ -49,6 +48,7 @@ const ProfilePoolTable = () => {
     );
   });
 
+  // eslint-disable-next-line consistent-return, @typescript-eslint/no-explicit-any
   const itemRender: any = (_: any, type: string) => {
     if (type === "prev") {
       return Prev;
@@ -65,11 +65,9 @@ const ProfilePoolTable = () => {
           <TableCaption>
             <Pagination
               current={current}
-              onChange={(page: any) => {
-                setCurrent(page);
-              }}
+              onChange={(page: number | undefined) => setCurrent(page || 1)}
               pageSize={pageSize}
-              total={data.length}
+              total={betMatches.length}
               itemRender={itemRender}
               paginationProps={{
                 display: "flex",
@@ -99,17 +97,20 @@ const ProfilePoolTable = () => {
             </Tr>
           </Thead>
           <Tbody>
-            {posts.map((item: any, index: any) => {
+            {posts.map((item: BetMatchesTable) => {
               return (
-                <Tr key={index}>
+                <Tr key={uniqueID()}>
                   <Td color="#fff" fontSize="md" fontWeight="hairline">
-                    {item.home}
+                    {item.teamAName}
                   </Td>
                   <Td color="#fff" fontSize="md" fontWeight="hairline">
-                    {item.away}
+                    {item.teamBName}
                   </Td>
                   <Td color="#fff" fontSize="md" fontWeight="hairline">
-                    {item.selected}
+                    {item.selection}
+                  </Td>
+                  <Td color="#fff" fontSize="md" fontWeight="hairline">
+                    {item.outcome}
                   </Td>
                 </Tr>
               );

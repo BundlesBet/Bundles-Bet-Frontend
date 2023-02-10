@@ -84,6 +84,13 @@ export const getUserBets = async (userId: number) => {
   return apiCall(response, error);
 };
 
+export const fetchBetMatches = async (body: object) => {
+  const [response, error] = await api(
+    axios.post(`${userRoute}/fetchBetMatches`, body)
+  );
+  return apiCall(response, error);
+};
+
 export const updateUserRewards = async (body: {
   userId: number;
   reward: number;

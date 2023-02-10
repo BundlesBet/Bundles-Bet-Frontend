@@ -23,7 +23,7 @@ import {
 import BN from "bn.js";
 import { useEffect } from "react";
 import { BiCopy } from "react-icons/bi";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import {
   useAccount,
   useBalance,
@@ -37,6 +37,7 @@ import {
 } from "wagmi/actions";
 
 import { contractDetails } from "config";
+import { setUserData } from "redux/slices/user";
 import type { RootState } from "redux/store";
 import { approvalAmt } from "utils";
 import { createBet } from "utils/apiCalls";
@@ -52,6 +53,7 @@ interface ModalProps {
 export const ConfirmBetModal = (props: ModalProps) => {
   const { isOpen, close, handleConfirm, teamsSelected } = props;
 
+  const dispatch = useDispatch();
   const { onCopy, setValue } = useClipboard("");
   const { address, isConnected } = useAccount();
   const { poolData } = useSelector((state: RootState) => state.betting);
@@ -95,7 +97,7 @@ export const ConfirmBetModal = (props: ModalProps) => {
         args: [address, contractDetails.betting.address],
       });
 
-      if (new BN(poolData.fee).gt(new BN(allowance as number))) {
+      if (new BN(poolData.fee).gt(allowance as BN)) {
         const approveConfig = await prepareWriteContract({
           address: contractDetails.bundToken.address,
           abi: contractDetails.bundToken.abi,
@@ -145,6 +147,13 @@ export const ConfirmBetModal = (props: ModalProps) => {
         };
 
         await createBet(body);
+
+        dispatch(
+          setUserData({
+            ...userData,
+            totalPoolsParticipated: userData.totalPoolsParticipated + 1,
+          })
+        );
 
         close();
         handleConfirm();

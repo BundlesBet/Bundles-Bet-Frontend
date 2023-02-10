@@ -19,7 +19,7 @@ const TotalTokenTransferred = (props: TotalTokenTransferredProps) => {
         <Icon boxSize={70} as={FaCoins} color="white" />
         <VStack justifyContent="space-between" alignItems="flex-end">
           <Text fontSize="sm" color="muted" textAlign="end">
-            Total Token Transferred
+            Total Rwards Earned
           </Text>
           <Heading size={{ base: "2xl", md: "xl" }} textAlign="end">
             {totalToken}

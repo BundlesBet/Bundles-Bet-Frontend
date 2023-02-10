@@ -12,10 +12,11 @@ export default function useWagmiLogin() {
     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     const userData = await getUserDataByWalletAddress(address!);
 
-    if (userData.user != null) {
+    if (userData.user !== null) {
       dispatch(setUserData(userData.user));
       return true;
     }
+
     return false;
   };
 
