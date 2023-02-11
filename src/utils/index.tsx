@@ -97,3 +97,18 @@ export const matches = [
 export function uniqueID() {
   return Math.floor(Math.random() * Date.now());
 }
+
+export const getStringOutcome = (matchOutcome: number) => {
+  switch (matchOutcome) {
+    case 0:
+      return "TEAM_A";
+    case 1:
+      return "TEAM_B";
+    case 2:
+      return "DRAW";
+    case 3:
+      return "CANCELLED";
+    default:
+      return "NOT_STARTED";
+  }
+};

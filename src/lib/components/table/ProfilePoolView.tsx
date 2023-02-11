@@ -1,8 +1,3 @@
-/* eslint-disable @typescript-eslint/no-shadow */
-/* eslint-disable @typescript-eslint/no-explicit-any */
-/* eslint-disable consistent-return */
-/* eslint-disable react/no-unstable-nested-components */
-/* eslint-disable react/no-array-index-key */
 import {
   Table,
   Thead,
@@ -16,58 +11,26 @@ import {
   TableContainer,
 } from "@chakra-ui/react";
 import Pagination from "@choc-ui/paginator";
-import { useRouter } from "next/router";
-import { forwardRef, useEffect, useState } from "react";
-// import { useSelector } from "react-redux";
+import { forwardRef, useState } from "react";
 
-// import type { RootState } from "redux/store";
-// import { getMatchesOfPool, getUserBets } from "utils/apiCalls";
-import type { ESPNMatch } from "utils/interfaces";
+import { uniqueID } from "utils";
+import type { BetMatchesTable } from "utils/interfaces";
 
-const ProfilePoolTable = () => {
-  const header = ["Home Team", "Away Team", "Selected Team"];
+interface Props {
+  betMatches: BetMatchesTable[];
+}
 
-  // const [matchData, setMatchData] = useState<ESPNMatch[]>([]);
+const ProfilePoolTable = ({ betMatches }: Props) => {
+  const header = ["Home Team", "Away Team", "Selected Team", "Match Outcome"];
 
-  const data: ESPNMatch[] = [];
   const [current, setCurrent] = useState(1);
+
   const pageSize = 5;
   const offset = (current - 1) * pageSize;
-  const posts = data.length > 0 ? data.slice(offset, offset + pageSize) : [];
-  const router = useRouter();
-  // const [loader, setLoader] = React.useState(true);
+  const posts =
+    betMatches.length === 0 ? [] : betMatches.slice(offset, offset + pageSize);
 
-  // const userData = useSelector((state: RootState) => state.user)
-  //   .userData as UserData;
-
-  const poolId = parseInt(router.query?.id as string);
-
-  const getUserData = async () => {
-    // const userBetsRes = await getUserBets(userData.id);
-    // const getMatchData = await getMatchesOfPool(poolId);
-    // console.log(userBetsRes.userBets.bets)
-    // userBetsRes.userBets.bets.forEach((match: ESPNMatch) => {
-    //   const bet = userBetsRes?.userBets?.bets.teamSelections.find(
-    //     (bet: Bet) => {
-    //       console.log(bet.teamSelections.match, match.espnMatchId);
-    //       return bet.teamSelections.match === match.espnMatchId;
-    //     }
-    //   );
-    //   console.log(bet);
-    //   if (bet) {
-    //     data.push({
-    //       homeTeam: match.teamA.abbreviation,
-    //       awayTeam: match.teamB.abbreviation,
-    //       selectedTeam:
-    //         bet.teamSelections.selection === 0
-    //           ? match.teamA.abbreviation
-    //           : match.teamB.abbreviation,
-    //     });
-    //   }
-    // setMatchData(data);
-    // setLoader(false);
-  };
-
+  // eslint-disable-next-line react/no-unstable-nested-components, @typescript-eslint/no-explicit-any
   const Prev = forwardRef((props, ref: any) => {
     return (
       <Button ref={ref} {...props}>
@@ -75,6 +38,8 @@ const ProfilePoolTable = () => {
       </Button>
     );
   });
+
+  // eslint-disable-next-line react/no-unstable-nested-components, @typescript-eslint/no-explicit-any
   const Next = forwardRef((props, ref: any) => {
     return (
       <Button ref={ref} {...props}>
@@ -83,6 +48,7 @@ const ProfilePoolTable = () => {
     );
   });
 
+  // eslint-disable-next-line consistent-return, @typescript-eslint/no-explicit-any
   const itemRender: any = (_: any, type: string) => {
     if (type === "prev") {
       return Prev;
@@ -92,13 +58,6 @@ const ProfilePoolTable = () => {
     }
   };
 
-  useEffect(() => {
-    // if (!data || !data?.length) return;
-
-    getUserData();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [poolId]);
-
   return (
     <Flex w="full" alignItems="center" justifyContent="center">
       <TableContainer w="full">
@@ -106,11 +65,9 @@ const ProfilePoolTable = () => {
           <TableCaption>
             <Pagination
               current={current}
-              onChange={(page: any) => {
-                setCurrent(page);
-              }}
+              onChange={(page: number | undefined) => setCurrent(page || 1)}
               pageSize={pageSize}
-              total={data.length}
+              total={betMatches.length}
               itemRender={itemRender}
               paginationProps={{
                 display: "flex",
@@ -141,17 +98,20 @@ const ProfilePoolTable = () => {
             </Tr>
           </Thead>
           <Tbody>
-            {posts.map((item: any, index: any) => {
+            {posts.map((item: BetMatchesTable) => {
               return (
-                <Tr key={index}>
+                <Tr key={uniqueID()}>
                   <Td color="#fff" fontSize="md" fontWeight="hairline">
-                    {item.home}
+                    {item.teamAName}
                   </Td>
                   <Td color="#fff" fontSize="md" fontWeight="hairline">
-                    {item.away}
+                    {item.teamBName}
                   </Td>
                   <Td color="#fff" fontSize="md" fontWeight="hairline">
-                    {item.selected}
+                    {item.selection}
+                  </Td>
+                  <Td color="#fff" fontSize="md" fontWeight="hairline">
+                    {item.outcome}
                   </Td>
                 </Tr>
               );

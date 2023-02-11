@@ -42,6 +42,7 @@ const LeaderboardTable = ({ leaderboardData }: Props) => {
       </Button>
     );
   });
+
   // eslint-disable-next-line react/no-unstable-nested-components, @typescript-eslint/no-explicit-any
   const Next = forwardRef((props, ref: any) => {
     return (
