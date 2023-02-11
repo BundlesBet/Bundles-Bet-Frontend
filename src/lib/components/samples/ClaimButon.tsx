@@ -1,4 +1,4 @@
-import { Button, Flex } from "@chakra-ui/react";
+import { Button, Flex, useToast } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import { useContractWrite, usePrepareContractWrite } from "wagmi";
 
@@ -29,6 +29,8 @@ const ClaimButton = ({
     args: [poolId],
   });
 
+  const toast = useToast();
+
   const { writeAsync } = useContractWrite(config);
 
   const backendClaimCall = async () => {
@@ -41,10 +43,42 @@ const ClaimButton = ({
         bg="#0EB634"
         color="#111"
         onClick={async () => {
-          // eslint-disable-next-line @typescript-eslint/no-unused-vars
-          (await writeAsync?.())?.wait(3).then((value) => {
-            backendClaimCall();
+          toast({
+            position: "top-right",
+            title: "Processing transaction",
+            description: "We are processing your transaction, please wait...",
+            status: "info",
+            duration: 4000,
+            isClosable: true,
           });
+
+          (await writeAsync?.())
+            ?.wait(3)
+            // eslint-disable-next-line @typescript-eslint/no-unused-vars
+            .then((value) => {
+              backendClaimCall();
+
+              toast({
+                position: "top-right",
+                title: "Reward claimed",
+                description: "Reward claimed successfully.",
+                status: "success",
+                duration: 4000,
+                isClosable: true,
+              });
+            })
+            // eslint-disable-next-line @typescript-eslint/no-unused-vars
+            .catch((error) => {
+              toast({
+                position: "top-right",
+                title: "Problem encountered",
+                description:
+                  "Problem in reward claiming, please try again later!",
+                status: "error",
+                duration: 4000,
+                isClosable: true,
+              });
+            });
         }}
         isDisabled={!containsReward || !showClaimButton}
       >

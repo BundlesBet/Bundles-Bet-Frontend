@@ -129,6 +129,15 @@ const ProfileShowAll = (props: TableProps) => {
   const cancelUserBet = async () => {
     setLoader(true);
     try {
+      toast({
+        position: "top-right",
+        title: "Processing transaction",
+        description: "We are processing your transaction, please wait...",
+        status: "info",
+        duration: 4000,
+        isClosable: true,
+      });
+
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
       (await writeAsync?.())?.wait(3).then(async (value) => {
         const body = {
@@ -173,6 +182,14 @@ const ProfileShowAll = (props: TableProps) => {
       // eslint-disable-next-line no-console
       console.error(error);
       setLoader(false);
+      toast({
+        position: "top-right",
+        title: "Problem encountered",
+        description: "Problem in bet cancellation, please try again later!",
+        status: "error",
+        duration: 4000,
+        isClosable: true,
+      });
     }
   };
 

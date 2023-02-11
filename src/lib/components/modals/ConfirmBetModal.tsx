@@ -137,6 +137,15 @@ export const ConfirmBetModal = (props: ModalProps) => {
         return;
       }
 
+      toast({
+        position: "top-right",
+        title: "Processing transaction",
+        description: "We are processing your transaction, please wait...",
+        status: "info",
+        duration: 4000,
+        isClosable: true,
+      });
+
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
       (await writeAsync?.())?.wait(3).then(async (value) => {
         const body = {
@@ -155,12 +164,29 @@ export const ConfirmBetModal = (props: ModalProps) => {
           })
         );
 
+        toast({
+          position: "top-right",
+          title: "Bet created",
+          description: "Bet successfully created.",
+          status: "success",
+          duration: 4000,
+          isClosable: true,
+        });
+
         close();
         handleConfirm();
       });
     } catch (error) {
       // eslint-disable-next-line no-console
       console.error(error);
+      toast({
+        position: "top-right",
+        title: "Problem Encountered",
+        description: "Problem in bet creation, please try again later!",
+        status: "error",
+        duration: 4000,
+        isClosable: true,
+      });
     }
   };
 
