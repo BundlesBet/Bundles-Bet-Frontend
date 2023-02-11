@@ -156,7 +156,7 @@ const ActiveTable = (props: TableProps) => {
     if (selectCount !== data.length) {
       return "Please Select Teams";
     }
-    return "";
+    return "Bet Now";
   };
 
   const selectedTeamText = (index: number, teamA: string, teamB: string) => {
