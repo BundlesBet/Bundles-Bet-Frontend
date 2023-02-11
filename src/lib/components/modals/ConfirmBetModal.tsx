@@ -281,7 +281,9 @@ export const ConfirmBetModal = (props: ModalProps) => {
               Accept
             </Button>
 
-            <Button onClick={() => close()}>Decline</Button>
+            <Button onClick={() => close()} isLoading={loader}>
+              Decline
+            </Button>
           </ButtonGroup>
         </ModalFooter>
       </ModalContent>
