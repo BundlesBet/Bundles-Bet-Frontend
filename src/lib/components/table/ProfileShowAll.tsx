@@ -193,6 +193,7 @@ const ProfileShowAll = (props: TableProps) => {
                 display: "flex",
                 pos: "absolute",
                 left: "50%",
+                marginTop: "20px",
                 transform: "translateX(-50%)",
               }}
               focusRing="#0EB634"
