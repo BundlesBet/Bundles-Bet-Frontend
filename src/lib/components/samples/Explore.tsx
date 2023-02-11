@@ -40,6 +40,7 @@ const ExploreViewPool = () => {
           alignItems="center"
           gap={4}
           direction={{ base: "column", md: "row" }}
+          w="100%"
         >
           {explore.map(
             (link: { href: string; text: string; disable: boolean }) => (
