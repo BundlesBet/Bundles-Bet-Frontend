@@ -10,13 +10,13 @@ const allowedChain =
 
 export const contractDetails = {
   betting: {
-    address: "0xF0acFa453908369297f43E65EfeB9356fa2F9076",
+    address: "0x0d4F3b4791367Da4dF9B221aaD6Dab7F2eD5d983",
     abi,
     name: contractName,
     chainId: allowedChain[0].id,
   },
   bundToken: {
-    address: "0xa121E5317FE55097E468282BF833100D9b905785",
+    address: "0xda5c6f1D5F0445451cC2E53AA2CDEEC9309C8864",
     abi: BundTokenABI,
     name: "BUND",
     chainId: allowedChain[0].id,
