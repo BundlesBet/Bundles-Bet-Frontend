@@ -1,20 +1,19 @@
 import {
   Box,
-  Button,
+  // Button,
   Heading,
   Image,
   Text,
   Link as ChakraLink,
-  useColorMode,
+  // useColorMode,
   Flex,
 } from "@chakra-ui/react";
-import Link from "next/link";
 import { NextSeo } from "next-seo";
 
 import MotionBox from "lib/components/motion/Box";
 
 const Page404 = () => {
-  const { colorMode } = useColorMode();
+  // const { colorMode } = useColorMode();
 
   return (
     <Flex minHeight="70vh" direction="column" justifyContent="center">
@@ -35,9 +34,7 @@ const Page404 = () => {
           href="https://stories.freepik.com/web"
           isExternal
           rel="noopener noreferrer"
-        >
-          Illustration by Freepik Stories
-        </ChakraLink>
+        />
       </Text>
 
       <Box marginY={4}>
@@ -49,14 +46,14 @@ const Page404 = () => {
           <Text fontSize="sm" color="gray">
             It&apos;s Okay!
           </Text>
-          <Button
-            as={Link}
+          {/* <Button
+            as="link"
             href="/"
             backgroundColor={colorMode === "light" ? "gray.300" : "teal.500"}
             size="sm"
           >
             Let&apos;s Head Back
-          </Button>
+          </Button> */}
         </Box>
       </Box>
     </Flex>
