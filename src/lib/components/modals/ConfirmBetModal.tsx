@@ -21,7 +21,7 @@ import {
   useToast,
 } from "@chakra-ui/react";
 import BN from "bn.js";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { BiCopy } from "react-icons/bi";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -56,6 +56,7 @@ export const ConfirmBetModal = (props: ModalProps) => {
   const dispatch = useDispatch();
   const { onCopy, setValue } = useClipboard("");
   const { address, isConnected } = useAccount();
+  const [loader, setLoader] = useState(false);
   const { poolData } = useSelector((state: RootState) => state.betting);
   const userData = useSelector((state: RootState) => state.user)
     .userData as UserData;
@@ -88,6 +89,7 @@ export const ConfirmBetModal = (props: ModalProps) => {
   }, [address, setValue]);
 
   const processTransaction = async () => {
+    setLoader(true);
     try {
       const allowance = await readContract({
         address: contractDetails.bundToken.address,
@@ -133,6 +135,7 @@ export const ConfirmBetModal = (props: ModalProps) => {
           duration: 4000,
           isClosable: true,
         });
+        setLoader(false);
         close();
         return;
       }
@@ -172,13 +175,14 @@ export const ConfirmBetModal = (props: ModalProps) => {
           duration: 4000,
           isClosable: true,
         });
-
+        setLoader(false);
         close();
         handleConfirm();
       });
     } catch (error) {
       // eslint-disable-next-line no-console
       console.error(error);
+      setLoader(false);
       toast({
         position: "top-right",
         title: "Problem Encountered",
@@ -272,6 +276,7 @@ export const ConfirmBetModal = (props: ModalProps) => {
                 bg: "#0EB634",
               }}
               onClick={processTransaction}
+              isLoading={loader}
             >
               Accept
             </Button>
