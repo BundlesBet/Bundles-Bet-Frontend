@@ -21,6 +21,7 @@ import {
   useToast,
 } from "@chakra-ui/react";
 import BN from "bn.js";
+import { ethers } from "ethers";
 import { useEffect, useState } from "react";
 import { BiCopy } from "react-icons/bi";
 import { useDispatch, useSelector } from "react-redux";
@@ -74,6 +75,9 @@ export const ConfirmBetModal = (props: ModalProps) => {
     functionName: "placeBets(uint256,string[],uint256[])",
     args: [poolData.id, matchIds, matchesSelections],
     enabled: Boolean(poolData.id && matchIds && matchesSelections),
+    overrides: {
+      value: ethers.utils.parseUnits(poolData.protocolFee.toString(), "ether"),
+    },
   });
 
   const { writeAsync } = useContractWrite(config);
@@ -106,6 +110,7 @@ export const ConfirmBetModal = (props: ModalProps) => {
           functionName: "approve",
           args: [contractDetails.betting.address, approvalAmt],
         });
+
         const approveData = await (await writeContract(approveConfig)).wait(1);
 
         if (!approveData) {
@@ -149,36 +154,41 @@ export const ConfirmBetModal = (props: ModalProps) => {
         isClosable: true,
       });
 
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      (await writeAsync?.())?.wait(3).then(async (value) => {
-        const body = {
-          userId: (userData as UserData).id,
-          poolId: poolData.id,
-          teamSelections: teamsSelected,
-          betAmount: poolData.fee,
-        };
+      (await writeAsync?.())
+        ?.wait(1)
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        .then(async (value) => {
+          const body = {
+            userId: (userData as UserData).id,
+            poolId: poolData.id,
+            teamSelections: teamsSelected,
+            betAmount: poolData.fee,
+          };
 
-        await createBet(body);
+          await createBet(body);
 
-        dispatch(
-          setUserData({
-            ...userData,
-            totalPoolsParticipated: userData.totalPoolsParticipated + 1,
-          })
-        );
+          dispatch(
+            setUserData({
+              ...userData,
+              totalPoolsParticipated: userData.totalPoolsParticipated + 1,
+            })
+          );
 
-        toast({
-          position: "top-right",
-          title: "Bet created",
-          description: "Bet successfully created.",
-          status: "success",
-          duration: 4000,
-          isClosable: true,
+          toast({
+            position: "top-right",
+            title: "Bet created",
+            description: "Bet successfully created.",
+            status: "success",
+            duration: 4000,
+            isClosable: true,
+          });
+          setLoader(false);
+          close();
+          handleConfirm();
+        })
+        .catch((error) => {
+          throw new Error(error);
         });
-        setLoader(false);
-        close();
-        handleConfirm();
-      });
     } catch (error) {
       // eslint-disable-next-line no-console
       console.error(error);

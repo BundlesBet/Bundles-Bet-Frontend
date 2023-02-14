@@ -138,46 +138,51 @@ const ProfileShowAll = (props: TableProps) => {
         isClosable: true,
       });
 
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      (await writeAsync?.())?.wait(3).then(async (value) => {
-        const body = {
-          betId,
-          poolId,
-          userId,
-        };
+      (await writeAsync?.())
+        ?.wait(3)
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        .then(async (value) => {
+          const body = {
+            betId,
+            poolId,
+            userId,
+          };
 
-        await cancelBet(body);
+          await cancelBet(body);
 
-        toast({
-          position: "top-right",
-          title: "Bet Cancelled",
-          description: "Bet successfully cancelled.",
-          status: "success",
-          duration: 4000,
-          isClosable: true,
-        });
+          toast({
+            position: "top-right",
+            title: "Bet Cancelled",
+            description: "Bet successfully cancelled.",
+            status: "success",
+            duration: 4000,
+            isClosable: true,
+          });
 
-        const refreshArr: PoolWithBets[] = [];
-        for (let i = 0; i < betData.length; i += 1) {
-          if (betData[i].id === cancelRowId) {
-            betData[i].status = "CANCELLED";
+          const refreshArr: PoolWithBets[] = [];
+          for (let i = 0; i < betData.length; i += 1) {
+            if (betData[i].id === cancelRowId) {
+              betData[i].status = "CANCELLED";
 
-            refreshArr.push(betData[i]);
-          } else {
-            refreshArr.push(betData[i]);
+              refreshArr.push(betData[i]);
+            } else {
+              refreshArr.push(betData[i]);
+            }
           }
-        }
-        setBetData(refreshArr);
-        setCancelRowId(0);
+          setBetData(refreshArr);
+          setCancelRowId(0);
 
-        dispatch(
-          setUserData({
-            ...userData,
-            totalPoolsParticipated: userData.totalPoolsParticipated - 1,
-          })
-        );
-        setLoader(false);
-      });
+          dispatch(
+            setUserData({
+              ...userData,
+              totalPoolsParticipated: userData.totalPoolsParticipated - 1,
+            })
+          );
+          setLoader(false);
+        })
+        .catch((error) => {
+          throw new Error(error);
+        });
     } catch (error) {
       // eslint-disable-next-line no-console
       console.error(error);
