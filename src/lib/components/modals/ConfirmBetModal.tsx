@@ -65,7 +65,7 @@ export const ConfirmBetModal = (props: ModalProps) => {
   const trimmedAccount = isConnected
     ? `${address?.slice(0, 5)}...${address?.slice(-5)}`
     : "Account";
-  const matchIds = teamsSelected.map((teamSel) => teamSel.match);
+  const matchIds = teamsSelected.map((teamSel) => teamSel.match.toString());
   const matchesSelections = teamsSelected.map((teamSel) => teamSel.selection);
 
   const { config } = usePrepareContractWrite({
