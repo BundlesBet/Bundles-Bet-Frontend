@@ -18,6 +18,7 @@ export const BettingSlice = createSlice({
       totalPoolAmount: 0,
       rewardPercentage: 0,
       matches: [],
+      betEndTime: "",
     } as Pool,
   },
   reducers: {

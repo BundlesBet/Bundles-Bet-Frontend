@@ -97,6 +97,9 @@ const ProfileShowAll = (props: TableProps) => {
     if (item.status === "ACTIVE") {
       return (
         <Button
+          isDisabled={
+            new Date().getTime() > new Date(item.pool.betEndTime).getTime()
+          }
           onClick={() => {
             toggle(item.id);
             setBetId(item.id);
