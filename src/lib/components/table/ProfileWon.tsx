@@ -26,7 +26,12 @@ interface TableProps {
 const ProfileWon = (props: TableProps) => {
   const { wonBetsData } = props;
 
-  const header = ["Pool Creation Date", "Pool Name", "Bet Amount", "Status"];
+  const header = [
+    "Pool Creation Date",
+    "Pool Name",
+    "Total Pool In Amount",
+    "Status",
+  ];
 
   const data = wonBetsData;
 

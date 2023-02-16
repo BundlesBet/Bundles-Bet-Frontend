@@ -21,6 +21,7 @@ import {
   ButtonGroup,
   PopoverFooter,
   useToast,
+  Tooltip,
 } from "@chakra-ui/react";
 import Pagination from "@choc-ui/paginator";
 import { formatInTimeZone } from "date-fns-tz";
@@ -64,7 +65,12 @@ const ProfileShowAll = (props: TableProps) => {
   const offset = (current - 1) * pageSize;
   const posts =
     betData?.length === 0 ? [] : betData.slice(offset, offset + pageSize);
-  const header = ["Pool Creation Date", "Pool Name", "Bet Amount", "Status"];
+  const header = [
+    "Pool Creation Date",
+    "Pool Name",
+    "Total Pool In Amount",
+    "Status",
+  ];
 
   // eslint-disable-next-line react/no-unstable-nested-components, @typescript-eslint/no-explicit-any
   const Prev = forwardRef((forwardprops, ref: any) => {
@@ -96,19 +102,28 @@ const ProfileShowAll = (props: TableProps) => {
   const popOverItems = (item: PoolWithBets) => {
     if (item.status === "ACTIVE") {
       return (
-        <Button
-          isDisabled={
+        <Tooltip
+          hasArrow
+          label={
             new Date().getTime() > new Date(item.pool.betEndTime).getTime()
+              ? "Cancellation not allowed as one of the Pool Matches are active"
+              : ""
           }
-          onClick={() => {
-            toggle(item.id);
-            setBetId(item.id);
-            setPoolId(item.poolId);
-            setUserId(item.userId);
-          }}
         >
-          Cancel
-        </Button>
+          <Button
+            isDisabled={
+              new Date().getTime() > new Date(item.pool.betEndTime).getTime()
+            }
+            onClick={() => {
+              toggle(item.id);
+              setBetId(item.id);
+              setPoolId(item.poolId);
+              setUserId(item.userId);
+            }}
+          >
+            Cancel
+          </Button>
+        </Tooltip>
       );
     }
     return (
