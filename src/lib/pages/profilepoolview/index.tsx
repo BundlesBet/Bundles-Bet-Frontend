@@ -42,13 +42,32 @@ const ProfilePoolView = () => {
       const outcome = betMatchesData.outcomesForMatches.find(
         (out) => out.match === match.espnMatchId
       );
+
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+      const matchOutcome = getStringOutcome(outcome!.selection!);
+      let finalOutcome = "";
+
+      switch (matchOutcome) {
+        case "TEAM_A":
+          finalOutcome = match.teamA.name;
+          break;
+        case "TEAM_B":
+          finalOutcome = match.teamB.name;
+          break;
+        case "NOT_STARTED":
+          finalOutcome = "NOT STARTED";
+          break;
+        default:
+          finalOutcome = matchOutcome;
+          break;
+      }
+
       finalBetMatches.push({
         teamAName: match.teamA.name,
         teamBName: match.teamB.name,
         selection:
           teamSelection?.selection === 0 ? match.teamA.name : match.teamB.name,
-        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-        outcome: getStringOutcome(outcome!.selection!),
+        outcome: finalOutcome,
       });
     });
 
