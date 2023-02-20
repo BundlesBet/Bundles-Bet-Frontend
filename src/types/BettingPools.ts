@@ -32,6 +32,7 @@ export interface BettingPoolsInterface extends utils.Interface {
   functions: {
     "addPoolData(string,uint256,uint256,uint256,uint256,string[],uint256,uint256)": FunctionFragment;
     "addressBettingInPool(address,uint256)": FunctionFragment;
+    "addressPoolRewards(address,uint256)": FunctionFragment;
     "allMatches(string)": FunctionFragment;
     "allPools(uint256)": FunctionFragment;
     "archivePool(uint256)": FunctionFragment;
@@ -68,6 +69,7 @@ export interface BettingPoolsInterface extends utils.Interface {
     nameOrSignatureOrTopic:
       | "addPoolData"
       | "addressBettingInPool"
+      | "addressPoolRewards"
       | "allMatches"
       | "allPools"
       | "archivePool"
@@ -115,6 +117,10 @@ export interface BettingPoolsInterface extends utils.Interface {
   ): string;
   encodeFunctionData(
     functionFragment: "addressBettingInPool",
+    values: [PromiseOrValue<string>, PromiseOrValue<BigNumberish>]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "addressPoolRewards",
     values: [PromiseOrValue<string>, PromiseOrValue<BigNumberish>]
   ): string;
   encodeFunctionData(
@@ -253,6 +259,10 @@ export interface BettingPoolsInterface extends utils.Interface {
   ): Result;
   decodeFunctionResult(
     functionFragment: "addressBettingInPool",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "addressPoolRewards",
     data: BytesLike
   ): Result;
   decodeFunctionResult(functionFragment: "allMatches", data: BytesLike): Result;
@@ -516,6 +526,12 @@ export interface BettingPools extends BaseContract {
       overrides?: CallOverrides
     ): Promise<[boolean]>;
 
+    addressPoolRewards(
+      arg0: PromiseOrValue<string>,
+      arg1: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
+    ): Promise<[BigNumber]>;
+
     allMatches(
       arg0: PromiseOrValue<string>,
       overrides?: CallOverrides
@@ -726,6 +742,12 @@ export interface BettingPools extends BaseContract {
     overrides?: CallOverrides
   ): Promise<boolean>;
 
+  addressPoolRewards(
+    arg0: PromiseOrValue<string>,
+    arg1: PromiseOrValue<BigNumberish>,
+    overrides?: CallOverrides
+  ): Promise<BigNumber>;
+
   allMatches(
     arg0: PromiseOrValue<string>,
     overrides?: CallOverrides
@@ -933,6 +955,12 @@ export interface BettingPools extends BaseContract {
       arg1: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<boolean>;
+
+    addressPoolRewards(
+      arg0: PromiseOrValue<string>,
+      arg1: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
 
     allMatches(
       arg0: PromiseOrValue<string>,
@@ -1219,6 +1247,12 @@ export interface BettingPools extends BaseContract {
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
+    addressPoolRewards(
+      arg0: PromiseOrValue<string>,
+      arg1: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
     allMatches(
       arg0: PromiseOrValue<string>,
       overrides?: CallOverrides
@@ -1383,6 +1417,12 @@ export interface BettingPools extends BaseContract {
     ): Promise<PopulatedTransaction>;
 
     addressBettingInPool(
+      arg0: PromiseOrValue<string>,
+      arg1: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    addressPoolRewards(
       arg0: PromiseOrValue<string>,
       arg1: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
