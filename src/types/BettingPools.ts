@@ -37,12 +37,14 @@ export interface BettingPoolsInterface extends utils.Interface {
     "archivePool(uint256)": FunctionFragment;
     "batchAddMatches(string[],string[],string[],string[])": FunctionFragment;
     "bund()": FunctionFragment;
+    "calculateReward(uint256)": FunctionFragment;
     "cancelBet(uint256)": FunctionFragment;
     "changeGrader(address)": FunctionFragment;
     "claimReward(uint256)": FunctionFragment;
     "emergencyWithdraw()": FunctionFragment;
     "globalBetsID()": FunctionFragment;
     "grader()": FunctionFragment;
+    "hasClaimedRewards(address,uint256)": FunctionFragment;
     "isAdmin(address)": FunctionFragment;
     "isMatchInPool(string,uint256)": FunctionFragment;
     "matchExists(string)": FunctionFragment;
@@ -51,6 +53,8 @@ export interface BettingPoolsInterface extends utils.Interface {
     "poolBetByUser(uint256,address)": FunctionFragment;
     "poolBetCount(uint256)": FunctionFragment;
     "poolSelections(uint256,string)": FunctionFragment;
+    "poolToAddress(uint256,uint256)": FunctionFragment;
+    "poolToScoreToAdddress(uint256,uint256,uint256)": FunctionFragment;
     "protocolFeeCollector()": FunctionFragment;
     "renounceOwnership()": FunctionFragment;
     "setAdmin(address,bool)": FunctionFragment;
@@ -69,12 +73,14 @@ export interface BettingPoolsInterface extends utils.Interface {
       | "archivePool"
       | "batchAddMatches"
       | "bund"
+      | "calculateReward"
       | "cancelBet"
       | "changeGrader"
       | "claimReward"
       | "emergencyWithdraw"
       | "globalBetsID"
       | "grader"
+      | "hasClaimedRewards"
       | "isAdmin"
       | "isMatchInPool"
       | "matchExists"
@@ -83,6 +89,8 @@ export interface BettingPoolsInterface extends utils.Interface {
       | "poolBetByUser"
       | "poolBetCount"
       | "poolSelections"
+      | "poolToAddress"
+      | "poolToScoreToAdddress"
       | "protocolFeeCollector"
       | "renounceOwnership"
       | "setAdmin"
@@ -132,6 +140,10 @@ export interface BettingPoolsInterface extends utils.Interface {
   ): string;
   encodeFunctionData(functionFragment: "bund", values?: undefined): string;
   encodeFunctionData(
+    functionFragment: "calculateReward",
+    values: [PromiseOrValue<BigNumberish>]
+  ): string;
+  encodeFunctionData(
     functionFragment: "cancelBet",
     values: [PromiseOrValue<BigNumberish>]
   ): string;
@@ -152,6 +164,10 @@ export interface BettingPoolsInterface extends utils.Interface {
     values?: undefined
   ): string;
   encodeFunctionData(functionFragment: "grader", values?: undefined): string;
+  encodeFunctionData(
+    functionFragment: "hasClaimedRewards",
+    values: [PromiseOrValue<string>, PromiseOrValue<BigNumberish>]
+  ): string;
   encodeFunctionData(
     functionFragment: "isAdmin",
     values: [PromiseOrValue<string>]
@@ -184,6 +200,18 @@ export interface BettingPoolsInterface extends utils.Interface {
   encodeFunctionData(
     functionFragment: "poolSelections",
     values: [PromiseOrValue<BigNumberish>, PromiseOrValue<string>]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "poolToAddress",
+    values: [PromiseOrValue<BigNumberish>, PromiseOrValue<BigNumberish>]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "poolToScoreToAdddress",
+    values: [
+      PromiseOrValue<BigNumberish>,
+      PromiseOrValue<BigNumberish>,
+      PromiseOrValue<BigNumberish>
+    ]
   ): string;
   encodeFunctionData(
     functionFragment: "protocolFeeCollector",
@@ -238,6 +266,10 @@ export interface BettingPoolsInterface extends utils.Interface {
     data: BytesLike
   ): Result;
   decodeFunctionResult(functionFragment: "bund", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "calculateReward",
+    data: BytesLike
+  ): Result;
   decodeFunctionResult(functionFragment: "cancelBet", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "changeGrader",
@@ -256,6 +288,10 @@ export interface BettingPoolsInterface extends utils.Interface {
     data: BytesLike
   ): Result;
   decodeFunctionResult(functionFragment: "grader", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "hasClaimedRewards",
+    data: BytesLike
+  ): Result;
   decodeFunctionResult(functionFragment: "isAdmin", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "isMatchInPool",
@@ -277,6 +313,14 @@ export interface BettingPoolsInterface extends utils.Interface {
   ): Result;
   decodeFunctionResult(
     functionFragment: "poolSelections",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "poolToAddress",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "poolToScoreToAdddress",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
@@ -311,6 +355,7 @@ export interface BettingPoolsInterface extends utils.Interface {
     "matchGraded(string,uint256,address)": EventFragment;
     "poolAdded(uint256,uint256,uint256,uint256,uint256)": EventFragment;
     "poolArchived(uint256)": EventFragment;
+    "rewardClaimed(address,uint256,uint256)": EventFragment;
   };
 
   getEvent(nameOrSignatureOrTopic: "AdminAccessSet"): EventFragment;
@@ -321,6 +366,7 @@ export interface BettingPoolsInterface extends utils.Interface {
   getEvent(nameOrSignatureOrTopic: "matchGraded"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "poolAdded"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "poolArchived"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "rewardClaimed"): EventFragment;
 }
 
 export interface AdminAccessSetEventObject {
@@ -413,6 +459,18 @@ export type poolArchivedEvent = TypedEvent<
 
 export type poolArchivedEventFilter = TypedEventFilter<poolArchivedEvent>;
 
+export interface rewardClaimedEventObject {
+  claimer: string;
+  poolID: BigNumber;
+  amount: BigNumber;
+}
+export type rewardClaimedEvent = TypedEvent<
+  [string, BigNumber, BigNumber],
+  rewardClaimedEventObject
+>;
+
+export type rewardClaimedEventFilter = TypedEventFilter<rewardClaimedEvent>;
+
 export interface BettingPools extends BaseContract {
   connect(signerOrProvider: Signer | Provider | string): this;
   attach(addressOrName: string): this;
@@ -484,6 +542,7 @@ export interface BettingPools extends BaseContract {
         BigNumber,
         BigNumber,
         BigNumber,
+        boolean,
         boolean
       ] & {
         poolID: BigNumber;
@@ -495,6 +554,7 @@ export interface BettingPools extends BaseContract {
         winnerPercentage: BigNumber;
         maxParticipants: BigNumber;
         isArchived: boolean;
+        rewardsCalculated: boolean;
       }
     >;
 
@@ -512,6 +572,11 @@ export interface BettingPools extends BaseContract {
     ): Promise<ContractTransaction>;
 
     bund(overrides?: CallOverrides): Promise<[string]>;
+
+    calculateReward(
+      pool_id: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<ContractTransaction>;
 
     cancelBet(
       pool_id: PromiseOrValue<BigNumberish>,
@@ -537,6 +602,12 @@ export interface BettingPools extends BaseContract {
     ): Promise<[BigNumber] & { _value: BigNumber }>;
 
     grader(overrides?: CallOverrides): Promise<[string]>;
+
+    hasClaimedRewards(
+      arg0: PromiseOrValue<string>,
+      arg1: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
+    ): Promise<[boolean]>;
 
     isAdmin(
       admin: PromiseOrValue<string>,
@@ -587,6 +658,19 @@ export interface BettingPools extends BaseContract {
       arg1: PromiseOrValue<string>,
       overrides?: CallOverrides
     ): Promise<[BigNumber]>;
+
+    poolToAddress(
+      arg0: PromiseOrValue<BigNumberish>,
+      arg1: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
+    ): Promise<[string]>;
+
+    poolToScoreToAdddress(
+      arg0: PromiseOrValue<BigNumberish>,
+      arg1: PromiseOrValue<BigNumberish>,
+      arg2: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
+    ): Promise<[string]>;
 
     protocolFeeCollector(overrides?: CallOverrides): Promise<[string]>;
 
@@ -668,6 +752,7 @@ export interface BettingPools extends BaseContract {
       BigNumber,
       BigNumber,
       BigNumber,
+      boolean,
       boolean
     ] & {
       poolID: BigNumber;
@@ -679,6 +764,7 @@ export interface BettingPools extends BaseContract {
       winnerPercentage: BigNumber;
       maxParticipants: BigNumber;
       isArchived: boolean;
+      rewardsCalculated: boolean;
     }
   >;
 
@@ -696,6 +782,11 @@ export interface BettingPools extends BaseContract {
   ): Promise<ContractTransaction>;
 
   bund(overrides?: CallOverrides): Promise<string>;
+
+  calculateReward(
+    pool_id: PromiseOrValue<BigNumberish>,
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
+  ): Promise<ContractTransaction>;
 
   cancelBet(
     pool_id: PromiseOrValue<BigNumberish>,
@@ -719,6 +810,12 @@ export interface BettingPools extends BaseContract {
   globalBetsID(overrides?: CallOverrides): Promise<BigNumber>;
 
   grader(overrides?: CallOverrides): Promise<string>;
+
+  hasClaimedRewards(
+    arg0: PromiseOrValue<string>,
+    arg1: PromiseOrValue<BigNumberish>,
+    overrides?: CallOverrides
+  ): Promise<boolean>;
 
   isAdmin(
     admin: PromiseOrValue<string>,
@@ -769,6 +866,19 @@ export interface BettingPools extends BaseContract {
     arg1: PromiseOrValue<string>,
     overrides?: CallOverrides
   ): Promise<BigNumber>;
+
+  poolToAddress(
+    arg0: PromiseOrValue<BigNumberish>,
+    arg1: PromiseOrValue<BigNumberish>,
+    overrides?: CallOverrides
+  ): Promise<string>;
+
+  poolToScoreToAdddress(
+    arg0: PromiseOrValue<BigNumberish>,
+    arg1: PromiseOrValue<BigNumberish>,
+    arg2: PromiseOrValue<BigNumberish>,
+    overrides?: CallOverrides
+  ): Promise<string>;
 
   protocolFeeCollector(overrides?: CallOverrides): Promise<string>;
 
@@ -850,6 +960,7 @@ export interface BettingPools extends BaseContract {
         BigNumber,
         BigNumber,
         BigNumber,
+        boolean,
         boolean
       ] & {
         poolID: BigNumber;
@@ -861,6 +972,7 @@ export interface BettingPools extends BaseContract {
         winnerPercentage: BigNumber;
         maxParticipants: BigNumber;
         isArchived: boolean;
+        rewardsCalculated: boolean;
       }
     >;
 
@@ -878,6 +990,11 @@ export interface BettingPools extends BaseContract {
     ): Promise<void>;
 
     bund(overrides?: CallOverrides): Promise<string>;
+
+    calculateReward(
+      pool_id: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
+    ): Promise<void>;
 
     cancelBet(
       pool_id: PromiseOrValue<BigNumberish>,
@@ -899,6 +1016,12 @@ export interface BettingPools extends BaseContract {
     globalBetsID(overrides?: CallOverrides): Promise<BigNumber>;
 
     grader(overrides?: CallOverrides): Promise<string>;
+
+    hasClaimedRewards(
+      arg0: PromiseOrValue<string>,
+      arg1: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
+    ): Promise<boolean>;
 
     isAdmin(
       admin: PromiseOrValue<string>,
@@ -949,6 +1072,19 @@ export interface BettingPools extends BaseContract {
       arg1: PromiseOrValue<string>,
       overrides?: CallOverrides
     ): Promise<BigNumber>;
+
+    poolToAddress(
+      arg0: PromiseOrValue<BigNumberish>,
+      arg1: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
+    ): Promise<string>;
+
+    poolToScoreToAdddress(
+      arg0: PromiseOrValue<BigNumberish>,
+      arg1: PromiseOrValue<BigNumberish>,
+      arg2: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
+    ): Promise<string>;
 
     protocolFeeCollector(overrides?: CallOverrides): Promise<string>;
 
@@ -1051,6 +1187,17 @@ export interface BettingPools extends BaseContract {
 
     "poolArchived(uint256)"(poolID?: null): poolArchivedEventFilter;
     poolArchived(poolID?: null): poolArchivedEventFilter;
+
+    "rewardClaimed(address,uint256,uint256)"(
+      claimer?: PromiseOrValue<string> | null,
+      poolID?: null,
+      amount?: null
+    ): rewardClaimedEventFilter;
+    rewardClaimed(
+      claimer?: PromiseOrValue<string> | null,
+      poolID?: null,
+      amount?: null
+    ): rewardClaimedEventFilter;
   };
 
   estimateGas: {
@@ -1097,6 +1244,11 @@ export interface BettingPools extends BaseContract {
 
     bund(overrides?: CallOverrides): Promise<BigNumber>;
 
+    calculateReward(
+      pool_id: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<BigNumber>;
+
     cancelBet(
       pool_id: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
@@ -1119,6 +1271,12 @@ export interface BettingPools extends BaseContract {
     globalBetsID(overrides?: CallOverrides): Promise<BigNumber>;
 
     grader(overrides?: CallOverrides): Promise<BigNumber>;
+
+    hasClaimedRewards(
+      arg0: PromiseOrValue<string>,
+      arg1: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
 
     isAdmin(
       admin: PromiseOrValue<string>,
@@ -1159,6 +1317,19 @@ export interface BettingPools extends BaseContract {
     poolSelections(
       arg0: PromiseOrValue<BigNumberish>,
       arg1: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    poolToAddress(
+      arg0: PromiseOrValue<BigNumberish>,
+      arg1: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    poolToScoreToAdddress(
+      arg0: PromiseOrValue<BigNumberish>,
+      arg1: PromiseOrValue<BigNumberish>,
+      arg2: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
@@ -1242,6 +1413,11 @@ export interface BettingPools extends BaseContract {
 
     bund(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
+    calculateReward(
+      pool_id: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<PopulatedTransaction>;
+
     cancelBet(
       pool_id: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
@@ -1264,6 +1440,12 @@ export interface BettingPools extends BaseContract {
     globalBetsID(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     grader(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
+    hasClaimedRewards(
+      arg0: PromiseOrValue<string>,
+      arg1: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
 
     isAdmin(
       admin: PromiseOrValue<string>,
@@ -1304,6 +1486,19 @@ export interface BettingPools extends BaseContract {
     poolSelections(
       arg0: PromiseOrValue<BigNumberish>,
       arg1: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    poolToAddress(
+      arg0: PromiseOrValue<BigNumberish>,
+      arg1: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    poolToScoreToAdddress(
+      arg0: PromiseOrValue<BigNumberish>,
+      arg1: PromiseOrValue<BigNumberish>,
+      arg2: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
