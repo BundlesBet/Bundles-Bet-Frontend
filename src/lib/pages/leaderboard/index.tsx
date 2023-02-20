@@ -3,7 +3,10 @@ import { useRouter } from "next/router";
 import { NextSeo } from "next-seo";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
+import { useAccount } from "wagmi";
+import { readContract } from "wagmi/actions";
 
+import { contractDetails } from "config";
 import ClaimButton from "lib/components/samples/ClaimButon";
 import CustomLoader from "lib/components/samples/CustomLoader";
 import LeaderboardTable from "lib/components/table/LeaderBoardTable";
@@ -13,6 +16,7 @@ import type { LeaderBoard, UserData } from "utils/interfaces";
 
 const Leaderboard = () => {
   const router = useRouter();
+  const { address } = useAccount();
   const poolId = parseInt(router.query.id as string);
   const { userData } = useSelector((state: RootState) => state.user);
 
@@ -21,12 +25,23 @@ const Leaderboard = () => {
   const [leaderboardData, setLeaderboardData] = useState<LeaderBoard | null>(
     null
   );
+  const [hasClaimedRewards, setHasClaimedRewards] = useState(false);
 
   const getLeaderboardData = async () => {
     const leaderboardDataRes = await getLeaderboard(poolId);
     setLeaderboardData(leaderboardDataRes.poolLeaderboard);
     const poolData = await getMatchesOfPool(poolId);
     setShowClaimButton(poolData.fetchedMatches.poolEnded);
+
+    const hasClaimed = (await readContract({
+      address: contractDetails.bundToken.address,
+      abi: contractDetails.bundToken.abi,
+      chainId: contractDetails.bundToken.chainId,
+      functionName: "hasClaimedRewards",
+      args: [address, poolId],
+    })) as boolean;
+    setHasClaimedRewards(hasClaimed);
+
     setTimeout(() => setLoading(false), 2000);
   };
 
@@ -84,6 +99,7 @@ const Leaderboard = () => {
                 reward.reward > 0
             ) || false
           }
+          hasClaimedRewards={hasClaimedRewards}
         />
       )}
 

@@ -10,6 +10,7 @@ interface Props {
   reward: number;
   userId: number;
   showClaimButton: boolean;
+  hasClaimedRewards: boolean;
 }
 
 const ClaimButton = ({
@@ -17,6 +18,7 @@ const ClaimButton = ({
   reward,
   userId,
   showClaimButton,
+  hasClaimedRewards,
 }: Props) => {
   const router = useRouter();
   const poolId = router.query.id;
@@ -80,7 +82,7 @@ const ClaimButton = ({
               });
             });
         }}
-        isDisabled={!containsReward || !showClaimButton}
+        isDisabled={!containsReward || !showClaimButton || !hasClaimedRewards}
       >
         {" "}
         Claim
