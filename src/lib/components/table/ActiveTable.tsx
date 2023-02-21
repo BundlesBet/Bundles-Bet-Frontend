@@ -47,6 +47,7 @@ const ActiveTable = (props: TableProps) => {
     Array<{ match: number; selection: number }>
   >([]);
 
+  const { poolData } = useSelector((state: RootState) => state.betting);
   const userData = useSelector((state: RootState) => state.user)
     .userData as UserData;
 
@@ -94,7 +95,10 @@ const ActiveTable = (props: TableProps) => {
       }
     );
 
-    if (bettingData && Object.keys(bettingData).length) {
+    if (
+      (bettingData && Object.keys(bettingData).length) ||
+      new Date(poolData.betEndTime).getTime() < new Date().getTime()
+    ) {
       setAllowedToBet(false);
     }
 

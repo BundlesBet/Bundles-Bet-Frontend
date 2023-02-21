@@ -33,6 +33,14 @@ const Leaderboard = () => {
     const poolData = await getMatchesOfPool(poolId);
     setShowClaimButton(poolData.fetchedMatches.poolEnded);
 
+    if (!address) {
+      setHasClaimedRewards(false);
+
+      setTimeout(() => setLoading(false), 2000);
+
+      return;
+    }
+
     const hasClaimed = (await readContract({
       address: contractDetails.betting.address,
       abi: contractDetails.betting.abi,
