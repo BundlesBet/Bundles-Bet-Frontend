@@ -15,7 +15,7 @@ import {
 } from "@chakra-ui/react";
 import Pagination from "@choc-ui/paginator";
 import { useRouter } from "next/router";
-import { useEffect, useState, forwardRef } from "react";
+import { useEffect, useState, forwardRef, useCallback } from "react";
 import { useSelector } from "react-redux";
 import { useAccount } from "wagmi";
 
@@ -85,7 +85,7 @@ const ActiveTable = (props: TableProps) => {
     }
   };
 
-  const getUserData = async () => {
+  const getUserData = useCallback(async () => {
     const userBetsRes = await getUserBets(userData.id);
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -103,7 +103,8 @@ const ActiveTable = (props: TableProps) => {
     }
 
     setLoader(false);
-  };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [userData]);
 
   useEffect(() => {
     if (!data || !data?.length) return;
