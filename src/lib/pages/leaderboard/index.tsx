@@ -34,9 +34,9 @@ const Leaderboard = () => {
     setShowClaimButton(poolData.fetchedMatches.poolEnded);
 
     const hasClaimed = (await readContract({
-      address: contractDetails.bundToken.address,
-      abi: contractDetails.bundToken.abi,
-      chainId: contractDetails.bundToken.chainId,
+      address: contractDetails.betting.address,
+      abi: contractDetails.betting.abi,
+      chainId: contractDetails.betting.chainId,
       functionName: "hasClaimedRewards",
       args: [address, poolId],
     })) as boolean;
