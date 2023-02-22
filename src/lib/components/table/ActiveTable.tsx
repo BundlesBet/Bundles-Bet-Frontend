@@ -95,6 +95,9 @@ const ActiveTable = (props: TableProps) => {
       }
     );
 
+    // eslint-disable-next-line no-console
+    console.log(new Date(poolData.betEndTime).getTime() < new Date().getTime());
+
     if (
       (bettingData && Object.keys(bettingData).length) ||
       new Date(poolData.betEndTime).getTime() < new Date().getTime()

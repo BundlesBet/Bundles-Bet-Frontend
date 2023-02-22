@@ -103,6 +103,11 @@ export const ConfirmBetModal = (props: ModalProps) => {
         args: [address, contractDetails.betting.address],
       });
 
+      // eslint-disable-next-line no-console
+      console.log(`allowance-`, allowance);
+      // eslint-disable-next-line no-console
+      console.log(`new BN protocolFee`, new BN(poolData.protocolFee));
+
       if (new BN(poolData.protocolFee).gt(allowance as BN)) {
         const approveConfig = await prepareWriteContract({
           address: contractDetails.bundToken.address,
@@ -126,6 +131,11 @@ export const ConfirmBetModal = (props: ModalProps) => {
           return;
         }
       }
+
+      // eslint-disable-next-line no-console
+      console.log(`data`, data);
+      // eslint-disable-next-line no-console
+      console.log(`poolData.protocolFee`, poolData.protocolFee);
 
       if (
         data?.formatted &&
