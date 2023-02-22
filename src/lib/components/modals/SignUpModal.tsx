@@ -87,7 +87,7 @@ export const SignUpModal = (props: ModalProps) => {
   return (
     <Modal
       isOpen={isOpen}
-      onClose={() => close()}
+      onClose={() => {}}
       size="xl"
       // `trapFocus` and `blockScrollOnMount` are only switched off so that the preview works properly.
       blockScrollOnMount={false}
