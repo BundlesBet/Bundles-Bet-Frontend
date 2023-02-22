@@ -106,7 +106,7 @@ export const ConfirmBetModal = (props: ModalProps) => {
       // eslint-disable-next-line no-console
       console.log(`allowance-`, allowance);
       // eslint-disable-next-line no-console
-      console.log(`new BN protocolFee`, new BN(poolData.protocolFee));
+      console.log(`protocolFee`, poolData.protocolFee);
 
       // eslint-disable-next-line no-console
       console.log(`poolData.fee`, poolData.fee);
