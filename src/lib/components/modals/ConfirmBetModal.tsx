@@ -111,7 +111,12 @@ export const ConfirmBetModal = (props: ModalProps) => {
       // eslint-disable-next-line no-console
       console.log(`poolData.fee`, poolData.fee);
 
-      if (new BN(poolData.fee).gt(allowance as BN)) {
+      const contractFee = new BN(poolData.fee);
+
+      // eslint-disable-next-line no-console
+      console.log(`contractFee`, contractFee);
+
+      if (contractFee.gte(allowance as BN)) {
         const approveConfig = await prepareWriteContract({
           address: contractDetails.bundToken.address,
           abi: contractDetails.bundToken.abi,
