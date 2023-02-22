@@ -9,11 +9,16 @@ import type {
   CallOverrides,
   ContractTransaction,
   Overrides,
+  PayableOverrides,
   PopulatedTransaction,
   Signer,
   utils,
 } from "ethers";
-import type { FunctionFragment, Result } from "@ethersproject/abi";
+import type {
+  FunctionFragment,
+  Result,
+  EventFragment,
+} from "@ethersproject/abi";
 import type { Listener, Provider } from "@ethersproject/providers";
 import type {
   TypedEventFilter,
@@ -25,24 +30,76 @@ import type {
 
 export interface BettingPoolsInterface extends utils.Interface {
   functions: {
-    "addPoolData(string,uint256,uint256,uint256,uint256,string[],uint256)": FunctionFragment;
+    "addPoolData(string,uint256,uint256,uint256,uint256,string[],uint256,uint256)": FunctionFragment;
+    "addressBettingInPool(address,uint256)": FunctionFragment;
+    "addressPoolRewards(address,uint256)": FunctionFragment;
+    "allMatches(string)": FunctionFragment;
+    "allPools(uint256)": FunctionFragment;
     "archivePool(uint256)": FunctionFragment;
     "batchAddMatches(string[],string[],string[],string[])": FunctionFragment;
+    "bund()": FunctionFragment;
+    "calculateReward(uint256)": FunctionFragment;
     "cancelBet(uint256)": FunctionFragment;
+    "changeGrader(address)": FunctionFragment;
     "claimReward(uint256)": FunctionFragment;
+    "emergencyWithdraw()": FunctionFragment;
+    "globalBetsID()": FunctionFragment;
+    "grader()": FunctionFragment;
+    "hasClaimedRewards(address,uint256)": FunctionFragment;
+    "isAdmin(address)": FunctionFragment;
+    "isMatchInPool(string,uint256)": FunctionFragment;
+    "matchExists(string)": FunctionFragment;
+    "owner()": FunctionFragment;
     "placeBets(uint256,string[],uint256[])": FunctionFragment;
+    "poolBetByUser(uint256,address)": FunctionFragment;
+    "poolBetCount(uint256)": FunctionFragment;
+    "poolSelections(uint256,string)": FunctionFragment;
+    "poolToAddress(uint256,uint256)": FunctionFragment;
+    "poolToScoreToAdddress(uint256,uint256,uint256)": FunctionFragment;
+    "protocolFeeCollector()": FunctionFragment;
+    "renounceOwnership()": FunctionFragment;
+    "setAdmin(address,bool)": FunctionFragment;
+    "transferOwnership(address)": FunctionFragment;
+    "updateMatchStatus(string,uint256)": FunctionFragment;
     "updatePool(uint256,string,uint256,uint256)": FunctionFragment;
+    "withdrawProtocolFee()": FunctionFragment;
   };
 
   getFunction(
     nameOrSignatureOrTopic:
       | "addPoolData"
+      | "addressBettingInPool"
+      | "addressPoolRewards"
+      | "allMatches"
+      | "allPools"
       | "archivePool"
       | "batchAddMatches"
+      | "bund"
+      | "calculateReward"
       | "cancelBet"
+      | "changeGrader"
       | "claimReward"
+      | "emergencyWithdraw"
+      | "globalBetsID"
+      | "grader"
+      | "hasClaimedRewards"
+      | "isAdmin"
+      | "isMatchInPool"
+      | "matchExists"
+      | "owner"
       | "placeBets"
+      | "poolBetByUser"
+      | "poolBetCount"
+      | "poolSelections"
+      | "poolToAddress"
+      | "poolToScoreToAdddress"
+      | "protocolFeeCollector"
+      | "renounceOwnership"
+      | "setAdmin"
+      | "transferOwnership"
+      | "updateMatchStatus"
       | "updatePool"
+      | "withdrawProtocolFee"
   ): FunctionFragment;
 
   encodeFunctionData(
@@ -54,8 +111,25 @@ export interface BettingPoolsInterface extends utils.Interface {
       PromiseOrValue<BigNumberish>,
       PromiseOrValue<BigNumberish>,
       PromiseOrValue<string>[],
+      PromiseOrValue<BigNumberish>,
       PromiseOrValue<BigNumberish>
     ]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "addressBettingInPool",
+    values: [PromiseOrValue<string>, PromiseOrValue<BigNumberish>]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "addressPoolRewards",
+    values: [PromiseOrValue<string>, PromiseOrValue<BigNumberish>]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "allMatches",
+    values: [PromiseOrValue<string>]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "allPools",
+    values: [PromiseOrValue<BigNumberish>]
   ): string;
   encodeFunctionData(
     functionFragment: "archivePool",
@@ -70,14 +144,49 @@ export interface BettingPoolsInterface extends utils.Interface {
       PromiseOrValue<string>[]
     ]
   ): string;
+  encodeFunctionData(functionFragment: "bund", values?: undefined): string;
+  encodeFunctionData(
+    functionFragment: "calculateReward",
+    values: [PromiseOrValue<BigNumberish>]
+  ): string;
   encodeFunctionData(
     functionFragment: "cancelBet",
     values: [PromiseOrValue<BigNumberish>]
   ): string;
   encodeFunctionData(
+    functionFragment: "changeGrader",
+    values: [PromiseOrValue<string>]
+  ): string;
+  encodeFunctionData(
     functionFragment: "claimReward",
     values: [PromiseOrValue<BigNumberish>]
   ): string;
+  encodeFunctionData(
+    functionFragment: "emergencyWithdraw",
+    values?: undefined
+  ): string;
+  encodeFunctionData(
+    functionFragment: "globalBetsID",
+    values?: undefined
+  ): string;
+  encodeFunctionData(functionFragment: "grader", values?: undefined): string;
+  encodeFunctionData(
+    functionFragment: "hasClaimedRewards",
+    values: [PromiseOrValue<string>, PromiseOrValue<BigNumberish>]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "isAdmin",
+    values: [PromiseOrValue<string>]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "isMatchInPool",
+    values: [PromiseOrValue<string>, PromiseOrValue<BigNumberish>]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "matchExists",
+    values: [PromiseOrValue<string>]
+  ): string;
+  encodeFunctionData(functionFragment: "owner", values?: undefined): string;
   encodeFunctionData(
     functionFragment: "placeBets",
     values: [
@@ -85,6 +194,50 @@ export interface BettingPoolsInterface extends utils.Interface {
       PromiseOrValue<string>[],
       PromiseOrValue<BigNumberish>[]
     ]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "poolBetByUser",
+    values: [PromiseOrValue<BigNumberish>, PromiseOrValue<string>]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "poolBetCount",
+    values: [PromiseOrValue<BigNumberish>]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "poolSelections",
+    values: [PromiseOrValue<BigNumberish>, PromiseOrValue<string>]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "poolToAddress",
+    values: [PromiseOrValue<BigNumberish>, PromiseOrValue<BigNumberish>]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "poolToScoreToAdddress",
+    values: [
+      PromiseOrValue<BigNumberish>,
+      PromiseOrValue<BigNumberish>,
+      PromiseOrValue<BigNumberish>
+    ]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "protocolFeeCollector",
+    values?: undefined
+  ): string;
+  encodeFunctionData(
+    functionFragment: "renounceOwnership",
+    values?: undefined
+  ): string;
+  encodeFunctionData(
+    functionFragment: "setAdmin",
+    values: [PromiseOrValue<string>, PromiseOrValue<boolean>]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "transferOwnership",
+    values: [PromiseOrValue<string>]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "updateMatchStatus",
+    values: [PromiseOrValue<string>, PromiseOrValue<BigNumberish>]
   ): string;
   encodeFunctionData(
     functionFragment: "updatePool",
@@ -95,11 +248,25 @@ export interface BettingPoolsInterface extends utils.Interface {
       PromiseOrValue<BigNumberish>
     ]
   ): string;
+  encodeFunctionData(
+    functionFragment: "withdrawProtocolFee",
+    values?: undefined
+  ): string;
 
   decodeFunctionResult(
     functionFragment: "addPoolData",
     data: BytesLike
   ): Result;
+  decodeFunctionResult(
+    functionFragment: "addressBettingInPool",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "addressPoolRewards",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(functionFragment: "allMatches", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: "allPools", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "archivePool",
     data: BytesLike
@@ -108,16 +275,211 @@ export interface BettingPoolsInterface extends utils.Interface {
     functionFragment: "batchAddMatches",
     data: BytesLike
   ): Result;
+  decodeFunctionResult(functionFragment: "bund", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "calculateReward",
+    data: BytesLike
+  ): Result;
   decodeFunctionResult(functionFragment: "cancelBet", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "changeGrader",
+    data: BytesLike
+  ): Result;
   decodeFunctionResult(
     functionFragment: "claimReward",
     data: BytesLike
   ): Result;
+  decodeFunctionResult(
+    functionFragment: "emergencyWithdraw",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "globalBetsID",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(functionFragment: "grader", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "hasClaimedRewards",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(functionFragment: "isAdmin", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "isMatchInPool",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "matchExists",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(functionFragment: "owner", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "placeBets", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "poolBetByUser",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "poolBetCount",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "poolSelections",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "poolToAddress",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "poolToScoreToAdddress",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "protocolFeeCollector",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "renounceOwnership",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(functionFragment: "setAdmin", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "transferOwnership",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "updateMatchStatus",
+    data: BytesLike
+  ): Result;
   decodeFunctionResult(functionFragment: "updatePool", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "withdrawProtocolFee",
+    data: BytesLike
+  ): Result;
 
-  events: {};
+  events: {
+    "AdminAccessSet(address,bool)": EventFragment;
+    "OwnershipTransferred(address,address)": EventFragment;
+    "betPlaced(uint256,address,uint256[])": EventFragment;
+    "emergencyWithdrawal(address,uint256)": EventFragment;
+    "matchAdded(string)": EventFragment;
+    "matchGraded(string,uint256,address)": EventFragment;
+    "poolAdded(uint256,uint256,uint256,uint256,uint256)": EventFragment;
+    "poolArchived(uint256)": EventFragment;
+    "rewardClaimed(address,uint256,uint256)": EventFragment;
+  };
+
+  getEvent(nameOrSignatureOrTopic: "AdminAccessSet"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "OwnershipTransferred"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "betPlaced"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "emergencyWithdrawal"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "matchAdded"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "matchGraded"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "poolAdded"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "poolArchived"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "rewardClaimed"): EventFragment;
 }
+
+export interface AdminAccessSetEventObject {
+  _admin: string;
+  _enabled: boolean;
+}
+export type AdminAccessSetEvent = TypedEvent<
+  [string, boolean],
+  AdminAccessSetEventObject
+>;
+
+export type AdminAccessSetEventFilter = TypedEventFilter<AdminAccessSetEvent>;
+
+export interface OwnershipTransferredEventObject {
+  previousOwner: string;
+  newOwner: string;
+}
+export type OwnershipTransferredEvent = TypedEvent<
+  [string, string],
+  OwnershipTransferredEventObject
+>;
+
+export type OwnershipTransferredEventFilter =
+  TypedEventFilter<OwnershipTransferredEvent>;
+
+export interface betPlacedEventObject {
+  poolID: BigNumber;
+  better: string;
+  selections: BigNumber[];
+}
+export type betPlacedEvent = TypedEvent<
+  [BigNumber, string, BigNumber[]],
+  betPlacedEventObject
+>;
+
+export type betPlacedEventFilter = TypedEventFilter<betPlacedEvent>;
+
+export interface emergencyWithdrawalEventObject {
+  withdrawnTo: string;
+  amount: BigNumber;
+}
+export type emergencyWithdrawalEvent = TypedEvent<
+  [string, BigNumber],
+  emergencyWithdrawalEventObject
+>;
+
+export type emergencyWithdrawalEventFilter =
+  TypedEventFilter<emergencyWithdrawalEvent>;
+
+export interface matchAddedEventObject {
+  espn_id: string;
+}
+export type matchAddedEvent = TypedEvent<[string], matchAddedEventObject>;
+
+export type matchAddedEventFilter = TypedEventFilter<matchAddedEvent>;
+
+export interface matchGradedEventObject {
+  espn_id: string;
+  statusCode: BigNumber;
+  grader: string;
+}
+export type matchGradedEvent = TypedEvent<
+  [string, BigNumber, string],
+  matchGradedEventObject
+>;
+
+export type matchGradedEventFilter = TypedEventFilter<matchGradedEvent>;
+
+export interface poolAddedEventObject {
+  poolID: BigNumber;
+  matchCount: BigNumber;
+  winPercentage: BigNumber;
+  start_time: BigNumber;
+  end_time: BigNumber;
+}
+export type poolAddedEvent = TypedEvent<
+  [BigNumber, BigNumber, BigNumber, BigNumber, BigNumber],
+  poolAddedEventObject
+>;
+
+export type poolAddedEventFilter = TypedEventFilter<poolAddedEvent>;
+
+export interface poolArchivedEventObject {
+  poolID: BigNumber;
+}
+export type poolArchivedEvent = TypedEvent<
+  [BigNumber],
+  poolArchivedEventObject
+>;
+
+export type poolArchivedEventFilter = TypedEventFilter<poolArchivedEvent>;
+
+export interface rewardClaimedEventObject {
+  claimer: string;
+  poolID: BigNumber;
+  amount: BigNumber;
+}
+export type rewardClaimedEvent = TypedEvent<
+  [string, BigNumber, BigNumber],
+  rewardClaimedEventObject
+>;
+
+export type rewardClaimedEventFilter = TypedEventFilter<rewardClaimedEvent>;
 
 export interface BettingPools extends BaseContract {
   connect(signerOrProvider: Signer | Provider | string): this;
@@ -153,9 +515,64 @@ export interface BettingPools extends BaseContract {
       bet_start_time: PromiseOrValue<BigNumberish>,
       bet_end_time: PromiseOrValue<BigNumberish>,
       match_ids: PromiseOrValue<string>[],
-      participants: PromiseOrValue<BigNumberish>,
+      max_participants: PromiseOrValue<BigNumberish>,
+      winnerPercentage: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
+
+    addressBettingInPool(
+      arg0: PromiseOrValue<string>,
+      arg1: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
+    ): Promise<[boolean]>;
+
+    addressPoolRewards(
+      arg0: PromiseOrValue<string>,
+      arg1: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
+    ): Promise<[BigNumber]>;
+
+    allMatches(
+      arg0: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<
+      [string, string, string, string, number] & {
+        espn_id: string;
+        name: string;
+        teamA: string;
+        teamB: string;
+        status: number;
+      }
+    >;
+
+    allPools(
+      arg0: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
+    ): Promise<
+      [
+        BigNumber,
+        string,
+        BigNumber,
+        BigNumber,
+        BigNumber,
+        BigNumber,
+        BigNumber,
+        BigNumber,
+        boolean,
+        boolean
+      ] & {
+        poolID: BigNumber;
+        poolName: string;
+        startTime: BigNumber;
+        endTime: BigNumber;
+        entryFee: BigNumber;
+        protocolFee: BigNumber;
+        winnerPercentage: BigNumber;
+        maxParticipants: BigNumber;
+        isArchived: boolean;
+        rewardsCalculated: boolean;
+      }
+    >;
 
     archivePool(
       poolId: PromiseOrValue<BigNumberish>,
@@ -170,8 +587,20 @@ export interface BettingPools extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
+    bund(overrides?: CallOverrides): Promise<[string]>;
+
+    calculateReward(
+      pool_id: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<ContractTransaction>;
+
     cancelBet(
       pool_id: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<ContractTransaction>;
+
+    changeGrader(
+      _grader: PromiseOrValue<string>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
@@ -180,18 +609,117 @@ export interface BettingPools extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
+    emergencyWithdraw(
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<ContractTransaction>;
+
+    globalBetsID(
+      overrides?: CallOverrides
+    ): Promise<[BigNumber] & { _value: BigNumber }>;
+
+    grader(overrides?: CallOverrides): Promise<[string]>;
+
+    hasClaimedRewards(
+      arg0: PromiseOrValue<string>,
+      arg1: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
+    ): Promise<[boolean]>;
+
+    isAdmin(
+      admin: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<[boolean]>;
+
+    isMatchInPool(
+      arg0: PromiseOrValue<string>,
+      arg1: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
+    ): Promise<[boolean]>;
+
+    matchExists(
+      arg0: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<[boolean]>;
+
+    owner(overrides?: CallOverrides): Promise<[string]>;
+
     placeBets(
       pool_id: PromiseOrValue<BigNumberish>,
       match_ids: PromiseOrValue<string>[],
       selections: PromiseOrValue<BigNumberish>[],
+      overrides?: PayableOverrides & { from?: PromiseOrValue<string> }
+    ): Promise<ContractTransaction>;
+
+    poolBetByUser(
+      arg0: PromiseOrValue<BigNumberish>,
+      arg1: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<
+      [BigNumber, string, BigNumber, boolean, BigNumber] & {
+        poolID: BigNumber;
+        user: string;
+        selectionID: BigNumber;
+        isActive: boolean;
+        score: BigNumber;
+      }
+    >;
+
+    poolBetCount(
+      arg0: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
+    ): Promise<[BigNumber]>;
+
+    poolSelections(
+      arg0: PromiseOrValue<BigNumberish>,
+      arg1: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<[BigNumber]>;
+
+    poolToAddress(
+      arg0: PromiseOrValue<BigNumberish>,
+      arg1: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
+    ): Promise<[string]>;
+
+    poolToScoreToAdddress(
+      arg0: PromiseOrValue<BigNumberish>,
+      arg1: PromiseOrValue<BigNumberish>,
+      arg2: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
+    ): Promise<[string]>;
+
+    protocolFeeCollector(overrides?: CallOverrides): Promise<[string]>;
+
+    renounceOwnership(
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<ContractTransaction>;
+
+    setAdmin(
+      admin: PromiseOrValue<string>,
+      enabled: PromiseOrValue<boolean>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<ContractTransaction>;
+
+    transferOwnership(
+      newOwner: PromiseOrValue<string>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<ContractTransaction>;
+
+    updateMatchStatus(
+      matchID: PromiseOrValue<string>,
+      statusCode: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
     updatePool(
       poolID: PromiseOrValue<BigNumberish>,
-      poolName: PromiseOrValue<string>,
-      entry_fee: PromiseOrValue<BigNumberish>,
-      protocolFee: PromiseOrValue<BigNumberish>,
+      _poolName: PromiseOrValue<string>,
+      _entryFee: PromiseOrValue<BigNumberish>,
+      _protocolFee: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<ContractTransaction>;
+
+    withdrawProtocolFee(
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
   };
@@ -203,9 +731,64 @@ export interface BettingPools extends BaseContract {
     bet_start_time: PromiseOrValue<BigNumberish>,
     bet_end_time: PromiseOrValue<BigNumberish>,
     match_ids: PromiseOrValue<string>[],
-    participants: PromiseOrValue<BigNumberish>,
+    max_participants: PromiseOrValue<BigNumberish>,
+    winnerPercentage: PromiseOrValue<BigNumberish>,
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
+
+  addressBettingInPool(
+    arg0: PromiseOrValue<string>,
+    arg1: PromiseOrValue<BigNumberish>,
+    overrides?: CallOverrides
+  ): Promise<boolean>;
+
+  addressPoolRewards(
+    arg0: PromiseOrValue<string>,
+    arg1: PromiseOrValue<BigNumberish>,
+    overrides?: CallOverrides
+  ): Promise<BigNumber>;
+
+  allMatches(
+    arg0: PromiseOrValue<string>,
+    overrides?: CallOverrides
+  ): Promise<
+    [string, string, string, string, number] & {
+      espn_id: string;
+      name: string;
+      teamA: string;
+      teamB: string;
+      status: number;
+    }
+  >;
+
+  allPools(
+    arg0: PromiseOrValue<BigNumberish>,
+    overrides?: CallOverrides
+  ): Promise<
+    [
+      BigNumber,
+      string,
+      BigNumber,
+      BigNumber,
+      BigNumber,
+      BigNumber,
+      BigNumber,
+      BigNumber,
+      boolean,
+      boolean
+    ] & {
+      poolID: BigNumber;
+      poolName: string;
+      startTime: BigNumber;
+      endTime: BigNumber;
+      entryFee: BigNumber;
+      protocolFee: BigNumber;
+      winnerPercentage: BigNumber;
+      maxParticipants: BigNumber;
+      isArchived: boolean;
+      rewardsCalculated: boolean;
+    }
+  >;
 
   archivePool(
     poolId: PromiseOrValue<BigNumberish>,
@@ -220,8 +803,20 @@ export interface BettingPools extends BaseContract {
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
+  bund(overrides?: CallOverrides): Promise<string>;
+
+  calculateReward(
+    pool_id: PromiseOrValue<BigNumberish>,
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
+  ): Promise<ContractTransaction>;
+
   cancelBet(
     pool_id: PromiseOrValue<BigNumberish>,
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
+  ): Promise<ContractTransaction>;
+
+  changeGrader(
+    _grader: PromiseOrValue<string>,
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
@@ -230,18 +825,115 @@ export interface BettingPools extends BaseContract {
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
+  emergencyWithdraw(
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
+  ): Promise<ContractTransaction>;
+
+  globalBetsID(overrides?: CallOverrides): Promise<BigNumber>;
+
+  grader(overrides?: CallOverrides): Promise<string>;
+
+  hasClaimedRewards(
+    arg0: PromiseOrValue<string>,
+    arg1: PromiseOrValue<BigNumberish>,
+    overrides?: CallOverrides
+  ): Promise<boolean>;
+
+  isAdmin(
+    admin: PromiseOrValue<string>,
+    overrides?: CallOverrides
+  ): Promise<boolean>;
+
+  isMatchInPool(
+    arg0: PromiseOrValue<string>,
+    arg1: PromiseOrValue<BigNumberish>,
+    overrides?: CallOverrides
+  ): Promise<boolean>;
+
+  matchExists(
+    arg0: PromiseOrValue<string>,
+    overrides?: CallOverrides
+  ): Promise<boolean>;
+
+  owner(overrides?: CallOverrides): Promise<string>;
+
   placeBets(
     pool_id: PromiseOrValue<BigNumberish>,
     match_ids: PromiseOrValue<string>[],
     selections: PromiseOrValue<BigNumberish>[],
+    overrides?: PayableOverrides & { from?: PromiseOrValue<string> }
+  ): Promise<ContractTransaction>;
+
+  poolBetByUser(
+    arg0: PromiseOrValue<BigNumberish>,
+    arg1: PromiseOrValue<string>,
+    overrides?: CallOverrides
+  ): Promise<
+    [BigNumber, string, BigNumber, boolean, BigNumber] & {
+      poolID: BigNumber;
+      user: string;
+      selectionID: BigNumber;
+      isActive: boolean;
+      score: BigNumber;
+    }
+  >;
+
+  poolBetCount(
+    arg0: PromiseOrValue<BigNumberish>,
+    overrides?: CallOverrides
+  ): Promise<BigNumber>;
+
+  poolSelections(
+    arg0: PromiseOrValue<BigNumberish>,
+    arg1: PromiseOrValue<string>,
+    overrides?: CallOverrides
+  ): Promise<BigNumber>;
+
+  poolToAddress(
+    arg0: PromiseOrValue<BigNumberish>,
+    arg1: PromiseOrValue<BigNumberish>,
+    overrides?: CallOverrides
+  ): Promise<string>;
+
+  poolToScoreToAdddress(
+    arg0: PromiseOrValue<BigNumberish>,
+    arg1: PromiseOrValue<BigNumberish>,
+    arg2: PromiseOrValue<BigNumberish>,
+    overrides?: CallOverrides
+  ): Promise<string>;
+
+  protocolFeeCollector(overrides?: CallOverrides): Promise<string>;
+
+  renounceOwnership(
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
+  ): Promise<ContractTransaction>;
+
+  setAdmin(
+    admin: PromiseOrValue<string>,
+    enabled: PromiseOrValue<boolean>,
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
+  ): Promise<ContractTransaction>;
+
+  transferOwnership(
+    newOwner: PromiseOrValue<string>,
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
+  ): Promise<ContractTransaction>;
+
+  updateMatchStatus(
+    matchID: PromiseOrValue<string>,
+    statusCode: PromiseOrValue<BigNumberish>,
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
   updatePool(
     poolID: PromiseOrValue<BigNumberish>,
-    poolName: PromiseOrValue<string>,
-    entry_fee: PromiseOrValue<BigNumberish>,
-    protocolFee: PromiseOrValue<BigNumberish>,
+    _poolName: PromiseOrValue<string>,
+    _entryFee: PromiseOrValue<BigNumberish>,
+    _protocolFee: PromiseOrValue<BigNumberish>,
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
+  ): Promise<ContractTransaction>;
+
+  withdrawProtocolFee(
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
@@ -253,9 +945,64 @@ export interface BettingPools extends BaseContract {
       bet_start_time: PromiseOrValue<BigNumberish>,
       bet_end_time: PromiseOrValue<BigNumberish>,
       match_ids: PromiseOrValue<string>[],
-      participants: PromiseOrValue<BigNumberish>,
+      max_participants: PromiseOrValue<BigNumberish>,
+      winnerPercentage: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<BigNumber>;
+
+    addressBettingInPool(
+      arg0: PromiseOrValue<string>,
+      arg1: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
+    ): Promise<boolean>;
+
+    addressPoolRewards(
+      arg0: PromiseOrValue<string>,
+      arg1: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    allMatches(
+      arg0: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<
+      [string, string, string, string, number] & {
+        espn_id: string;
+        name: string;
+        teamA: string;
+        teamB: string;
+        status: number;
+      }
+    >;
+
+    allPools(
+      arg0: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
+    ): Promise<
+      [
+        BigNumber,
+        string,
+        BigNumber,
+        BigNumber,
+        BigNumber,
+        BigNumber,
+        BigNumber,
+        BigNumber,
+        boolean,
+        boolean
+      ] & {
+        poolID: BigNumber;
+        poolName: string;
+        startTime: BigNumber;
+        endTime: BigNumber;
+        entryFee: BigNumber;
+        protocolFee: BigNumber;
+        winnerPercentage: BigNumber;
+        maxParticipants: BigNumber;
+        isArchived: boolean;
+        rewardsCalculated: boolean;
+      }
+    >;
 
     archivePool(
       poolId: PromiseOrValue<BigNumberish>,
@@ -270,8 +1017,20 @@ export interface BettingPools extends BaseContract {
       overrides?: CallOverrides
     ): Promise<void>;
 
+    bund(overrides?: CallOverrides): Promise<string>;
+
+    calculateReward(
+      pool_id: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
     cancelBet(
       pool_id: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
+    changeGrader(
+      _grader: PromiseOrValue<string>,
       overrides?: CallOverrides
     ): Promise<void>;
 
@@ -280,6 +1039,36 @@ export interface BettingPools extends BaseContract {
       overrides?: CallOverrides
     ): Promise<void>;
 
+    emergencyWithdraw(overrides?: CallOverrides): Promise<void>;
+
+    globalBetsID(overrides?: CallOverrides): Promise<BigNumber>;
+
+    grader(overrides?: CallOverrides): Promise<string>;
+
+    hasClaimedRewards(
+      arg0: PromiseOrValue<string>,
+      arg1: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
+    ): Promise<boolean>;
+
+    isAdmin(
+      admin: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<boolean>;
+
+    isMatchInPool(
+      arg0: PromiseOrValue<string>,
+      arg1: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
+    ): Promise<boolean>;
+
+    matchExists(
+      arg0: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<boolean>;
+
+    owner(overrides?: CallOverrides): Promise<string>;
+
     placeBets(
       pool_id: PromiseOrValue<BigNumberish>,
       match_ids: PromiseOrValue<string>[],
@@ -287,16 +1076,157 @@ export interface BettingPools extends BaseContract {
       overrides?: CallOverrides
     ): Promise<void>;
 
-    updatePool(
-      poolID: PromiseOrValue<BigNumberish>,
-      poolName: PromiseOrValue<string>,
-      entry_fee: PromiseOrValue<BigNumberish>,
-      protocolFee: PromiseOrValue<BigNumberish>,
+    poolBetByUser(
+      arg0: PromiseOrValue<BigNumberish>,
+      arg1: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<
+      [BigNumber, string, BigNumber, boolean, BigNumber] & {
+        poolID: BigNumber;
+        user: string;
+        selectionID: BigNumber;
+        isActive: boolean;
+        score: BigNumber;
+      }
+    >;
+
+    poolBetCount(
+      arg0: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    poolSelections(
+      arg0: PromiseOrValue<BigNumberish>,
+      arg1: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    poolToAddress(
+      arg0: PromiseOrValue<BigNumberish>,
+      arg1: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
+    ): Promise<string>;
+
+    poolToScoreToAdddress(
+      arg0: PromiseOrValue<BigNumberish>,
+      arg1: PromiseOrValue<BigNumberish>,
+      arg2: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
+    ): Promise<string>;
+
+    protocolFeeCollector(overrides?: CallOverrides): Promise<string>;
+
+    renounceOwnership(overrides?: CallOverrides): Promise<void>;
+
+    setAdmin(
+      admin: PromiseOrValue<string>,
+      enabled: PromiseOrValue<boolean>,
       overrides?: CallOverrides
     ): Promise<void>;
+
+    transferOwnership(
+      newOwner: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
+    updateMatchStatus(
+      matchID: PromiseOrValue<string>,
+      statusCode: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
+    updatePool(
+      poolID: PromiseOrValue<BigNumberish>,
+      _poolName: PromiseOrValue<string>,
+      _entryFee: PromiseOrValue<BigNumberish>,
+      _protocolFee: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
+    withdrawProtocolFee(overrides?: CallOverrides): Promise<void>;
   };
 
-  filters: {};
+  filters: {
+    "AdminAccessSet(address,bool)"(
+      _admin?: null,
+      _enabled?: null
+    ): AdminAccessSetEventFilter;
+    AdminAccessSet(_admin?: null, _enabled?: null): AdminAccessSetEventFilter;
+
+    "OwnershipTransferred(address,address)"(
+      previousOwner?: PromiseOrValue<string> | null,
+      newOwner?: PromiseOrValue<string> | null
+    ): OwnershipTransferredEventFilter;
+    OwnershipTransferred(
+      previousOwner?: PromiseOrValue<string> | null,
+      newOwner?: PromiseOrValue<string> | null
+    ): OwnershipTransferredEventFilter;
+
+    "betPlaced(uint256,address,uint256[])"(
+      poolID?: PromiseOrValue<BigNumberish> | null,
+      better?: PromiseOrValue<string> | null,
+      selections?: null
+    ): betPlacedEventFilter;
+    betPlaced(
+      poolID?: PromiseOrValue<BigNumberish> | null,
+      better?: PromiseOrValue<string> | null,
+      selections?: null
+    ): betPlacedEventFilter;
+
+    "emergencyWithdrawal(address,uint256)"(
+      withdrawnTo?: PromiseOrValue<string> | null,
+      amount?: PromiseOrValue<BigNumberish> | null
+    ): emergencyWithdrawalEventFilter;
+    emergencyWithdrawal(
+      withdrawnTo?: PromiseOrValue<string> | null,
+      amount?: PromiseOrValue<BigNumberish> | null
+    ): emergencyWithdrawalEventFilter;
+
+    "matchAdded(string)"(
+      espn_id?: PromiseOrValue<string> | null
+    ): matchAddedEventFilter;
+    matchAdded(espn_id?: PromiseOrValue<string> | null): matchAddedEventFilter;
+
+    "matchGraded(string,uint256,address)"(
+      espn_id?: PromiseOrValue<string> | null,
+      statusCode?: PromiseOrValue<BigNumberish> | null,
+      grader?: PromiseOrValue<string> | null
+    ): matchGradedEventFilter;
+    matchGraded(
+      espn_id?: PromiseOrValue<string> | null,
+      statusCode?: PromiseOrValue<BigNumberish> | null,
+      grader?: PromiseOrValue<string> | null
+    ): matchGradedEventFilter;
+
+    "poolAdded(uint256,uint256,uint256,uint256,uint256)"(
+      poolID?: PromiseOrValue<BigNumberish> | null,
+      matchCount?: PromiseOrValue<BigNumberish> | null,
+      winPercentage?: PromiseOrValue<BigNumberish> | null,
+      start_time?: null,
+      end_time?: null
+    ): poolAddedEventFilter;
+    poolAdded(
+      poolID?: PromiseOrValue<BigNumberish> | null,
+      matchCount?: PromiseOrValue<BigNumberish> | null,
+      winPercentage?: PromiseOrValue<BigNumberish> | null,
+      start_time?: null,
+      end_time?: null
+    ): poolAddedEventFilter;
+
+    "poolArchived(uint256)"(poolID?: null): poolArchivedEventFilter;
+    poolArchived(poolID?: null): poolArchivedEventFilter;
+
+    "rewardClaimed(address,uint256,uint256)"(
+      claimer?: PromiseOrValue<string> | null,
+      poolID?: null,
+      amount?: null
+    ): rewardClaimedEventFilter;
+    rewardClaimed(
+      claimer?: PromiseOrValue<string> | null,
+      poolID?: null,
+      amount?: null
+    ): rewardClaimedEventFilter;
+  };
 
   estimateGas: {
     addPoolData(
@@ -306,8 +1236,31 @@ export interface BettingPools extends BaseContract {
       bet_start_time: PromiseOrValue<BigNumberish>,
       bet_end_time: PromiseOrValue<BigNumberish>,
       match_ids: PromiseOrValue<string>[],
-      participants: PromiseOrValue<BigNumberish>,
+      max_participants: PromiseOrValue<BigNumberish>,
+      winnerPercentage: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<BigNumber>;
+
+    addressBettingInPool(
+      arg0: PromiseOrValue<string>,
+      arg1: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    addressPoolRewards(
+      arg0: PromiseOrValue<string>,
+      arg1: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    allMatches(
+      arg0: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    allPools(
+      arg0: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
     ): Promise<BigNumber>;
 
     archivePool(
@@ -323,8 +1276,20 @@ export interface BettingPools extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
+    bund(overrides?: CallOverrides): Promise<BigNumber>;
+
+    calculateReward(
+      pool_id: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<BigNumber>;
+
     cancelBet(
       pool_id: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<BigNumber>;
+
+    changeGrader(
+      _grader: PromiseOrValue<string>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
@@ -333,18 +1298,107 @@ export interface BettingPools extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
+    emergencyWithdraw(
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<BigNumber>;
+
+    globalBetsID(overrides?: CallOverrides): Promise<BigNumber>;
+
+    grader(overrides?: CallOverrides): Promise<BigNumber>;
+
+    hasClaimedRewards(
+      arg0: PromiseOrValue<string>,
+      arg1: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    isAdmin(
+      admin: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    isMatchInPool(
+      arg0: PromiseOrValue<string>,
+      arg1: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    matchExists(
+      arg0: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    owner(overrides?: CallOverrides): Promise<BigNumber>;
+
     placeBets(
       pool_id: PromiseOrValue<BigNumberish>,
       match_ids: PromiseOrValue<string>[],
       selections: PromiseOrValue<BigNumberish>[],
+      overrides?: PayableOverrides & { from?: PromiseOrValue<string> }
+    ): Promise<BigNumber>;
+
+    poolBetByUser(
+      arg0: PromiseOrValue<BigNumberish>,
+      arg1: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    poolBetCount(
+      arg0: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    poolSelections(
+      arg0: PromiseOrValue<BigNumberish>,
+      arg1: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    poolToAddress(
+      arg0: PromiseOrValue<BigNumberish>,
+      arg1: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    poolToScoreToAdddress(
+      arg0: PromiseOrValue<BigNumberish>,
+      arg1: PromiseOrValue<BigNumberish>,
+      arg2: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    protocolFeeCollector(overrides?: CallOverrides): Promise<BigNumber>;
+
+    renounceOwnership(
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<BigNumber>;
+
+    setAdmin(
+      admin: PromiseOrValue<string>,
+      enabled: PromiseOrValue<boolean>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<BigNumber>;
+
+    transferOwnership(
+      newOwner: PromiseOrValue<string>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<BigNumber>;
+
+    updateMatchStatus(
+      matchID: PromiseOrValue<string>,
+      statusCode: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
     updatePool(
       poolID: PromiseOrValue<BigNumberish>,
-      poolName: PromiseOrValue<string>,
-      entry_fee: PromiseOrValue<BigNumberish>,
-      protocolFee: PromiseOrValue<BigNumberish>,
+      _poolName: PromiseOrValue<string>,
+      _entryFee: PromiseOrValue<BigNumberish>,
+      _protocolFee: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<BigNumber>;
+
+    withdrawProtocolFee(
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
   };
@@ -357,8 +1411,31 @@ export interface BettingPools extends BaseContract {
       bet_start_time: PromiseOrValue<BigNumberish>,
       bet_end_time: PromiseOrValue<BigNumberish>,
       match_ids: PromiseOrValue<string>[],
-      participants: PromiseOrValue<BigNumberish>,
+      max_participants: PromiseOrValue<BigNumberish>,
+      winnerPercentage: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<PopulatedTransaction>;
+
+    addressBettingInPool(
+      arg0: PromiseOrValue<string>,
+      arg1: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    addressPoolRewards(
+      arg0: PromiseOrValue<string>,
+      arg1: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    allMatches(
+      arg0: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    allPools(
+      arg0: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
     archivePool(
@@ -374,8 +1451,20 @@ export interface BettingPools extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
+    bund(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
+    calculateReward(
+      pool_id: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<PopulatedTransaction>;
+
     cancelBet(
       pool_id: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<PopulatedTransaction>;
+
+    changeGrader(
+      _grader: PromiseOrValue<string>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
@@ -384,18 +1473,109 @@ export interface BettingPools extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
+    emergencyWithdraw(
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<PopulatedTransaction>;
+
+    globalBetsID(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
+    grader(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
+    hasClaimedRewards(
+      arg0: PromiseOrValue<string>,
+      arg1: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    isAdmin(
+      admin: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    isMatchInPool(
+      arg0: PromiseOrValue<string>,
+      arg1: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    matchExists(
+      arg0: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    owner(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
     placeBets(
       pool_id: PromiseOrValue<BigNumberish>,
       match_ids: PromiseOrValue<string>[],
       selections: PromiseOrValue<BigNumberish>[],
+      overrides?: PayableOverrides & { from?: PromiseOrValue<string> }
+    ): Promise<PopulatedTransaction>;
+
+    poolBetByUser(
+      arg0: PromiseOrValue<BigNumberish>,
+      arg1: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    poolBetCount(
+      arg0: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    poolSelections(
+      arg0: PromiseOrValue<BigNumberish>,
+      arg1: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    poolToAddress(
+      arg0: PromiseOrValue<BigNumberish>,
+      arg1: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    poolToScoreToAdddress(
+      arg0: PromiseOrValue<BigNumberish>,
+      arg1: PromiseOrValue<BigNumberish>,
+      arg2: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    protocolFeeCollector(
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    renounceOwnership(
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<PopulatedTransaction>;
+
+    setAdmin(
+      admin: PromiseOrValue<string>,
+      enabled: PromiseOrValue<boolean>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<PopulatedTransaction>;
+
+    transferOwnership(
+      newOwner: PromiseOrValue<string>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<PopulatedTransaction>;
+
+    updateMatchStatus(
+      matchID: PromiseOrValue<string>,
+      statusCode: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
     updatePool(
       poolID: PromiseOrValue<BigNumberish>,
-      poolName: PromiseOrValue<string>,
-      entry_fee: PromiseOrValue<BigNumberish>,
-      protocolFee: PromiseOrValue<BigNumberish>,
+      _poolName: PromiseOrValue<string>,
+      _entryFee: PromiseOrValue<BigNumberish>,
+      _protocolFee: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<PopulatedTransaction>;
+
+    withdrawProtocolFee(
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
   };

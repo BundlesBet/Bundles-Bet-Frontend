@@ -21,7 +21,8 @@ import {
   useToast,
 } from "@chakra-ui/react";
 import BN from "bn.js";
-import { useEffect } from "react";
+import { ethers } from "ethers";
+import { useEffect, useState } from "react";
 import { BiCopy } from "react-icons/bi";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -56,6 +57,7 @@ export const ConfirmBetModal = (props: ModalProps) => {
   const dispatch = useDispatch();
   const { onCopy, setValue } = useClipboard("");
   const { address, isConnected } = useAccount();
+  const [loader, setLoader] = useState(false);
   const { poolData } = useSelector((state: RootState) => state.betting);
   const userData = useSelector((state: RootState) => state.user)
     .userData as UserData;
@@ -63,7 +65,7 @@ export const ConfirmBetModal = (props: ModalProps) => {
   const trimmedAccount = isConnected
     ? `${address?.slice(0, 5)}...${address?.slice(-5)}`
     : "Account";
-  const matchIds = teamsSelected.map((teamSel) => teamSel.match);
+  const matchIds = teamsSelected.map((teamSel) => teamSel.match.toString());
   const matchesSelections = teamsSelected.map((teamSel) => teamSel.selection);
 
   const { config } = usePrepareContractWrite({
@@ -73,6 +75,9 @@ export const ConfirmBetModal = (props: ModalProps) => {
     functionName: "placeBets(uint256,string[],uint256[])",
     args: [poolData.id, matchIds, matchesSelections],
     enabled: Boolean(poolData.id && matchIds && matchesSelections),
+    overrides: {
+      value: ethers.utils.parseUnits(poolData.protocolFee.toString(), "ether"),
+    },
   });
 
   const { writeAsync } = useContractWrite(config);
@@ -88,6 +93,7 @@ export const ConfirmBetModal = (props: ModalProps) => {
   }, [address, setValue]);
 
   const processTransaction = async () => {
+    setLoader(true);
     try {
       const allowance = await readContract({
         address: contractDetails.bundToken.address,
@@ -97,13 +103,14 @@ export const ConfirmBetModal = (props: ModalProps) => {
         args: [address, contractDetails.betting.address],
       });
 
-      if (new BN(poolData.fee).gt(allowance as BN)) {
+      if (new BN(poolData.protocolFee).gt(allowance as BN)) {
         const approveConfig = await prepareWriteContract({
           address: contractDetails.bundToken.address,
           abi: contractDetails.bundToken.abi,
           functionName: "approve",
           args: [contractDetails.betting.address, approvalAmt],
         });
+
         const approveData = await (await writeContract(approveConfig)).wait(1);
 
         if (!approveData) {
@@ -133,34 +140,67 @@ export const ConfirmBetModal = (props: ModalProps) => {
           duration: 4000,
           isClosable: true,
         });
+        setLoader(false);
         close();
         return;
       }
 
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      (await writeAsync?.())?.wait(3).then(async (value) => {
-        const body = {
-          userId: (userData as UserData).id,
-          poolId: poolData.id,
-          teamSelections: teamsSelected,
-          betAmount: poolData.fee,
-        };
-
-        await createBet(body);
-
-        dispatch(
-          setUserData({
-            ...userData,
-            totalPoolsParticipated: userData.totalPoolsParticipated + 1,
-          })
-        );
-
-        close();
-        handleConfirm();
+      toast({
+        position: "top-right",
+        title: "Processing transaction",
+        description: "We are processing your transaction, please wait...",
+        status: "info",
+        duration: 4000,
+        isClosable: true,
       });
+
+      (await writeAsync?.())
+        ?.wait(1)
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        .then(async (value) => {
+          const body = {
+            userId: (userData as UserData).id,
+            poolId: poolData.id,
+            teamSelections: teamsSelected,
+            betAmount: poolData.fee,
+          };
+
+          await createBet(body);
+
+          dispatch(
+            setUserData({
+              ...userData,
+              totalPoolsParticipated: userData.totalPoolsParticipated + 1,
+            })
+          );
+
+          toast({
+            position: "top-right",
+            title: "Bet created",
+            description: "Bet successfully created.",
+            status: "success",
+            duration: 4000,
+            isClosable: true,
+          });
+          setLoader(false);
+          close();
+          handleConfirm();
+        })
+        .catch((error) => {
+          throw new Error(error);
+        });
     } catch (error) {
       // eslint-disable-next-line no-console
       console.error(error);
+      setLoader(false);
+      toast({
+        position: "top-right",
+        title: "Problem Encountered",
+        description: "Problem in bet creation, please try again later!",
+        status: "error",
+        duration: 4000,
+        isClosable: true,
+      });
     }
   };
 
@@ -246,11 +286,14 @@ export const ConfirmBetModal = (props: ModalProps) => {
                 bg: "#0EB634",
               }}
               onClick={processTransaction}
+              isLoading={loader}
             >
               Accept
             </Button>
 
-            <Button onClick={() => close()}>Decline</Button>
+            <Button onClick={() => close()} isLoading={loader}>
+              Decline
+            </Button>
           </ButtonGroup>
         </ModalFooter>
       </ModalContent>

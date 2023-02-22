@@ -22,11 +22,6 @@ const explore = [
     text: "Sportsbook",
     disable: true,
   },
-  {
-    href: "#",
-    text: "Casino Games",
-    disable: true,
-  },
 ];
 
 const ExploreSection = () => {

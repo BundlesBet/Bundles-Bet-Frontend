@@ -21,6 +21,7 @@ import {
   ButtonGroup,
   PopoverFooter,
   useToast,
+  Tooltip,
 } from "@chakra-ui/react";
 import Pagination from "@choc-ui/paginator";
 import { formatInTimeZone } from "date-fns-tz";
@@ -64,7 +65,12 @@ const ProfileShowAll = (props: TableProps) => {
   const offset = (current - 1) * pageSize;
   const posts =
     betData?.length === 0 ? [] : betData.slice(offset, offset + pageSize);
-  const header = ["Pool Creation Date", "Pool Name", "Bet Amount", "Status"];
+  const header = [
+    "Pool Creation Date",
+    "Pool Name",
+    "Total Pool In Amount",
+    "Status",
+  ];
 
   // eslint-disable-next-line react/no-unstable-nested-components, @typescript-eslint/no-explicit-any
   const Prev = forwardRef((forwardprops, ref: any) => {
@@ -96,16 +102,28 @@ const ProfileShowAll = (props: TableProps) => {
   const popOverItems = (item: PoolWithBets) => {
     if (item.status === "ACTIVE") {
       return (
-        <Button
-          onClick={() => {
-            toggle(item.id);
-            setBetId(item.id);
-            setPoolId(item.poolId);
-            setUserId(item.userId);
-          }}
+        <Tooltip
+          hasArrow
+          label={
+            new Date().getTime() > new Date(item.pool.betEndTime).getTime()
+              ? "Cancellation not allowed as one of the Pool Matches are active"
+              : ""
+          }
         >
-          Cancel
-        </Button>
+          <Button
+            isDisabled={
+              new Date().getTime() > new Date(item.pool.betEndTime).getTime()
+            }
+            onClick={() => {
+              toggle(item.id);
+              setBetId(item.id);
+              setPoolId(item.poolId);
+              setUserId(item.userId);
+            }}
+          >
+            Cancel
+          </Button>
+        </Tooltip>
       );
     }
     return (
@@ -129,50 +147,72 @@ const ProfileShowAll = (props: TableProps) => {
   const cancelUserBet = async () => {
     setLoader(true);
     try {
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      (await writeAsync?.())?.wait(3).then(async (value) => {
-        const body = {
-          betId,
-          poolId,
-          userId,
-        };
-
-        await cancelBet(body);
-
-        toast({
-          position: "top-right",
-          title: "Bet Cancelled",
-          description: "Bet successfully cancelled.",
-          status: "success",
-          duration: 4000,
-          isClosable: true,
-        });
-
-        const refreshArr: PoolWithBets[] = [];
-        for (let i = 0; i < betData.length; i += 1) {
-          if (betData[i].id === cancelRowId) {
-            betData[i].status = "CANCELLED";
-
-            refreshArr.push(betData[i]);
-          } else {
-            refreshArr.push(betData[i]);
-          }
-        }
-        setBetData(refreshArr);
-        setCancelRowId(0);
-
-        dispatch(
-          setUserData({
-            ...userData,
-            totalPoolsParticipated: userData.totalPoolsParticipated - 1,
-          })
-        );
-        setLoader(false);
+      toast({
+        position: "top-right",
+        title: "Processing transaction",
+        description: "We are processing your transaction, please wait...",
+        status: "info",
+        duration: 4000,
+        isClosable: true,
       });
+
+      (await writeAsync?.())
+        ?.wait(3)
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        .then(async (value) => {
+          const body = {
+            betId,
+            poolId,
+            userId,
+          };
+
+          await cancelBet(body);
+
+          toast({
+            position: "top-right",
+            title: "Bet Cancelled",
+            description: "Bet successfully cancelled.",
+            status: "success",
+            duration: 4000,
+            isClosable: true,
+          });
+
+          const refreshArr: PoolWithBets[] = [];
+          for (let i = 0; i < betData.length; i += 1) {
+            if (betData[i].id === cancelRowId) {
+              betData[i].status = "CANCELLED";
+
+              refreshArr.push(betData[i]);
+            } else {
+              refreshArr.push(betData[i]);
+            }
+          }
+          setBetData(refreshArr);
+          setCancelRowId(0);
+
+          dispatch(
+            setUserData({
+              ...userData,
+              totalPoolsParticipated: userData.totalPoolsParticipated - 1,
+            })
+          );
+          setLoader(false);
+        })
+        .catch((error) => {
+          throw new Error(error);
+        });
     } catch (error) {
       // eslint-disable-next-line no-console
       console.error(error);
       setLoader(false);
+      toast({
+        position: "top-right",
+        title: "Problem encountered",
+        description: "Problem in bet cancellation, please try again later!",
+        status: "error",
+        duration: 4000,
+        isClosable: true,
+      });
     }
   };
 
