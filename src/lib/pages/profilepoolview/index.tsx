@@ -72,7 +72,6 @@ const ProfilePoolView = () => {
     });
 
     setBetMatches(finalBetMatches);
-
     setTimeout(() => {
       setLoading(false);
     }, 2000);
@@ -95,8 +94,7 @@ const ProfilePoolView = () => {
       >
         <CustomLoader />
         <Heading size="md" mt="1rem">
-          {" "}
-          Loading Data{" "}
+          Loading Data
         </Heading>
       </Flex>
     );
@@ -107,7 +105,7 @@ const ProfilePoolView = () => {
       direction="column"
       alignItems="center"
       justifyContent="center"
-      minHeight="70vh"
+      minHeight="60vh"
       gap={4}
       mb={8}
       w="full"

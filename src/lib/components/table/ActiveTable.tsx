@@ -150,6 +150,20 @@ const ActiveTable = (props: TableProps) => {
     return "";
   };
 
+  // eslint-disable-next-line sonarjs/no-identical-functions
+  const betText = () => {
+    if (!allowedToBet) {
+      return "Bet already placed";
+    }
+    if (!isConnected) {
+      return "Connect Wallet";
+    }
+    if (selectCount !== data.length) {
+      return "Please Select Teams";
+    }
+    return "Bet Now";
+  };
+
   const selectedTeamText = (index: number, teamA: string, teamB: string) => {
     if (selectTeams[index]?.selection === -2) {
       return "Select a Team";
@@ -181,7 +195,7 @@ const ActiveTable = (props: TableProps) => {
                   color="#111"
                   onClick={onOpen}
                 >
-                  Bet Now
+                  {betText()}
                 </Button>
               </Tooltip>
               <Pagination
@@ -194,6 +208,7 @@ const ActiveTable = (props: TableProps) => {
                   display: "flex",
                   pos: "absolute",
                   left: "50%",
+                  marginTop: "20px",
                   transform: "translateX(-50%)",
                 }}
                 focusRing="#0EB634"

@@ -66,7 +66,7 @@ const ViewPoolMatches = () => {
       direction="column"
       alignItems="center"
       justifyContent="center"
-      minHeight="70vh"
+      minHeight="60vh"
       gap={10}
       mb={10}
       w="full"

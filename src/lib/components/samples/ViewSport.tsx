@@ -1,7 +1,8 @@
-import { Flex, Grid, GridItem, Icon, Link, Tooltip } from "@chakra-ui/react";
+import { Flex, Grid, Icon, Link, Tooltip } from "@chakra-ui/react";
 import NextLink from "next/link";
 import { useDispatch } from "react-redux";
 
+import { SportsGrid } from "../common/CommonGrid";
 import { setSportSelected } from "redux/slices/user";
 import { sportsList, uniqueID } from "utils";
 
@@ -31,23 +32,21 @@ const ViewSport = () => {
         alignItems="center"
         direction="column"
       >
-        <Grid templateColumns="repeat(5, 1fr)" gap={6}>
+        <SportsGrid key={uniqueID()}>
           {sportsList.map((sport) => (
-            <GridItem w="100%" key={uniqueID()}>
-              <Link
-                as={NextLink}
-                // rel="noopener noreferrer"
-                href={`/viewSportPools/${sport.id}`}
-              >
-                <Tooltip hasArrow label={sport.sportName}>
-                  <div onClick={() => updateSelectedNftState(sport.id)}>
-                    <Icon as={sport.icon} w={20} h={25} />
-                  </div>
-                </Tooltip>
-              </Link>
-            </GridItem>
+            <Link
+              as={NextLink}
+              // rel="noopener noreferrer"
+              href={`/viewSportPools/${sport.id}`}
+            >
+              <Tooltip hasArrow label={sport.sportName}>
+                <div onClick={() => updateSelectedNftState(sport.id)}>
+                  <Icon as={sport.icon} w={20} h={25} />
+                </div>
+              </Tooltip>
+            </Link>
           ))}
-        </Grid>
+        </SportsGrid>
       </Flex>
     </Grid>
   );

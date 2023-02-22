@@ -11,9 +11,9 @@ const ViewSportPools = () => {
       direction="column"
       alignItems="center"
       justifyContent="center"
-      minHeight="70vh"
+      minHeight="60vh"
       gap={10}
-      mb={8}
+      mb={12}
       w="full"
     >
       <NextSeo title="View Pool" />

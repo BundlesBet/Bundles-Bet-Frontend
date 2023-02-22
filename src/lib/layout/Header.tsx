@@ -1,4 +1,5 @@
 import {
+  Box,
   Flex,
   Heading,
   IconButton,
@@ -70,10 +71,13 @@ const Header = () => {
         justifyContent="space-between"
         alignItems="center"
       >
-        <HelperImage size={20} src="/green_logo.png" label="Logo" />
+        <Box display={{ base: "none", lg: "flex", md: "flex" }}>
+          <HelperImage size={20} src="/green_logo.png" label="Logo" />
+        </Box>
+
         <Heading
           as="h1"
-          size="lg"
+          size={{ base: "sm", lg: "lg" }}
           onClick={() => {
             router.push("/");
           }}
@@ -85,7 +89,7 @@ const Header = () => {
       <Flex marginLeft="auto" align="center" gap={2}>
         {isConnected ? (
           <>
-            <ConnectButton showBalance chainStatus="none" />
+            <ConnectButton chainStatus="none" />
             <Menu>
               <MenuButton
                 as={IconButton}

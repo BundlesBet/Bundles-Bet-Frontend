@@ -35,7 +35,7 @@ const Dashboard = () => {
         direction="column"
         alignItems="center"
         justifyContent="center"
-        minHeight="70vh"
+        minHeight="60vh"
         gap={4}
         mb={8}
         w="full"
@@ -51,7 +51,7 @@ const Dashboard = () => {
         direction="column"
         alignItems="center"
         justifyContent="center"
-        minHeight="70vh"
+        minHeight="60vh"
         gap={4}
         mb={8}
         w="full"
@@ -67,7 +67,7 @@ const Dashboard = () => {
         direction="column"
         alignItems="center"
         justifyContent="center"
-        minHeight="70vh"
+        minHeight="60vh"
         gap={4}
         mb={8}
         w="full"
@@ -82,7 +82,7 @@ const Dashboard = () => {
       direction="column"
       alignItems="center"
       justifyContent="center"
-      minHeight="70vh"
+      minHeight="60vh"
       gap={4}
       mb={8}
       w="full"

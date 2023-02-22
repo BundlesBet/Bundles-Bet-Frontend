@@ -68,7 +68,7 @@ const Leaderboard = () => {
         direction="column"
         alignItems="center"
         justifyContent="center"
-        minHeight="70vh"
+        minHeight="60vh"
         gap={4}
         mb={8}
         w="full"
@@ -82,7 +82,7 @@ const Leaderboard = () => {
       direction="column"
       alignItems="flex-end"
       justifyContent="center"
-      minHeight="70vh"
+      minHeight="60vh"
       gap={4}
       mb={8}
       w="full"

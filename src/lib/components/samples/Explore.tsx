@@ -30,7 +30,13 @@ const ExploreViewPool = () => {
         alignItems="center"
         direction="column"
       >
-        <Flex justifyContent="center" alignItems="center" gap={2}>
+        <Flex
+          justifyContent="center"
+          alignItems="center"
+          gap={4}
+          direction={{ base: "column", md: "row" }}
+          w="100%"
+        >
           {explore.map(
             (link: { href: string; text: string; disable: boolean }) => (
               <Tooltip
@@ -43,6 +49,7 @@ const ExploreViewPool = () => {
                   isDisabled={link.disable}
                   target="_blank"
                   size="sm"
+                  w="100%"
                 >
                   {link.text}
                 </Button>
