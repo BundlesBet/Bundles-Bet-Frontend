@@ -59,9 +59,9 @@ export default function footer() {
           alignItems="center"
         >
           <HelperImage size={10} src="/green_logo.png" label="Logo" />
-          <Text> Bundlesbets</Text>
+          <Text color="#0EB634"> BundlesBets</Text>
         </Stack>
-        <Text>© 2023 Bundles bets finance</Text>
+        <Text>© 2023 BundlesBets finance</Text>
         <Stack direction="row" spacing={6}>
           <SocialButton label="Twitter" href="#">
             <FiTwitter />

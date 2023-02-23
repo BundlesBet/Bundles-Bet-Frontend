@@ -1,4 +1,4 @@
-import { Box, Flex, Grid, Heading, Highlight, Tooltip } from "@chakra-ui/react";
+import { Box, Flex, Grid, Heading, Tooltip } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 
 import { uniqueID, urls } from "utils";
@@ -36,10 +36,8 @@ const ExploreSection = () => {
       >
         <Flex gap={2} justifyContent="center" alignItems="center">
           <HelperImage size={20} src="/green_logo.png" label="Logo" />
-          <Heading as="h1" size="2xl">
-            <Highlight query="Bundles" styles={{ color: "#0EB634" }}>
-              BundlesBets
-            </Highlight>
+          <Heading as="h1" size="2xl" color="#0EB634">
+            BundlesBets
           </Heading>
         </Flex>
         {explore.map(

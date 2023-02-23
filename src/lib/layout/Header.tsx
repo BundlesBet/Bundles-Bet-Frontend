@@ -78,6 +78,7 @@ const Header = () => {
         <Heading
           as="h1"
           size={{ base: "sm", lg: "lg" }}
+          color="#0EB634"
           onClick={() => {
             router.push("/");
           }}
