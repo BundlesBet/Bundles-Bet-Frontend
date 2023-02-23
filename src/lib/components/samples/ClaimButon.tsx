@@ -82,7 +82,9 @@ const ClaimButton = ({
               });
             });
         }}
-        isDisabled={!containsReward || !showClaimButton || !hasClaimedRewards}
+        isDisabled={
+          !containsReward || !showClaimButton || hasClaimedRewards === true
+        }
       >
         {" "}
         Claim

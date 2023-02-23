@@ -48,6 +48,13 @@ const Leaderboard = () => {
       functionName: "hasClaimedRewards",
       args: [address, poolId],
     })) as boolean;
+
+    // eslint-disable-next-line no-console
+    console.log(
+      "🚀 ~ file: index.tsx:53 ~ getLeaderboardData ~ hasClaimed:",
+      hasClaimed
+    );
+
     setHasClaimedRewards(hasClaimed);
 
     setTimeout(() => setLoading(false), 2000);
