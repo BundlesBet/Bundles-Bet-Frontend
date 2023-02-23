@@ -1,8 +1,8 @@
 /** @type {import('next-seo').DefaultSeoProps} */
 const defaultSEOConfig = {
-  title: "bundles-bets",
-  titleTemplate: "%s | Bundles Bets",
-  defaultTitle: "Bundles Bets",
+  title: "BundleBets",
+  titleTemplate: "%s | BundlesBets",
+  defaultTitle: "BundlesBets",
   description: "",
 
   // openGraph: {

@@ -83,7 +83,7 @@ const Header = () => {
           }}
           cursor="pointer"
         >
-          Bundles Bets
+          BundlesBets
         </Heading>
       </Flex>
       <Flex marginLeft="auto" align="center" gap={2}>

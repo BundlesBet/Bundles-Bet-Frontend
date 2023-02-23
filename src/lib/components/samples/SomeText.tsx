@@ -52,7 +52,7 @@ const SomeText = () => {
           <HelperImage size={20} src="/green_logo.png" label="Logo" />
           <Heading as="h1" size="2xl">
             <Highlight query="Bundles" styles={{ color: "#0EB634" }}>
-              Bundles Bets
+              BundlesBets
             </Highlight>
           </Heading>
         </Flex>

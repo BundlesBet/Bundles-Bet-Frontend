@@ -40,7 +40,7 @@ const { chains, provider, webSocketProvider } = configureChains(
 );
 
 const { connectors } = getDefaultWallets({
-  appName: "Bundles Bets",
+  appName: "BundlesBets",
   chains,
 });
 
@@ -67,7 +67,7 @@ const MyApp = ({ Component, pageProps }: AppProps) => {
     <WagmiConfig client={wagmiClient}>
       <RainbowKitProvider
         coolMode
-        modalSize="compact"
+        modalSize="wide"
         showRecentTransactions
         theme={darkTheme(theme)}
         chains={chains}

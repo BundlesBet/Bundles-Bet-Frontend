@@ -59,7 +59,7 @@ export default function footer() {
           alignItems="center"
         >
           <HelperImage size={10} src="/green_logo.png" label="Logo" />
-          <Text> Bundles bets</Text>
+          <Text> Bundlesbets</Text>
         </Stack>
         <Text>© 2023 Bundles bets finance</Text>
         <Stack direction="row" spacing={6}>
