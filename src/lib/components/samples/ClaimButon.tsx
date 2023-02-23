@@ -11,6 +11,7 @@ interface Props {
   userId: number;
   showClaimButton: boolean;
   hasClaimedRewards: boolean;
+  checkHasClaimed: () => void;
 }
 
 const ClaimButton = ({
@@ -19,6 +20,7 @@ const ClaimButton = ({
   userId,
   showClaimButton,
   hasClaimedRewards,
+  checkHasClaimed,
 }: Props) => {
   const router = useRouter();
   const poolId = router.query.id;
@@ -59,6 +61,7 @@ const ClaimButton = ({
             // eslint-disable-next-line @typescript-eslint/no-unused-vars
             .then((value) => {
               backendClaimCall();
+              checkHasClaimed();
 
               toast({
                 position: "top-right",
