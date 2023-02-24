@@ -20,7 +20,7 @@ import {
   ButtonGroup,
   useToast,
 } from "@chakra-ui/react";
-import BN from "bn.js";
+import type BN from "bn.js";
 import { ethers } from "ethers";
 import { useEffect, useState } from "react";
 import { BiCopy } from "react-icons/bi";
@@ -111,12 +111,16 @@ export const ConfirmBetModal = (props: ModalProps) => {
       // eslint-disable-next-line no-console
       console.log(`poolData.fee`, poolData.fee);
 
-      const contractFee = new BN(poolData.fee);
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
+      const poolFee = ethers.utils.parseUnits(poolData.fee);
 
       // eslint-disable-next-line no-console
-      console.log(`contractFee`, contractFee);
+      console.log(`contractFee`, poolFee);
 
-      if (contractFee.gte(allowance as BN)) {
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
+      if (poolFee.gte(allowance as BN)) {
         const approveConfig = await prepareWriteContract({
           address: contractDetails.bundToken.address,
           abi: contractDetails.bundToken.abi,
