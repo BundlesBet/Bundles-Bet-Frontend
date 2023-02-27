@@ -64,7 +64,7 @@ export const sportsList = [
   },
   {
     icon: MdSportsSoccer,
-    sportName: "Soccer",
+    sportName: "SOCCER",
     id: 4,
     value: "soccer",
   },

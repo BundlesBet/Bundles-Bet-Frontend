@@ -130,7 +130,7 @@ const Leaderboard = () => {
         </Heading>
       </Box>
       <Text fontSize="small" textAlign="center" w="100%">
-        * Leaderboard table updates everytime a match in a pool ends. *
+        * Leaderboard table updates every time a match in a pool ends. *
       </Text>
       <LeaderboardTable leaderboardData={leaderboardData} />
     </Flex>
