@@ -35,6 +35,7 @@ const ViewSport = () => {
         <SportsGrid key={uniqueID()}>
           {sportsList.map((sport) => (
             <Link
+              key={uniqueID()}
               as={NextLink}
               // rel="noopener noreferrer"
               href={`/viewSportPools/${sport.id}`}

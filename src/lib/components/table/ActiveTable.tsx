@@ -95,9 +95,6 @@ const ActiveTable = (props: TableProps) => {
       }
     );
 
-    // eslint-disable-next-line no-console
-    console.log(new Date(poolData.betEndTime).getTime() < new Date().getTime());
-
     if (
       (bettingData && Object.keys(bettingData).length) ||
       new Date(poolData.betEndTime).getTime() < new Date().getTime()
@@ -106,8 +103,7 @@ const ActiveTable = (props: TableProps) => {
     }
 
     setLoader(false);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [userData]);
+  }, [userData.id, poolData, poolId]);
 
   useEffect(() => {
     if (!data || !data?.length) return;
@@ -141,11 +137,14 @@ const ActiveTable = (props: TableProps) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   const tooltipLabel = () => {
-    if (!allowedToBet) {
-      return "Bet already placed";
-    }
     if (!isConnected) {
       return "Connect Wallet";
+    }
+    if (new Date(poolData.betEndTime).getTime() < new Date().getTime()) {
+      return "Pool ended";
+    }
+    if (!allowedToBet) {
+      return "Bet already placed";
     }
     if (selectCount !== data.length) {
       return "Please Select Teams";
@@ -155,11 +154,14 @@ const ActiveTable = (props: TableProps) => {
 
   // eslint-disable-next-line sonarjs/no-identical-functions
   const betText = () => {
-    if (!allowedToBet) {
-      return "Bet already placed";
-    }
     if (!isConnected) {
       return "Connect Wallet";
+    }
+    if (new Date(poolData.betEndTime).getTime() < new Date().getTime()) {
+      return "Pool ended";
+    }
+    if (!allowedToBet) {
+      return "Bet already placed";
     }
     if (selectCount !== data.length) {
       return "Please Select Teams";
