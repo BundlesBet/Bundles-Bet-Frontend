@@ -111,7 +111,8 @@ const LeaderboardTable = ({ leaderboardData }: Props) => {
                   return (
                     <Tr key={uniqueID()}>
                       <Td color="#fff" fontSize="md" fontWeight="hairline">
-                        {post.user.name}
+                        {post.user.name} ({post.user.walletAddress.slice(0, 3)}
+                        ...{post.user.walletAddress.slice(-3)})
                       </Td>
                       <Td color="#fff" fontSize="md" fontWeight="hairline">
                         {leaderboardData?.positions[index].position}

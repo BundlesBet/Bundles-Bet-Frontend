@@ -141,11 +141,11 @@ export const SignUpModal = (props: ModalProps) => {
                   onChange={formik.handleChange}
                   focusBorderColor={useColorModeValue("blue.500", "blue.200")}
                 />
-                {formik.touched.email && Boolean(formik.errors.email) ? (
-                  <FormHelperText>Enter Your Email </FormHelperText>
+                <FormHelperText>Enter Your Email (Optional)</FormHelperText>
+                {/* {formik.touched.email && Boolean(formik.errors.email) ? (
                 ) : (
                   <FormErrorMessage>Email is required.</FormErrorMessage>
-                )}
+                )} */}
               </FormControl>
 
               <Button
