@@ -87,6 +87,11 @@ export const ConfirmBetModal = (props: ModalProps) => {
     address,
   });
 
+  const { data: bundData } = useBalance({
+    address,
+    token: ethers.utils.getAddress(contractDetails.bundToken.address),
+  });
+
   useEffect(() => {
     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     setValue(address!);
@@ -103,20 +108,9 @@ export const ConfirmBetModal = (props: ModalProps) => {
         args: [address, contractDetails.betting.address],
       });
 
-      // eslint-disable-next-line no-console
-      console.log(`allowance-`, allowance);
-      // eslint-disable-next-line no-console
-      console.log(`protocolFee`, poolData.protocolFee);
-
-      // eslint-disable-next-line no-console
-      console.log(`poolData.fee`, poolData.fee);
-
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-ignore
       const poolFee = ethers.utils.parseUnits(poolData.fee);
-
-      // eslint-disable-next-line no-console
-      console.log(`contractFee`, poolFee);
 
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-ignore
@@ -148,6 +142,23 @@ export const ConfirmBetModal = (props: ModalProps) => {
       console.log(`data`, data);
       // eslint-disable-next-line no-console
       console.log(`poolData.protocolFee`, poolData.protocolFee);
+
+      if (
+        bundData?.formatted &&
+        parseFloat(bundData?.formatted) < parseFloat(poolData.fee.toString())
+      ) {
+        toast({
+          position: "top-right",
+          title: "BUND Balance is less",
+          description: "BUND balance is less than the fee.",
+          status: "error",
+          duration: 4000,
+          isClosable: true,
+        });
+        setLoader(false);
+        close();
+        return;
+      }
 
       if (
         data?.formatted &&

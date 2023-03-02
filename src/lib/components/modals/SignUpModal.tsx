@@ -134,15 +134,15 @@ export const SignUpModal = (props: ModalProps) => {
                 <FormLabel srOnly>Enter Email</FormLabel>
                 <Input
                   type="email"
-                  placeholder="Input Email"
+                  placeholder="Input Email (Optional)"
                   size="lg"
                   fontSize="md"
                   value={formik.values.email}
                   onChange={formik.handleChange}
                   focusBorderColor={useColorModeValue("blue.500", "blue.200")}
                 />
-                <FormHelperText>Enter Your Email (Optional)</FormHelperText>
                 {/* {formik.touched.email && Boolean(formik.errors.email) ? (
+                  <FormHelperText>Enter Your Email (Optional)</FormHelperText>
                 ) : (
                   <FormErrorMessage>Email is required.</FormErrorMessage>
                 )} */}

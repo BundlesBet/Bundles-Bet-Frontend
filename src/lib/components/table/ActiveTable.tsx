@@ -86,6 +86,8 @@ const ActiveTable = (props: TableProps) => {
   };
 
   const getUserData = useCallback(async () => {
+    if (!userData) return;
+
     const userBetsRes = await getUserBets(userData.id);
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -103,7 +105,7 @@ const ActiveTable = (props: TableProps) => {
     }
 
     setLoader(false);
-  }, [userData.id, poolData, poolId]);
+  }, [userData, poolData, poolId]);
 
   useEffect(() => {
     if (!data || !data?.length) return;
