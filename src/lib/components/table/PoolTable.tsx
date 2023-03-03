@@ -13,6 +13,7 @@ import {
   Tooltip,
 } from "@chakra-ui/react";
 import Pagination from "@choc-ui/paginator";
+import { formatInTimeZone } from "date-fns-tz";
 import { forwardRef, useState } from "react";
 import { MdLeaderboard } from "react-icons/md";
 
@@ -26,7 +27,13 @@ interface TableProps {
 const PoolTable = (props: TableProps) => {
   const { poolData } = props;
 
-  const header = ["Contest", "Entry Fee", "Reward Percentage", ""];
+  const header = [
+    "Contest",
+    "Entry Fee",
+    "Reward Percentage",
+    "Bet End Time",
+    "",
+  ];
 
   const data = poolData || [];
   const [current, setCurrent] = useState(1);
@@ -123,6 +130,14 @@ const PoolTable = (props: TableProps) => {
                   </Td>
                   <Td color="#fff" fontSize="md" fontWeight="hairline">
                     {pool.rewardPercentage} %
+                  </Td>
+
+                  <Td color="#fff" fontSize="md" fontWeight="hairline">
+                    {formatInTimeZone(
+                      pool.betEndTime,
+                      Intl.DateTimeFormat().resolvedOptions().timeZone,
+                      "HH:mm aa, do MMM yyyy"
+                    )}
                   </Td>
 
                   <Td color="#fff" fontSize="md" fontWeight="hairline">

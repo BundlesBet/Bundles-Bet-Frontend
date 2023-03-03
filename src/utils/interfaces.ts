@@ -72,7 +72,7 @@ export type Pool = {
   totalPoolAmount: number;
   rewardPercentage: number;
   matches?: Array<ESPNMatch>;
-  betEndTime: string;
+  betEndTime: Date | string;
 };
 
 export type PoolWithBets = {
