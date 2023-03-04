@@ -1,10 +1,16 @@
 import { api } from "utils";
 
+// eslint-disable-next-line import/no-cycle
 import axios from "./axios";
 
 const userRoute = "/users";
 const bettingRoute = "/betting";
 const leaderboardRoute = "/leaderboard";
+
+export const ignoreRoutes = [
+  `${userRoute}/createUser`,
+  `${userRoute}/getUserByWalletAddress`,
+];
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const apiCall = async (response: any, error: any) => {
@@ -97,6 +103,13 @@ export const updateUserRewards = async (body: {
 }) => {
   const [response, error] = await api(
     axios.post(`${userRoute}/updateUserRewards`, body)
+  );
+  return apiCall(response, error);
+};
+
+export const deleteSession = async () => {
+  const [response, error] = await api(
+    axios.delete(`${userRoute}/deleteSession`)
   );
   return apiCall(response, error);
 };

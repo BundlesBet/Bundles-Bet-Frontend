@@ -35,6 +35,16 @@ export const api = async (AxiosObj: object) => {
   }
 };
 
+export const saveAuthTokens = (accessToken: string, refreshToken: string) => {
+  sessionStorage.setItem("accessToken", accessToken);
+  sessionStorage.setItem("refreshToken", refreshToken);
+};
+
+export const getAuthToken = (access = true): string | null => {
+  if (access) return sessionStorage.getItem("accessToken");
+  return sessionStorage.getItem("refreshToken");
+};
+
 export interface SportsListType {
   icon: string;
   sportName: string;

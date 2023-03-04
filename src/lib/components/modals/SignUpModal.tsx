@@ -20,6 +20,7 @@ import { useAccount } from "wagmi";
 
 import { signUpValidation } from "helpers/validation";
 import { setUserData } from "redux/slices/user";
+import { saveAuthTokens } from "utils";
 import { saveUserData } from "utils/apiCalls";
 
 interface ModalProps {
@@ -73,6 +74,8 @@ export const SignUpModal = (props: ModalProps) => {
     const response = await saveUserData(userData);
     // eslint-disable-next-line no-console
     console.log(response);
+
+    saveAuthTokens(response.tokens.access.token, response.tokens.refresh.token);
 
     // saving in redux state
     dispatch(setUserData(response.user));

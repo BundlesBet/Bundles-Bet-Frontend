@@ -47,7 +47,7 @@ const ProfileShowAll = (props: TableProps) => {
   const [poolId, setPoolId] = useState(0);
   const [userId, setUserId] = useState(0);
   const [current, setCurrent] = useState(1);
-  const [betData, setBetData] = useState<PoolWithBets[]>(allBetsData);
+  const [betData, setBetData] = useState<PoolWithBets[]>(allBetsData || []);
   const toast = useToast();
   const [loader, setLoader] = useState(false);
 
@@ -64,7 +64,9 @@ const ProfileShowAll = (props: TableProps) => {
   const pageSize = 5;
   const offset = (current - 1) * pageSize;
   const posts =
-    betData?.length === 0 ? [] : betData.slice(offset, offset + pageSize);
+    betData && betData?.length === 0
+      ? []
+      : betData.slice(offset, offset + pageSize);
   const header = [
     "Pool Creation Date",
     "Pool Name",
