@@ -1,3 +1,4 @@
+import { InfoOutlineIcon } from "@chakra-ui/icons";
 import {
   Table,
   Thead,
@@ -22,6 +23,7 @@ import {
   PopoverFooter,
   useToast,
   Tooltip,
+  IconButton,
 } from "@chakra-ui/react";
 import Pagination from "@choc-ui/paginator";
 import { formatInTimeZone } from "date-fns-tz";
@@ -271,11 +273,27 @@ const ProfileShowAll = (props: TableProps) => {
                         "HH:mm aa, do MMM yy"
                       )}
                     </Td>
-                    <Td color="#fff" fontSize="md" fontWeight="hairline">
+                    <Td
+                      color="#fff"
+                      fontSize="md"
+                      fontWeight="hairline"
+                      display="flex"
+                      alignItems="center"
+                    >
                       <CustomLink
                         href={`/dashboard/poolview/${item.id}/${item.poolId}`}
                       >
                         <Text cursor="pointer">{item.pool.poolName}</Text>
+                      </CustomLink>
+                      <CustomLink
+                        href={`/dashboard/poolview/${item.id}/${item.poolId}`}
+                      >
+                        <IconButton
+                          ml={2}
+                          background="transparent"
+                          aria-label="Search database"
+                          icon={<InfoOutlineIcon color="#0EB634" />}
+                        />
                       </CustomLink>
                     </Td>
                     <Td color="#fff" fontSize="md" fontWeight="hairline">

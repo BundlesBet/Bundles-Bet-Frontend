@@ -12,7 +12,7 @@ export default function useWagmiLogin() {
   const dispatch = useDispatch();
   const { address } = useAccount();
   const { disconnect } = useDisconnect();
-  const connectionTime = new Date().getTime() + 1000 * 60 * 60;
+  const connectionTime = new Date().getTime() + 1000 * 60 * 59;
 
   useEffect(() => {
     if (!address) return;
@@ -23,7 +23,7 @@ export default function useWagmiLogin() {
         toast({
           position: "top-right",
           title: "Session timeout",
-          description: "You session ended, please reconnect your wallet.",
+          description: "Your session ended, please reconnect your wallet.",
           status: "info",
           duration: 10000,
           isClosable: true,

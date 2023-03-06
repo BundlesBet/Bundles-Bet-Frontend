@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "author": "Bundles-dev-team",
+  "packageManager": "^yarn@1.22.19",
   "scripts": {
     "dev": "next dev",
     "build": "next build",
@@ -24,6 +25,7 @@
     "generate": "npx typechain --target=ethers-v5 './src/abis/*.json' --out-dir './src/types'"
   },
   "dependencies": {
+    "@chakra-ui/icons": "^2.0.17",
     "@chakra-ui/react": "^2.4.6",
     "@choc-ui/chakra-autocomplete": "^5.1.4",
     "@choc-ui/paginator": "^3.4.0",

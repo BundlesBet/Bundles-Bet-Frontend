@@ -1,13 +1,18 @@
 import { Flex, Grid, Icon, Link, Tooltip } from "@chakra-ui/react";
 import NextLink from "next/link";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 import { SportsGrid } from "../common/CommonGrid";
 import { setSportSelected } from "redux/slices/user";
+import type { RootState } from "redux/store";
 import { sportsList, uniqueID } from "utils";
 
 const ViewSport = () => {
   const dispatch = useDispatch();
+
+  const sportSelected = useSelector(
+    (state: RootState) => state.user.sportSelected
+  ).sportName;
 
   const updateSelectedNftState = (id: number) => {
     const sport = sportsList.filter((s) => s.id === id)[0];
@@ -41,7 +46,15 @@ const ViewSport = () => {
               href={`/viewSportPools/${sport.id}`}
             >
               <Tooltip hasArrow label={sport.sportName}>
-                <div onClick={() => updateSelectedNftState(sport.id)}>
+                <div
+                  onClick={() => updateSelectedNftState(sport.id)}
+                  style={{
+                    borderBottom:
+                      sportSelected === sport.sportName
+                        ? "2px solid #0EB634"
+                        : "",
+                  }}
+                >
                   <Icon as={sport.icon} w={20} h={25} />
                 </div>
               </Tooltip>

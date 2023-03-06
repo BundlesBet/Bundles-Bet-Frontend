@@ -1,4 +1,4 @@
-import { Button, Flex, Grid, Tooltip } from "@chakra-ui/react";
+import { Button, Flex, Grid, Show, Text, Tooltip } from "@chakra-ui/react";
 
 import { uniqueID, urls } from "utils";
 
@@ -52,6 +52,12 @@ const ExploreViewPool = () => {
                   w="100%"
                 >
                   {link.text}
+
+                  <Show below="md">
+                    <Text fontSize="small">
+                      {link.disable ? "(Coming Soon)" : ""}
+                    </Text>
+                  </Show>
                 </Button>
               </Tooltip>
             )

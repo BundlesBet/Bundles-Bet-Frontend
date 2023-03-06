@@ -1,3 +1,4 @@
+import { InfoOutlineIcon } from "@chakra-ui/icons";
 import {
   Table,
   Thead,
@@ -123,6 +124,15 @@ const PoolTable = (props: TableProps) => {
                   >
                     <CustomLink href={`/viewpool/${pool.id}`}>
                       {pool.poolName}
+
+                      <IconButton
+                        background="transparent"
+                        border={0}
+                        variant="outline"
+                        ml={1}
+                        icon={<InfoOutlineIcon />}
+                        aria-label="Pool Matches"
+                      />
                     </CustomLink>
                   </Td>
                   <Td color="#fff" fontSize="md" fontWeight="hairline">
@@ -140,7 +150,12 @@ const PoolTable = (props: TableProps) => {
                     )}
                   </Td>
 
-                  <Td color="#fff" fontSize="md" fontWeight="hairline">
+                  <Td
+                    color="#fff"
+                    fontSize="md"
+                    fontWeight="hairline"
+                    display="flex"
+                  >
                     <Tooltip
                       hasArrow
                       aria-label="leaderboard"

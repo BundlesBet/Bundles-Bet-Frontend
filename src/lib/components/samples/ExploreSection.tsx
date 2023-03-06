@@ -1,4 +1,12 @@
-import { Box, Flex, Grid, Heading, Tooltip } from "@chakra-ui/react";
+import {
+  Box,
+  Flex,
+  Grid,
+  Heading,
+  Show,
+  Text,
+  Tooltip,
+} from "@chakra-ui/react";
 import { useRouter } from "next/router";
 
 import { uniqueID, urls } from "utils";
@@ -54,6 +62,7 @@ const ExploreSection = () => {
                 bg="#282835"
                 color="white"
                 disabled={link.disable}
+                opacity={link.disable ? 0.6 : 1}
                 px={4}
                 h={14}
                 w="full"
@@ -62,6 +71,12 @@ const ExploreSection = () => {
                 }}
               >
                 {link.text}
+
+                <Show below="md">
+                  <Text fontSize="smaller">
+                    {link.disable ? "(Coming Soon)" : ""}
+                  </Text>
+                </Show>
               </Box>
             </Tooltip>
           )
