@@ -43,6 +43,7 @@ export interface BettingPoolsInterface extends utils.Interface {
     "changeGrader(address)": FunctionFragment;
     "claimReward(uint256)": FunctionFragment;
     "emergencyWithdraw()": FunctionFragment;
+    "getPoolMatches(uint256)": FunctionFragment;
     "globalBetsID()": FunctionFragment;
     "grader()": FunctionFragment;
     "hasClaimedRewards(address,uint256)": FunctionFragment;
@@ -80,6 +81,7 @@ export interface BettingPoolsInterface extends utils.Interface {
       | "changeGrader"
       | "claimReward"
       | "emergencyWithdraw"
+      | "getPoolMatches"
       | "globalBetsID"
       | "grader"
       | "hasClaimedRewards"
@@ -164,6 +166,10 @@ export interface BettingPoolsInterface extends utils.Interface {
   encodeFunctionData(
     functionFragment: "emergencyWithdraw",
     values?: undefined
+  ): string;
+  encodeFunctionData(
+    functionFragment: "getPoolMatches",
+    values: [PromiseOrValue<BigNumberish>]
   ): string;
   encodeFunctionData(
     functionFragment: "globalBetsID",
@@ -291,6 +297,10 @@ export interface BettingPoolsInterface extends utils.Interface {
   ): Result;
   decodeFunctionResult(
     functionFragment: "emergencyWithdraw",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "getPoolMatches",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
@@ -613,6 +623,11 @@ export interface BettingPools extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
+    getPoolMatches(
+      pool_id: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
+    ): Promise<[string[]]>;
+
     globalBetsID(
       overrides?: CallOverrides
     ): Promise<[BigNumber] & { _value: BigNumber }>;
@@ -829,6 +844,11 @@ export interface BettingPools extends BaseContract {
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
+  getPoolMatches(
+    pool_id: PromiseOrValue<BigNumberish>,
+    overrides?: CallOverrides
+  ): Promise<string[]>;
+
   globalBetsID(overrides?: CallOverrides): Promise<BigNumber>;
 
   grader(overrides?: CallOverrides): Promise<string>;
@@ -1040,6 +1060,11 @@ export interface BettingPools extends BaseContract {
     ): Promise<void>;
 
     emergencyWithdraw(overrides?: CallOverrides): Promise<void>;
+
+    getPoolMatches(
+      pool_id: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
+    ): Promise<string[]>;
 
     globalBetsID(overrides?: CallOverrides): Promise<BigNumber>;
 
@@ -1302,6 +1327,11 @@ export interface BettingPools extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
+    getPoolMatches(
+      pool_id: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
     globalBetsID(overrides?: CallOverrides): Promise<BigNumber>;
 
     grader(overrides?: CallOverrides): Promise<BigNumber>;
@@ -1475,6 +1505,11 @@ export interface BettingPools extends BaseContract {
 
     emergencyWithdraw(
       overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<PopulatedTransaction>;
+
+    getPoolMatches(
+      pool_id: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
     globalBetsID(overrides?: CallOverrides): Promise<PopulatedTransaction>;
