@@ -24,6 +24,7 @@ import {
   useToast,
   Tooltip,
   IconButton,
+  Box,
 } from "@chakra-ui/react";
 import Pagination from "@choc-ui/paginator";
 import { formatInTimeZone } from "date-fns-tz";
@@ -107,6 +108,7 @@ const ProfileShowAll = (props: TableProps) => {
     if (item.status === "ACTIVE") {
       return (
         <Tooltip
+          background="transparent"
           hasArrow
           label={
             new Date().getTime() > new Date(item.pool.betEndTime).getTime()
@@ -115,6 +117,11 @@ const ProfileShowAll = (props: TableProps) => {
           }
         >
           <Button
+            background="transparent"
+            _hover={{
+              background: "transparent",
+              transform: "scale(1.2)",
+            }}
             isDisabled={
               new Date().getTime() > new Date(item.pool.betEndTime).getTime()
             }
@@ -332,7 +339,7 @@ const ProfileShowAll = (props: TableProps) => {
                             closeOnBlur={false}
                           >
                             <PopoverTrigger>
-                              {popOverItems(item)}
+                              <Box>{popOverItems(item)}</Box>
                             </PopoverTrigger>
                             <PopoverContent
                               color="white"

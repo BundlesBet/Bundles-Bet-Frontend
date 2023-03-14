@@ -32,6 +32,7 @@ const PoolTable = (props: TableProps) => {
     "Contest",
     "Entry Fee",
     "Reward Percentage",
+    "No. of Entrants",
     "Bet End Time",
     "",
   ];
@@ -70,7 +71,7 @@ const PoolTable = (props: TableProps) => {
   };
 
   if (!poolData || !poolData?.length) {
-    return <h1 style={{ marginTop: "20px" }}>No pools to show</h1>;
+    return <h1 style={{ marginTop: "20px" }}>No Pools To Show</h1>;
   }
 
   return (
@@ -135,11 +136,19 @@ const PoolTable = (props: TableProps) => {
                       />
                     </CustomLink>
                   </Td>
+
                   <Td color="#fff" fontSize="md" fontWeight="hairline">
                     {pool.fee}
                   </Td>
+
                   <Td color="#fff" fontSize="md" fontWeight="hairline">
                     {pool.rewardPercentage} %
+                  </Td>
+
+                  <Td color="#fff" fontSize="md" fontWeight="hairline">
+                    {pool && pool.participants
+                      ? pool?.participants?.length
+                      : "N/A"}
                   </Td>
 
                   <Td color="#fff" fontSize="md" fontWeight="hairline">

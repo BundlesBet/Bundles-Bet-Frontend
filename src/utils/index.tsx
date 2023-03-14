@@ -61,14 +61,14 @@ export const sportsList = [
   },
   {
     icon: MdSportsBaseball,
-    sportName: "NBA",
-    img: "NBA",
+    sportName: "MLB",
+    img: "MLB",
     id: 2,
     value: "baseball",
   },
   {
     icon: FaBasketballBall,
-    sportName: "NCAAM",
+    sportName: "NBA",
     id: 3,
     value: "basketball",
   },

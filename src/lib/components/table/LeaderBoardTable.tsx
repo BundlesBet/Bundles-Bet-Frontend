@@ -132,7 +132,7 @@ const LeaderboardTable = ({ leaderboardData }: Props) => {
         </TableContainer>
       ) : (
         <Text fontSize="3xl" align="center">
-          No Participants to show
+          No Participants To Show
         </Text>
       )}
     </Flex>

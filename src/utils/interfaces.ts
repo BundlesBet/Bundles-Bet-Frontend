@@ -72,6 +72,7 @@ export type Pool = {
   totalPoolAmount: number;
   rewardPercentage: number;
   matches?: Array<ESPNMatch>;
+  participants?: Array<object>;
   betEndTime: Date | string;
 };
 
