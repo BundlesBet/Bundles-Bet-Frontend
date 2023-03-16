@@ -45,9 +45,29 @@ export const getSports = async () => {
   return apiCall(response, error);
 };
 
-export const getPoolOfSport = async (sportName: string, status: string) => {
+export const fetchSportLeagueData = async () => {
   const [response, error] = await api(
-    axios.get(`${bettingRoute}/getPools/${status}?sportName=${sportName}`)
+    axios.get(`${bettingRoute}/fetchSportLeagueData`)
+  );
+  return apiCall(response, error);
+};
+
+export const fetchLeagues = async (sportName: string) => {
+  const [response, error] = await api(
+    axios.get(`${bettingRoute}/fetchLeagues?sportName=${sportName}`)
+  );
+  return apiCall(response, error);
+};
+
+export const getPoolOfSport = async (
+  sportName: string,
+  leagueName: string,
+  status: string
+) => {
+  const [response, error] = await api(
+    axios.get(
+      `${bettingRoute}/getPools/${status}?sportName=${sportName}&leagueName=${leagueName}`
+    )
   );
   return apiCall(response, error);
 };

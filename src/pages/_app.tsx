@@ -6,7 +6,7 @@ import {
 import type { ThemeOptions } from "@rainbow-me/rainbowkit/dist/themes/baseTheme";
 import type { AppProps } from "next/app";
 import Head from "next/head";
-import { useRouter } from "next/router";
+// import { useRouter } from "next/router";
 import { DefaultSeo } from "next-seo";
 import { Provider } from "react-redux";
 import { configureChains, createClient, WagmiConfig } from "wagmi";
@@ -19,9 +19,9 @@ import defaultSEOConfig from "../../next-seo.config";
 import { Chakra } from "lib/components/Chakra";
 import Layout from "lib/layout";
 import "lib/styles/globals.css";
-import Footer from "lib/layout/Footer";
+// import Footer from "lib/layout/Footer";
 import store from "redux/store";
-import { urls } from "utils";
+// import { urls } from "utils";
 
 const { chains, provider, webSocketProvider } = configureChains(
   [
@@ -60,8 +60,9 @@ const theme: ThemeOptions = {
 };
 
 const MyApp = ({ Component, pageProps }: AppProps) => {
-  const loginRoutes = [urls.connectWallet];
-  const router = useRouter();
+  // const loginRoutes = [urls.viewPool];
+
+  // const router = useRouter();
 
   return (
     <WagmiConfig client={wagmiClient}>
@@ -81,7 +82,7 @@ const MyApp = ({ Component, pageProps }: AppProps) => {
               />
             </Head>
             <DefaultSeo {...defaultSEOConfig} />
-            {loginRoutes.includes(router.pathname) ? (
+            {/* {loginRoutes.includes(router.pathname) ? (
               <>
                 <Component {...pageProps} />
                 <Footer />
@@ -93,7 +94,10 @@ const MyApp = ({ Component, pageProps }: AppProps) => {
                   <Component {...pageProps} />
                 </Layout>
               </>
-            )}
+            )} */}
+            <Layout>
+              <Component {...pageProps} />
+            </Layout>
           </Chakra>
         </Provider>
       </RainbowKitProvider>

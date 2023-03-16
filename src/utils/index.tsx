@@ -13,10 +13,10 @@ import {
 // Required URLs
 export const urls = {
   admin: "/admin",
-  connectWallet: "/",
+  // connectWallet: "/",
   login: "/login",
   sportsSelection: "/sportSelection",
-  viewPool: "/view-pool",
+  viewPool: "/",
   dashboard: "/dashboard",
   storyBook: "/storybook",
   explore: "/explore",
@@ -34,6 +34,25 @@ export const api = async (AxiosObj: object) => {
     return [null, error];
   }
 };
+
+export const explore = [
+  {
+    href: urls.viewPool,
+    text: "Prediction Pools",
+    disable: false,
+  },
+  {
+    href: "#",
+    text: "Daily Fantasy Sports",
+    disable: true,
+  },
+
+  {
+    href: "#",
+    text: "Sportsbook",
+    disable: true,
+  },
+];
 
 export const saveAuthTokens = (accessToken: string, refreshToken: string) => {
   sessionStorage.setItem("accessToken", accessToken);
@@ -55,32 +74,31 @@ export interface SportsListType {
 export const sportsList = [
   {
     icon: IoAmericanFootballSharp,
-    sportName: "NFL",
+    sportName: "Football",
     id: 1,
     value: "football",
   },
   {
     icon: MdSportsBaseball,
-    sportName: "MLB",
-    img: "MLB",
+    sportName: "Baseball",
     id: 2,
     value: "baseball",
   },
   {
     icon: FaBasketballBall,
-    sportName: "NBA",
+    sportName: "Basketball",
     id: 3,
     value: "basketball",
   },
   {
     icon: MdSportsSoccer,
-    sportName: "SOCCER",
+    sportName: "Soccer",
     id: 4,
     value: "soccer",
   },
   {
     icon: MdSportsHockey,
-    sportName: "NHL",
+    sportName: "Hockey",
     id: 5,
     value: "hockey",
   },

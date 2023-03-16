@@ -2,17 +2,13 @@ import {
   Box,
   Flex,
   Heading,
-  IconButton,
-  Menu,
-  MenuButton,
-  MenuItem,
-  MenuList,
+  Show,
+  Tooltip,
   useDisclosure,
 } from "@chakra-ui/react";
 import { ConnectButton } from "@rainbow-me/rainbowkit";
 import { useRouter } from "next/router";
 import { useEffect, useRef } from "react";
-import { GiHamburgerMenu } from "react-icons/gi";
 import { useDispatch, useSelector } from "react-redux";
 import { useAccount } from "wagmi";
 
@@ -21,6 +17,9 @@ import { SignUpModal } from "lib/components/modals/SignUpModal";
 import HelperImage from "lib/components/samples/HelperImage";
 import { setUserData } from "redux/slices/user";
 import type { RootState } from "redux/store";
+import { explore, uniqueID } from "utils";
+
+import HeaderMenu from "./HeaderMenu";
 
 const Header = () => {
   const router = useRouter();
@@ -87,38 +86,60 @@ const Header = () => {
           BundlesBets
         </Heading>
       </Flex>
-      <Flex marginLeft="auto" align="center" gap={2}>
+
+      <Flex marginLeft="auto" align="center" gap={6}>
+        <Show above="lg">
+          {explore.map(
+            (link: { href: string; text: string; disable: boolean }) => (
+              <Tooltip
+                key={uniqueID()}
+                hasArrow
+                label={link.disable === true ? "Coming Soon" : ""}
+                aria-label="A tooltip"
+              >
+                <Box
+                  px={4}
+                  as="button"
+                  color="white"
+                  disabled={link.disable}
+                  background="transparent"
+                  fontWeight="bold"
+                  opacity={link.disable ? 0.6 : 1}
+                  onClick={() => {
+                    router.push(link.href);
+                  }}
+                >
+                  {link.text}
+                </Box>
+              </Tooltip>
+            )
+          )}
+
+          {isConnected && (
+            <Box
+              px={4}
+              as="button"
+              color="white"
+              fontWeight="bold"
+              background="transparent"
+              onClick={() => {
+                router.push("/dashboard");
+              }}
+            >
+              Profile
+            </Box>
+          )}
+        </Show>
+
         {isConnected ? (
-          <>
-            <ConnectButton chainStatus="none" />
-            <Menu>
-              <MenuButton
-                as={IconButton}
-                aria-label="Options"
-                icon={<GiHamburgerMenu />}
-                variant="outline"
-              />
-              <MenuList>
-                <MenuItem
-                  onClick={() => {
-                    router.push("/dashboard");
-                  }}
-                >
-                  {/* {userData.name.length > 0 && `User Name: ${userData.name}`} */}
-                </MenuItem>
-                <MenuItem
-                  onClick={() => {
-                    router.push("/dashboard");
-                  }}
-                >
-                  Profile
-                </MenuItem>
-              </MenuList>
-            </Menu>
-          </>
+          <ConnectButton accountStatus="address" chainStatus="none" />
         ) : (
           <ConnectButton />
         )}
+
+        <Show below="lg">
+          <HeaderMenu />
+        </Show>
       </Flex>
       {isOpen && <SignUpModal isOpen={isOpen} close={onClose} />}
     </Flex>

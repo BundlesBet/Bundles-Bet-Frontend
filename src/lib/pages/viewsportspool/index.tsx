@@ -1,8 +1,10 @@
-import { Box, Flex } from "@chakra-ui/react";
+import { Flex, Show } from "@chakra-ui/react";
 import { NextSeo } from "next-seo";
 
-import ExploreViewPool from "lib/components/samples/Explore";
-import ViewSport from "lib/components/samples/ViewSport";
+// import ExploreViewPool from "lib/components/samples/Explore";
+import LeagueSearchBar from "lib/components/samples/LeagueSearchBar";
+import SportSearchBar from "lib/components/samples/SportSearchBar";
+// import ViewSport from "lib/components/samples/ViewSport";
 import PoolTabs from "lib/components/tabs/PoolTabs";
 
 const ViewSportPools = () => {
@@ -17,12 +19,28 @@ const ViewSportPools = () => {
       w="full"
     >
       <NextSeo title="View Pool" />
-      <Box bg="#1C1C26" w="100%" p={4}>
+
+      <Show above="md">
+        <Flex width="100%" gap={3} flexDirection="row">
+          <SportSearchBar />
+          <LeagueSearchBar />
+        </Flex>
+      </Show>
+
+      <Show below="md">
+        <Flex width="100%" gap={3} flexDirection="column">
+          <SportSearchBar />
+          <LeagueSearchBar />
+        </Flex>
+      </Show>
+
+      {/* <Box bg="#1C1C26" w="100%" p={4}>
         <ViewSport />
-      </Box>
-      <Box bg="#1C1C26" w="100%" p={4}>
+      </Box> */}
+
+      {/* <Box bg="#1C1C26" w="100%" p={4}>
         <ExploreViewPool />
-      </Box>
+      </Box> */}
 
       <PoolTabs />
     </Flex>

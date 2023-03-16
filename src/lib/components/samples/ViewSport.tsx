@@ -20,7 +20,7 @@ const ViewSport = () => {
     const value = {
       id: sport.id,
       sportName: sport.sportName,
-      icon: JSON.stringify(sport.icon),
+      icon: sport.icon.toString(),
       value: sport.value,
     };
 
@@ -52,7 +52,7 @@ const ViewSport = () => {
                     borderBottom:
                       sportSelected === sport.sportName
                         ? "2px solid #0EB634"
-                        : "",
+                        : "none",
                   }}
                 >
                   <Icon as={sport.icon} w={20} h={25} />

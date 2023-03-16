@@ -20,14 +20,36 @@ export const BettingSlice = createSlice({
       matches: [],
       betEndTime: "",
     } as Pool,
+    sportName: "",
+    leagueName: "",
+    sportLeagues: [] as Array<{ name: string; slug: string }>,
   },
   reducers: {
     setPoolsData: (state: { poolData: Pool }, action: { payload: Pool }) => {
       state.poolData = action.payload;
     },
+    setSportName: (
+      state: { sportName: string },
+      action: { payload: string }
+    ) => {
+      state.sportName = action.payload;
+    },
+    setLeagueName: (
+      state: { leagueName: string },
+      action: { payload: string }
+    ) => {
+      state.leagueName = action.payload;
+    },
+    setSportLeagues: (
+      state: { sportLeagues: Array<object> },
+      action: { payload: Array<object> }
+    ) => {
+      state.sportLeagues = action.payload;
+    },
   },
 });
 
-export const { setPoolsData } = BettingSlice.actions;
+export const { setPoolsData, setSportName, setLeagueName, setSportLeagues } =
+  BettingSlice.actions;
 
 export default BettingSlice.reducer;

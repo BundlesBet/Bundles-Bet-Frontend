@@ -1,5 +1,6 @@
 import { Button, Flex, useToast } from "@chakra-ui/react";
 import { useRouter } from "next/router";
+import { useState } from "react";
 import { useContractWrite, usePrepareContractWrite } from "wagmi";
 
 import { contractDetails } from "config";
@@ -25,6 +26,8 @@ const ClaimButton = ({
   const router = useRouter();
   const poolId = router.query.id;
 
+  const [disableClaim, setDisableClaim] = useState(false);
+
   const { config } = usePrepareContractWrite({
     address: contractDetails.betting.address,
     abi: contractDetails.betting.abi,
@@ -47,6 +50,8 @@ const ClaimButton = ({
         bg="#0EB634"
         color="#111"
         onClick={async () => {
+          setDisableClaim(true);
+
           toast({
             position: "top-right",
             title: "Processing transaction",
@@ -62,6 +67,7 @@ const ClaimButton = ({
             .then((value) => {
               backendClaimCall();
               checkHasClaimed();
+              setDisableClaim(false);
 
               toast({
                 position: "top-right",
@@ -74,6 +80,7 @@ const ClaimButton = ({
             })
             // eslint-disable-next-line @typescript-eslint/no-unused-vars
             .catch((error) => {
+              setDisableClaim(false);
               toast({
                 position: "top-right",
                 title: "Problem encountered",
@@ -86,11 +93,14 @@ const ClaimButton = ({
             });
         }}
         isDisabled={
-          !containsReward || !showClaimButton || hasClaimedRewards === true
+          !containsReward ||
+          !showClaimButton ||
+          hasClaimedRewards === true ||
+          disableClaim
         }
       >
         {" "}
-        Claim
+        {disableClaim ? "Claiming" : "Claim"}
       </Button>
     </Flex>
   );

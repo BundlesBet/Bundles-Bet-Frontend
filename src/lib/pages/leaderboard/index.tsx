@@ -28,21 +28,20 @@ const Leaderboard = () => {
   const [hasClaimedRewards, setHasClaimedRewards] = useState(false);
 
   const checkHasClaimed = async () => {
-    const hasClaimed = (await readContract({
-      address: contractDetails.betting.address,
-      abi: contractDetails.betting.abi,
-      chainId: contractDetails.betting.chainId,
-      functionName: "hasClaimedRewards",
-      args: [address, poolId],
-    })) as boolean;
+    try {
+      const hasClaimed = (await readContract({
+        address: contractDetails.betting.address,
+        abi: contractDetails.betting.abi,
+        chainId: contractDetails.betting.chainId,
+        functionName: "hasClaimedRewards",
+        args: [address, poolId],
+      })) as boolean;
 
-    // eslint-disable-next-line no-console
-    console.log(
-      "🚀 ~ file: index.tsx:41 ~ getLeaderboardData ~ hasClaimed:",
-      hasClaimed
-    );
-
-    setHasClaimedRewards(hasClaimed);
+      setHasClaimedRewards(hasClaimed);
+    } catch (error) {
+      // eslint-disable-next-line no-console
+      console.log(error);
+    }
   };
 
   const getLeaderboardData = async () => {

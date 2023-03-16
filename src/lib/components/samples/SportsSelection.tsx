@@ -9,7 +9,7 @@ import { sportsList, uniqueID } from "utils";
 // import { getSports } from "utils/apiCalls";
 // import type { SportsDataInterface } from "utils/interfaces";
 
-import SearchBar from "./SearchBar";
+import SearchBar from "./SportSearchBar";
 
 const SportsSelection = () => {
   const dispatch = useDispatch();
@@ -24,7 +24,7 @@ const SportsSelection = () => {
     const value = {
       id: sport.id,
       sportName: sport.sportName,
-      icon: JSON.stringify(sport.icon),
+      icon: sport.icon.toString(),
       value: sport.value,
     };
 
