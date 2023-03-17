@@ -7,7 +7,7 @@ import {
   TabPanel,
   TabPanels,
   Tabs,
-  useDisclosure,
+  // useDisclosure,
 } from "@chakra-ui/react";
 import { useState, useRef, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -37,7 +37,7 @@ const PoolTabs = () => {
   const [tabIndex, setTabIndex] = useState(0);
   const [poolData, setPoolData] = useState<Pool[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
-  const { isOpen, onOpen, onClose } = useDisclosure();
+  // const { isOpen, onOpen, onClose } = useDisclosure();
 
   const dispatch = useDispatch();
   const sportName = useSelector(
@@ -78,7 +78,7 @@ const PoolTabs = () => {
       setPoolData(fetchPoolData.pools);
       currentSportsName.current = sportName;
       currentLeagueName.current = leagueName;
-      onClose();
+      // onClose();
       setTimeout(() => setLoading(false), 2000);
     }
 
@@ -107,7 +107,7 @@ const PoolTabs = () => {
       } = await fetchSportLeagueData();
 
       if (response.error) {
-        onOpen();
+        setLoading(false);
         return;
       }
 
@@ -143,7 +143,7 @@ const PoolTabs = () => {
       currentSportsName.current = response.sport!;
       currentLeagueName.current = response.league!;
 
-      onClose();
+      // onClose();
       setTimeout(() => setLoading(false), 2000);
     } catch (error) {
       // eslint-disable-next-line no-console
@@ -172,7 +172,6 @@ const PoolTabs = () => {
   }, []);
 
   useEffect(() => {
-    if (isOpen && sportName) onClose();
     if (
       !poolData ||
       poolData.length === 0 ||
