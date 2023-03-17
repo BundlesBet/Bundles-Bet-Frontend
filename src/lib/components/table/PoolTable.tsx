@@ -183,6 +183,30 @@ const PoolTable = (props: TableProps) => {
                       </div>
                     </Tooltip>
                   </Td>
+                  <Td
+                    color="#fff"
+                    fontSize="md"
+                    fontWeight="hairline"
+                    display="flex"
+                  >
+                    <Tooltip
+                      hasArrow
+                      aria-label="leaderboard"
+                      label="View Pool"
+                      placement="right-end"
+                    >
+                      <div>
+                        <CustomLink href={`/poolDetails/${pool.id}`}>
+                          <IconButton
+                            colorScheme="red"
+                            variant="outline"
+                            icon={<MdLeaderboard />}
+                            aria-label="Leaderboard"
+                          />
+                        </CustomLink>
+                      </div>
+                    </Tooltip>
+                  </Td>
                 </Tr>
               );
             })}
