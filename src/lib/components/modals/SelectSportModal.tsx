@@ -30,20 +30,19 @@ export const SelectSportModal = (props: ModalProps) => {
       <ModalContent borderRadius="2xl" mx="4" bg="#1C1C26">
         <ModalBody>
           <Stack
-            maxW="xs"
             mx="auto"
             py={{ base: "12", md: "16" }}
             spacing={{ base: "6", md: "10" }}
           >
-            <Stack
+            <SportSearchBar />
+            {/* <Stack
               gap="10"
               textAlign="center"
               alignItems="center"
               justifyContent="center"
             >
-              {/* <Heading size="2xl">Select Sport</Heading> */}
-              <SportSearchBar />
-            </Stack>
+              <Heading size="2xl">Select Sport</Heading>
+            </Stack> */}
           </Stack>
         </ModalBody>
       </ModalContent>

@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 import {
   Box,
+  Stack,
   Tab,
   TabList,
   TabPanel,
@@ -11,7 +12,7 @@ import {
 import { useState, useRef, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
-import { SelectSportModal } from "../modals/SelectSportModal";
+// import { SelectSportModal } from "../modals/SelectSportModal";
 import CustomLoader from "../samples/CustomLoader";
 import PoolTable from "../table/PoolTable";
 import {
@@ -150,6 +151,20 @@ const PoolTabs = () => {
     }
   };
 
+  const selectSportLeagueComp = () => {
+    return (
+      <Stack display="flex" justifyContent="center" alignItems="center">
+        Select Sport and league
+      </Stack>
+    );
+  };
+
+  const renderComp = () => {
+    if (loading) return <CustomLoader />;
+    if (!sportName && !leagueName) return selectSportLeagueComp();
+    return <PoolTable poolData={poolData} />;
+  };
+
   useEffect(() => {
     if (sportName && leagueName) return;
     getInitialValues();
@@ -157,6 +172,7 @@ const PoolTabs = () => {
   }, []);
 
   useEffect(() => {
+    if (isOpen && sportName) onClose();
     if (
       !poolData ||
       poolData.length === 0 ||
@@ -185,18 +201,12 @@ const PoolTabs = () => {
           <Tab _selected={{ color: "black", bg: "#0EB634" }}>Upcoming</Tab>
         </TabList>
         <TabPanels>
-          <TabPanel p="0">
-            {loading ? <CustomLoader /> : <PoolTable poolData={poolData} />}
-          </TabPanel>
-          <TabPanel p="0">
-            {loading ? <CustomLoader /> : <PoolTable poolData={poolData} />}
-          </TabPanel>
-          <TabPanel p="0">
-            {loading ? <CustomLoader /> : <PoolTable poolData={poolData} />}
-          </TabPanel>
+          <TabPanel p="0">{renderComp()}</TabPanel>
+          <TabPanel p="0">{renderComp()}</TabPanel>
+          <TabPanel p="0">{renderComp()}</TabPanel>
         </TabPanels>
       </Tabs>
-      <SelectSportModal isOpen={isOpen} close={onClose} />
+      {/* <SelectSportModal isOpen={isOpen} close={onClose} /> */}
     </Box>
   );
 };
