@@ -17,6 +17,7 @@ import "@rainbow-me/rainbowkit/styles.css";
 
 import defaultSEOConfig from "../../next-seo.config";
 import { Chakra } from "lib/components/Chakra";
+import ErrorBoundary from "lib/components/ErrorBoundary";
 import Layout from "lib/layout";
 import "lib/styles/globals.css";
 // import Footer from "lib/layout/Footer";
@@ -95,9 +96,11 @@ const MyApp = ({ Component, pageProps }: AppProps) => {
                 </Layout>
               </>
             )} */}
-            <Layout>
-              <Component {...pageProps} />
-            </Layout>
+            <ErrorBoundary>
+              <Layout>
+                <Component {...pageProps} />
+              </Layout>
+            </ErrorBoundary>
           </Chakra>
         </Provider>
       </RainbowKitProvider>

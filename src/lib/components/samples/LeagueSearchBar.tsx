@@ -33,7 +33,7 @@ export default function App() {
     (state: RootState) => state.betting.sportLeagues
   );
 
-  const [value, setValue] = useState(leagueName);
+  const [value, setValue] = useState("");
 
   const updateSelectedNftState = (slug: string) => {
     if (sportName !== leagueSportName) return;
@@ -45,7 +45,7 @@ export default function App() {
   };
 
   useEffect(() => {
-    if (!sportName || !leagues) return;
+    if (!sportName || !leagues || !leagueName) return;
 
     const baseValueLeague = leagues.find(
       (league) => league.slug === leagueName

@@ -25,10 +25,15 @@ export default function App() {
     (state: RootState) => state.user.sportSelected
   );
 
-  const [value, setValue] = useState(sportSelected.sportName);
+  const leagueSportName = useSelector(
+    (state: RootState) => state.betting.sportName
+  );
+
+  const [value, setValue] = useState("");
 
   const updateSelectedNftState = async (id: number) => {
     const sport = sportsList.filter((s) => s.id === id)[0];
+    if (sport.sportName === leagueSportName) return;
 
     const val = {
       id: sport.id,
