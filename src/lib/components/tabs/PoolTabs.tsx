@@ -107,6 +107,7 @@ const PoolTabs = () => {
 
       if (response.error) {
         onOpen();
+        return;
       }
 
       const sport = sportsList.find((list) => list.value === response.sport)!;

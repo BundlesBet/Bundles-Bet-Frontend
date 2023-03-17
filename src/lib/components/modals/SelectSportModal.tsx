@@ -1,5 +1,5 @@
 import {
-  Heading,
+  // Heading,
   Modal,
   ModalBody,
   ModalContent,
@@ -7,7 +7,7 @@ import {
   Stack,
 } from "@chakra-ui/react";
 
-import ViewSport from "../samples/ViewSport";
+import SportSearchBar from "../samples/SportSearchBar";
 
 interface ModalProps {
   isOpen: boolean;
@@ -41,8 +41,8 @@ export const SelectSportModal = (props: ModalProps) => {
               alignItems="center"
               justifyContent="center"
             >
-              <Heading size="2xl">Select Sport</Heading>
-              <ViewSport />
+              {/* <Heading size="2xl">Select Sport</Heading> */}
+              <SportSearchBar />
             </Stack>
           </Stack>
         </ModalBody>
