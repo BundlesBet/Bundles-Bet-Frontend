@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 import {
   Box,
-  Stack,
+  // Stack,
   Tab,
   TabList,
   TabPanel,
@@ -153,9 +153,10 @@ const PoolTabs = () => {
 
   const selectSportLeagueComp = () => {
     return (
-      <Stack display="flex" justifyContent="center" alignItems="center">
-        Select Sport and league
-      </Stack>
+      // <Stack display="flex" justifyContent="center" alignItems="center">
+      //   Select Sport and league
+      // </Stack>
+      <h1 style={{ marginTop: "20px" }}> Select Sport and league</h1>
     );
   };
 
