@@ -57,7 +57,7 @@ const SomeText = () => {
           </Heading>
         </Flex>
         <ConnectButton showBalance={false} chainStatus="none" />
-        <Link as={NextLink} href={urls.explore}>
+        <Link as={NextLink} href={urls.viewPool}>
           Skip for now
         </Link>
       </Flex>

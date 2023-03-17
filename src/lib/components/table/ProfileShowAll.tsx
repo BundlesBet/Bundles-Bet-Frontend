@@ -280,6 +280,7 @@ const ProfileShowAll = (props: TableProps) => {
                         "HH:mm aa, do MMM yy"
                       )}
                     </Td>
+
                     <Td
                       color="#fff"
                       fontSize="md"
@@ -303,6 +304,7 @@ const ProfileShowAll = (props: TableProps) => {
                         />
                       </CustomLink>
                     </Td>
+
                     <Td color="#fff" fontSize="md" fontWeight="hairline">
                       {item.pool.totalPoolAmount}
                     </Td>

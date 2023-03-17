@@ -1,10 +1,14 @@
 import { Button, Flex, useToast } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { useContractWrite, usePrepareContractWrite } from "wagmi";
 
 import { contractDetails } from "config";
+import { setUserData } from "redux/slices/user";
+import type { RootState } from "redux/store";
 import { updateUserRewards } from "utils/apiCalls";
+import type { UserData } from "utils/interfaces";
 
 interface Props {
   containsReward: boolean;
@@ -25,6 +29,11 @@ const ClaimButton = ({
 }: Props) => {
   const router = useRouter();
   const poolId = router.query.id;
+
+  const dispatch = useDispatch();
+
+  const userData = useSelector((state: RootState) => state.user)
+    .userData as UserData;
 
   const [disableClaim, setDisableClaim] = useState(false);
 
@@ -68,6 +77,13 @@ const ClaimButton = ({
               backendClaimCall();
               checkHasClaimed();
               setDisableClaim(false);
+
+              dispatch(
+                setUserData({
+                  ...userData,
+                  totalRewardsEarned: userData.totalRewardsEarned + reward,
+                })
+              );
 
               toast({
                 position: "top-right",

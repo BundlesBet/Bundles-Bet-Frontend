@@ -20,7 +20,7 @@ import { useAccount } from "wagmi";
 
 import { signUpValidation } from "helpers/validation";
 import { setUserData } from "redux/slices/user";
-import { saveAuthTokens } from "utils";
+import { saveAuthTokens, urls } from "utils";
 import { saveUserData } from "utils/apiCalls";
 
 interface ModalProps {
@@ -83,7 +83,7 @@ export const SignUpModal = (props: ModalProps) => {
     close();
 
     if (router.pathname === "/") {
-      router.push("/explore");
+      router.push(urls.viewPool);
     }
   }
 

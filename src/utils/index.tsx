@@ -13,10 +13,10 @@ import {
 // Required URLs
 export const urls = {
   admin: "/admin",
-  // connectWallet: "/",
+  connectWallet: "/",
   login: "/login",
   sportsSelection: "/sportSelection",
-  viewPool: "/",
+  viewPool: "/viewPool",
   dashboard: "/dashboard",
   storyBook: "/storybook",
   explore: "/explore",

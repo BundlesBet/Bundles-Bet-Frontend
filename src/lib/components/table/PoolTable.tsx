@@ -17,6 +17,7 @@ import Pagination from "@choc-ui/paginator";
 import { formatInTimeZone } from "date-fns-tz";
 import { forwardRef, useState } from "react";
 import { MdLeaderboard } from "react-icons/md";
+import { TbReportMoney } from "react-icons/tb";
 
 import CustomLink from "../common/CustomLink";
 import { uniqueID } from "utils";
@@ -125,15 +126,6 @@ const PoolTable = (props: TableProps) => {
                   >
                     <CustomLink href={`/viewpool/${pool.id}`}>
                       {pool.poolName}
-
-                      <IconButton
-                        background="transparent"
-                        border={0}
-                        variant="outline"
-                        ml={1}
-                        icon={<InfoOutlineIcon />}
-                        aria-label="Pool Matches"
-                      />
                     </CustomLink>
                   </Td>
 
@@ -159,12 +151,45 @@ const PoolTable = (props: TableProps) => {
                     )}
                   </Td>
 
-                  <Td
-                    color="#fff"
-                    fontSize="md"
-                    fontWeight="hairline"
-                    display="flex"
-                  >
+                  <Td color="#fff" gap={3} fontWeight="hairline" display="flex">
+                    <Tooltip
+                      hasArrow
+                      aria-label="Place Bet"
+                      label="Place Bet"
+                      placement="right-end"
+                    >
+                      <div>
+                        <CustomLink href={`/viewpool/${pool.id}`}>
+                          <IconButton
+                            background="transparent"
+                            fontSize="x-large"
+                            variant="outline"
+                            icon={<TbReportMoney />}
+                            aria-label="Pool Matches"
+                          />
+                        </CustomLink>
+                      </div>
+                    </Tooltip>
+
+                    <Tooltip
+                      hasArrow
+                      aria-label="Matches"
+                      label="Matches"
+                      placement="right-end"
+                    >
+                      <div>
+                        <CustomLink href={`/viewpool/${pool.id}`}>
+                          <IconButton
+                            background="transparent"
+                            fontSize="large"
+                            variant="outline"
+                            icon={<InfoOutlineIcon />}
+                            aria-label="Pool Matches"
+                          />
+                        </CustomLink>
+                      </div>
+                    </Tooltip>
+
                     <Tooltip
                       hasArrow
                       aria-label="leaderboard"
@@ -176,6 +201,7 @@ const PoolTable = (props: TableProps) => {
                           <IconButton
                             colorScheme="red"
                             variant="outline"
+                            fontSize="large"
                             icon={<MdLeaderboard />}
                             aria-label="Leaderboard"
                           />

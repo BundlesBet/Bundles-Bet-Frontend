@@ -13,6 +13,7 @@ import { useSelector } from "react-redux";
 
 import useRedirectAfterSomeSeconds from "hooks/useRedirectAfterSeconds";
 import type { RootState } from "redux/store";
+import { urls } from "utils";
 
 interface ModalProps {
   isOpen: boolean;
@@ -24,7 +25,7 @@ export const BetPlaced = (props: ModalProps) => {
   const { poolData } = useSelector((state: RootState) => state.betting);
 
   const { secondsRemaining } = useRedirectAfterSomeSeconds(
-    `/sportSelection`,
+    urls.viewPool,
     5,
     isOpen
   );

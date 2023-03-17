@@ -6,6 +6,7 @@ import { useAccount } from "wagmi";
 
 import CTASection from "lib/components/samples/CTASection";
 import SomeText from "lib/components/samples/SomeText";
+import { urls } from "utils";
 
 const Home = () => {
   const { address, isConnected } = useAccount();
@@ -13,7 +14,7 @@ const Home = () => {
 
   useEffect(() => {
     if (isConnected && address) {
-      router.push("/explore");
+      router.push(urls.viewPool);
     }
 
     // eslint-disable-next-line react-hooks/exhaustive-deps

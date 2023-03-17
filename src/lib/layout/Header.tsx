@@ -87,7 +87,7 @@ const Header = () => {
         </Heading>
       </Flex>
 
-      <Flex marginLeft="auto" align="center" gap={6}>
+      <Flex marginLeft="auto" align="center" gap={2}>
         <Show above="lg">
           {explore.map(
             (link: { href: string; text: string; disable: boolean }) => (

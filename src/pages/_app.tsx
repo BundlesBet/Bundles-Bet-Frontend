@@ -6,7 +6,7 @@ import {
 import type { ThemeOptions } from "@rainbow-me/rainbowkit/dist/themes/baseTheme";
 import type { AppProps } from "next/app";
 import Head from "next/head";
-// import { useRouter } from "next/router";
+import { useRouter } from "next/router";
 import { DefaultSeo } from "next-seo";
 import { Provider } from "react-redux";
 import { configureChains, createClient, WagmiConfig } from "wagmi";
@@ -20,9 +20,9 @@ import { Chakra } from "lib/components/Chakra";
 import ErrorBoundary from "lib/components/ErrorBoundary";
 import Layout from "lib/layout";
 import "lib/styles/globals.css";
-// import Footer from "lib/layout/Footer";
+import Footer from "lib/layout/Footer";
 import store from "redux/store";
-// import { urls } from "utils";
+import { urls } from "utils";
 
 const { chains, provider, webSocketProvider } = configureChains(
   [
@@ -61,9 +61,9 @@ const theme: ThemeOptions = {
 };
 
 const MyApp = ({ Component, pageProps }: AppProps) => {
-  // const loginRoutes = [urls.viewPool];
+  const loginRoutes = [urls.connectWallet];
 
-  // const router = useRouter();
+  const router = useRouter();
 
   return (
     <WagmiConfig client={wagmiClient}>
@@ -83,23 +83,20 @@ const MyApp = ({ Component, pageProps }: AppProps) => {
               />
             </Head>
             <DefaultSeo {...defaultSEOConfig} />
-            {/* {loginRoutes.includes(router.pathname) ? (
-              <>
-                <Component {...pageProps} />
-                <Footer />
-              </>
-            ) : (
-              <>
-                {" "}
-                <Layout>
-                  <Component {...pageProps} />
-                </Layout>
-              </>
-            )} */}
             <ErrorBoundary>
-              <Layout>
-                <Component {...pageProps} />
-              </Layout>
+              {loginRoutes.includes(router.pathname) ? (
+                <>
+                  <Component {...pageProps} />
+                  <Footer />
+                </>
+              ) : (
+                <>
+                  {" "}
+                  <Layout>
+                    <Component {...pageProps} />
+                  </Layout>
+                </>
+              )}
             </ErrorBoundary>
           </Chakra>
         </Provider>
