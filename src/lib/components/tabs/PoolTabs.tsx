@@ -1,14 +1,5 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
-import {
-  Box,
-  // Stack,
-  Tab,
-  TabList,
-  TabPanel,
-  TabPanels,
-  Tabs,
-  // useDisclosure,
-} from "@chakra-ui/react";
+import { Box, Tab, TabList, TabPanel, TabPanels, Tabs } from "@chakra-ui/react";
 import { useState, useRef, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
@@ -152,12 +143,7 @@ const PoolTabs = () => {
   };
 
   const selectSportLeagueComp = () => {
-    return (
-      // <Stack display="flex" justifyContent="center" alignItems="center">
-      //   Select Sport and league
-      // </Stack>
-      <h1 style={{ marginTop: "20px" }}> Select Sport and league</h1>
-    );
+    return <h1 style={{ marginTop: "20px" }}> Select Sport and league</h1>;
   };
 
   const renderComp = () => {
