@@ -20,7 +20,7 @@ import { MdLeaderboard } from "react-icons/md";
 import { TbReportMoney } from "react-icons/tb";
 
 import CustomLink from "../common/CustomLink";
-import { uniqueID } from "utils";
+import { uniqueID, urls } from "utils";
 import type { Pool } from "utils/interfaces";
 
 interface TableProps {
@@ -159,7 +159,7 @@ const PoolTable = (props: TableProps) => {
                       placement="right-end"
                     >
                       <div>
-                        <CustomLink href={`/viewpool/${pool.id}`}>
+                        <CustomLink href={`${urls.viewPool}/${pool.id}`}>
                           <IconButton
                             background="transparent"
                             fontSize="x-large"
@@ -178,7 +178,7 @@ const PoolTable = (props: TableProps) => {
                       placement="right-end"
                     >
                       <div>
-                        <CustomLink href={`/viewpool/${pool.id}`}>
+                        <CustomLink href={`${urls.viewPoolDetails}/${pool.id}`}>
                           <IconButton
                             background="transparent"
                             fontSize="large"

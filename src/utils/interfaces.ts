@@ -164,3 +164,9 @@ export type BetMatchesTable = {
   selection: string;
   outcome: string;
 };
+
+export type PoolMatchesTable = {
+  teamAName: string;
+  teamBName: string;
+  outcome: string;
+};

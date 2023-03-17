@@ -17,6 +17,7 @@ export const urls = {
   login: "/login",
   sportsSelection: "/sportSelection",
   viewPool: "/viewPool",
+  viewPoolDetails: "/viewPoolDetails",
   dashboard: "/dashboard",
   storyBook: "/storybook",
   explore: "/explore",
@@ -138,5 +139,24 @@ export const getStringOutcome = (matchOutcome: number) => {
       return "CANCELLED";
     default:
       return "NOT_STARTED";
+  }
+};
+
+export const getMatchOutcomes = (
+  matchOutcome: string,
+  teamA: string,
+  teamB: string
+) => {
+  switch (matchOutcome) {
+    case "TEAM_A":
+      return teamA;
+
+    case "TEAM_B":
+      return teamB;
+
+    case "NOT_STARTED":
+      return "NOT STARTED";
+    default:
+      return matchOutcome;
   }
 };
